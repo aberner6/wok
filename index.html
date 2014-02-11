@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>wok</title>
+
+	<style type="text/css">
+
+	</style>
+</head>
+<body>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<div id = "thing"></div>
+<script type="text/javascript">
+	
+	d3.csv("diffusionMRI.csv", function(data) {
+		// console.log(data);
+    var names = []
+    for (i = 0;i<data.length; i++){ 
+            names[i] = data[i].Year
+            } //generates an array of all Names
+    // console.log("List of All Names: " + Names)
+
+
+    function onlyUnique(value, index, self) { 
+    return self.indexOf(value) === index;
+        } 
+    var uniqueNames = names.filter( onlyUnique ); //finds unique names
+    console.log("Unique Names: " + uniqueNames);
+
+    function valueConsolidation(givenName, i) { 
+    //consolodates the Value for all values of a given Name
+        var total = 0;
+        for (i = 0;i<data.length; i++){ 
+            if(data[i].Year == givenName){
+                total++;
+            }else{
+
+            }}
+         return total;
+     } 
+    console.log("Sum of All 1996's: " + valueConsolidation("1996"))
+ 
+    var totals = []
+    for (i = 0; i<uniqueNames.length; i++){
+        totals[i]= valueConsolidation(uniqueNames[i])
+    } //creates a new aray with the sums of all the different Names
+
+
+			// var thisis1997 = d3.max(data, function(d,i) { 
+		 // 		if (data[i].Year==2013){
+			// 	return data[i].Year.length; 
+			// 	}
+			// })
+			// console.log(thisis1997)
+
+    //Width and height
+    var w = 1400;
+    var h = 1400;
+    var svgCircle = d3.select("body")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h);
+    
+			//Create scale functions
+	var radiusScale = d3.scale.linear()
+		.domain([0, d3.max(totals, function(d) { return d; })])
+		.range([1, 100]);
+			//Create scale functions
+	// var xScale = d3.scale.linear()
+	// 	.domain([0, totals.length])
+	// 	.range([10, w-10]);
+	var xScale = d3.scale.linear()
+		.domain([1984, 2014])
+		.range([10, w-10]);
+	var yScale = d3.scale.linear()
+		.domain([1984, 2014])
+		.range([10, h-10]);
+
+    var totalsCircles = svgCircle.selectAll("circle")  //draw circles with the newly parsed data values, the scale difference makes it weird!
+                    .data(data)
+                    .enter()
+                    .append("circle");
+                    totalsCircles
+                    .attr("cx", function(d,i) {
+                        return  xScale(d.Year);
+                    })
+                    .attr("cy", function(d,i){
+                    	//if your year matches the unique name year
+                    	//go through the unique name year's total at index of unique name
+                    	// map on the y region according to this
+                    	return h/2+Math.random(1)*100;
+                    })
+                    .attr("r", function(d) {
+                        return 5; 
+                     })
+                     .attr("fill", "rgba(0, 255, 0, 0.5)");
+
+
+
+    // console.log(totals)
+    // var totalsCircles = svgCircle.selectAll("circle")  //draw circles with the newly parsed data values, the scale difference makes it weird!
+    //                 .data(totals)
+    //                 .enter()
+    //                 .append("circle");
+    //                 totalsCircles
+    //                 .attr("cx", function(d,i) {
+    //                     return  xScale(i);
+    //                 })
+    //                 .attr("cy", h/2)
+    //                 .attr("r", function(d) {
+    //                     return radiusScale(d); 
+    //                  })
+    //                  .attr("fill", "rgba(0, 255, 0, 0.5)");
+		})			 
+</script>
+</body>
+</html>
