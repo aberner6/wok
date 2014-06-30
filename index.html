@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>wok</title>
+    <title>wok</title>
 <link href="tipsy.css" rel="stylesheet" type="text/css" /> 
 
-	<style type="text/css">
-	</style>
+    <style type="text/css">
+    </style>
 </head>
 <body>
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
@@ -17,6 +17,9 @@
 
 var years = []
 var uniqueYears;
+var journalTypes = []
+var uniqueTypes;
+var goSecond = false;
 var totals = [];
 var huh = [];
 var total1 = 0;
@@ -26,17 +29,27 @@ var total4 = 0;
 var total5 = 0;
 var total6 = 0;
 var totalss = {};
+var color =  d3.scale.category20c();
+
 var firstLoadVar;
 var firstLoad = -1;
+
+var secLoad = -1;
+var secondLoadVar;
+var secondLoad = -1;
+
+
 var thisTotal;
 var totalsCircles;
+var heightScale;
     //Width and height
     var w = 1400;
     var h = 800;
-	d3.csv("smallcsv.csv", function(data) {
-		// console.log(data);
+    d3.csv("smallcsv.csv", function(data) {
+        // console.log(data);
     for (i = 0;i<data.length; i++){ 
         years[i] = data[i].Year;
+        journalTypes[i] = data[i].Sourcetitle;
     } //generates an array of all Names
 
 
@@ -44,6 +57,9 @@ var totalsCircles;
     function onlyUnique(value, index, self) { 
         return self.indexOf(value) === index;
     } 
+    uniqueTypes = journalTypes.filter( onlyUnique ); //finds unique names
+    console.log("Unique Types: " + uniqueTypes);
+
     uniqueYears = years.filter( onlyUnique ); //finds unique names
     console.log("Unique Years: " + uniqueYears);
 
@@ -72,24 +88,24 @@ var totalsCircles;
             .attr("width", w)
             .attr("height", h);
     
- //    var maxEntries = d3.max(totals, function(d) { return d; });
-	// 		//Create scale functions
-	// var radiusScale = d3.scale.linear()
-	// 	.domain([0, maxEntries])
-	// 	.range([1, 100]);
-			//Create scale functions
-	// var xScale = d3.scale.linear()
-	// 	.domain([0, totals.length])
-	// 	.range([10, w-10]);
-	var xScale = d3.scale.linear()
-		.domain([1984, 2014])
-		.range([100, w-100]);
-	// var yScale = d3.scale.linear()
-	// 	.domain([1984, 2014])
-	// 	.range([10, h-10]);
+    var maxEntries = d3.max(totals, function(d) { return d; });
+    //      //Create scale functions
+    // var radiusScale = d3.scale.linear()
+    //  .domain([0, maxEntries])
+    //  .range([1, 100]);
+            //Create scale functions
+    // var xScale = d3.scale.linear()
+    //  .domain([0, totals.length])
+    //  .range([10, w-10]);
+    var xScale = d3.scale.linear()
+        .domain([1984, 2014])
+        .range([100, w-100]);
     // var yScale = d3.scale.linear()
-    //     .domain([0, maxEntries])
-    //     .range([h/2, h/4]);
+    //  .domain([1984, 2014])
+    //  .range([10, h-10]);
+    heightScale = d3.scale.linear()
+        .domain([0, maxEntries*3])
+        .range([1, h-100]);
 
     // var yScale = d3.scale.linear()
     //     .domain([0, maxEntries])
@@ -107,14 +123,6 @@ var totalsCircles;
         }
 }
 
-
-
-
-
-
-
-
-
 })
                     .attr("x", function(d,i) {
                         return  xScale(d.Year);
@@ -125,8 +133,7 @@ var totalsCircles;
                      // map on the y region according to this
     for (j = 0; j<uniqueYears.length; j++){
         if (d.Year==uniqueYears[j]){
-             return h/1.2-10*totals[j];               
-// return i;
+             return (h/1.2-heightScale(totals[j]));               
         }
 }
 
@@ -135,21 +142,31 @@ var totalsCircles;
                     //     total1++;
                     //     return (h/1.2)-10*total1;                        
                     //  }
-                    // if(d.Year==1985){
-                    //     total2++;
-                    //     return (h/1.2)-10*total2;   
-                    // }
-                    // if(d.Year==1986){
-                    //  return (h/1.2)-10*i;                        
-                    //  }
-                    // if(d.Year==1987){
-                    //  return (h/1.2)-10*i;                        
-                    //  }
-                    // })
-                    .attr("width", 10)
-                    .attr("height", 10)
-                     .attr("fill", "grey")
-                     .attr("opacity",.3)
+                    .attr("width", 20)
+                    .attr("height", 1)
+                     .attr("fill", "none")
+                     // .attr("stroke","lightgray")
+                     // .attr("opacity",1)
+makeRects();
+function makeRects(){
+var otherData = d3.range(20);
+
+svg.selectAll("otherRect")
+.data(otherData)
+.enter()
+.append("rect")
+.attr("class", "otherRect")
+.attr("x", 10)
+.attr("y", function(d,i){
+    return i+10
+})
+.attr("width",5)
+.attr("height",5)
+.attr("fill",function(d){
+    return color(d);
+})
+}
+
 $('rect').tipsy({
 
         gravity: 'w', 
@@ -157,7 +174,7 @@ $('rect').tipsy({
         delayIn: 500, 
         title: function() {
           var d = this.__data__;      
-         return d.Year;         
+         return d.Year+" "+", Journal: "+d.Sourcetitle;         
         }
       });
 
@@ -166,63 +183,108 @@ $('rect').tipsy({
 firstLoadVar = setInterval(function(){ 
 if(totals.length>0){    
     if (firstLoad<totals.length-1){
-        // d3.tsv("connectionfreqcodes_top25.txt", function(error, cData) {
         firstLoad++; 
         if (firstLoad>=0){
-            // thisTotal = totals[firstLoad];
-           // agh(1, totals[1], uniqueYears[1]); 
             total1=0;
 
            agh(firstLoad, totals[firstLoad], uniqueYears[firstLoad]); //store inner subjects is the loading function for the big data      
         }
-        // })
     }
     else {
-    // runOnce(); //once you have loaded everything in, then run the visual elements
+        console.log(journalTypes.length)
+if(journalTypes.length==15073&&uniqueTypes.length==14){    
+
+        // goNow();
+}
     clearInterval(firstLoadVar); //and stop loading stuff in
+
     }
 }
-},500);   
+},100);  
+
+
+        })
+
+// function goNow(){
+// // if (goSecond==true){
+//     secondLoadVar = setInterval(function(){ 
+
+
+
+
+// if(secondLoad<uniqueYears.length-1){
+//     secondLoad++;
+// }
+// if (secLoad<uniqueTypes.length-1){
+// secLoad++; 
+// }
+    
+//         // if (secLoad>=0){
+//         if (secLoad>=0 &&secondLoad>=0){
+//             // total2=0;
+//            ooh(uniqueYears[secondLoad], uniqueTypes[secLoad],secLoad); 
+//         }
 
 
 
 
 
 
+// if(secondLoad==uniqueYears.length-1) {
+//     clearInterval(secondLoadVar); //and stop loading stuff in
+//     }
 
-
-
-
-		})
-
-
-
+// },100);  
+// }
+// var color = ["blue","red","yellow","green","lightgreen","lightblue","pink","orange","cyan","turquoise","cornflowerblue","lavender","cornsilk","deeppink","plum","peru","rosybrown","blue"]
+// var color = d3.scale.linear()
+//     .domain([0,15])
+//     .range([d3.hsl(96, .6, 1), d3.hsl(276, .6, 0)])
+    // .clamp(true);
+// var color = d3.scale.cubehelix()
+//     .domain([0, 14 / 2,14 - 1])
+//     .range([d3.hsl(-40, 1, .4), d3.hsl(60, 1, 1), d3.hsl(160, 1, .4)]);
 function agh(z,tots, thisYear){
-if(totals.length>0){	
-console.log("yes")
-console.log(z)
-console.log(tots)
+if(totals.length>0){    
+// console.log("yes")
+// console.log(z)
+// console.log(tots)
 d3.selectAll(".theseRects"+thisYear)
-// totalsCircles
     .transition()
     .attr('y', function(d,i) {
-
-    // for (j = 0; j<uniqueYears.length; j++){
         if (d.Year==thisYear){
-                    // if(d.Year==1984){
                         total1++;
-                        return (h/1.2)-20*total1;                        
+             // return h/1.2-totals[j];               
+
+                        return (h/1.2)-heightScale(total1*3);                        
                      }
-        //     for (k=0; k<tots; k++){ //j is in unique years
-        //         console.log(k);
-        //     }    
-        // }
-        // return h/1.2-k;                    
+})
+.attr("fill", function(d,i){
+    for (j=0; j<uniqueTypes.length; j++){
+     if(d.Sourcetitle==uniqueTypes[j]){
+        return color(j);
+    }       
+    }
 
+}) 
 
-})		 
 }
 }
+
+
+// function ooh(thisYear, thisDoc, c){
+// // if(totals.length>0){    
+// console.log(thisYear)
+// console.log(c)
+// console.log(thisDoc)
+// d3.selectAll(".theseRects"+thisYear)
+//     .transition()
+// .attr("fill", function(d,i){
+//     if(d.DocumentType==thisDoc){
+//         return color[c];
+//     }
+// })       
+// }
 
 </script>
 </body>
