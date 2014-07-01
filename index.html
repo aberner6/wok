@@ -14,7 +14,9 @@
 <div id = "thing"></div>
 
 <script type="text/javascript">
-
+var svg;
+var eachEntry;
+var xScale;
 var years = []
 var uniqueYears;
 var journalTypes = [];
@@ -34,7 +36,6 @@ var color =  d3.scale.category20c();
 var opacityMap;
 var firstLoadVar;
 var firstLoad = -1;
-
 var secLoad = -1;
 var secondLoadVar;
 var secondLoad = -1;
@@ -42,11 +43,14 @@ var secondLoad = -1;
 
 var thisTotal;
 var totalsCircles;
+var textsAre;
 var heightScale;
+var thisData = [];
     //Width and height
     var w = 1400;
     var h = 800;
     d3.csv("smallcsv.csv", function(data) {
+        thisData=(data);
         // console.log(data);
     for (i = 0;i<data.length; i++){ 
         years[i] = data[i].Year;
@@ -84,14 +88,14 @@ var heightScale;
         totals[i]= valueConsolidation(uniqueYears[i])
     } //creates a new aray with the sums of all the different Names
     
-    var svg = d3.select("body")
+    svg = d3.select("body")
             .append("svg")
             .attr("width", w)
             .attr("height", h);
     
     var maxEntries = d3.max(totals, function(d) { return d; });
 
-    var xScale = d3.scale.linear()
+    xScale = d3.scale.linear()
         .domain([1984, 2014])
         .range([100, w-100]);
 
@@ -139,9 +143,35 @@ var heightScale;
             highlightAll(thisAuthor, i);
         })
         .on("mouseout", function(d,i){
+            unhighlight();
         })
-
+function unhighlight(){
+    // d3.selectAll("text.textIs")
+    // .transition()
+    // .attr("opacity",0)
+    d3.selectAll("rect")
+    .transition()
+    .attr("width", 20)
+}
 function highlightAll(thisAuthor, index){
+// d3.selectAll("text.textIs")
+//     .transition()
+//     .attr("opacity", function(d,i){
+//         // console.log("in here")
+//      for (j=0; j<authors[i].length-1; j++){ 
+//         for (k=0; k<thisAuthor.length; k++){
+//          if(authors[i][j]==thisAuthor[k] && i!=index){ 
+//             console.log("YES"+authors[i][j]+"  authorsatij  "+thisAuthor[k])
+//             return 1;
+//         }
+//         else {
+//             return 0;
+//         }            
+//         }
+
+//     }        
+//     })
+
 d3.selectAll("rect")
     .transition()
     .attr("width",function(d,i){
@@ -158,46 +188,27 @@ d3.selectAll("rect")
 
     }
     })
-totalsCircles.each(function(d,i) {
-     for (j=0; j<authors[i].length-1; j++){ 
-        for (k=0; k<thisAuthor.length; k++){
-         if(authors[i][j]==thisAuthor[k] && i!=index){ 
-            console.log(authors[i][j]+"  authorsatij  "+thisAuthor[k])
-                d3.select(this).append("text")
-                .attr("x", "28")
-                .attr("y", "23")
-                .attr("fill","black")
-                .text(function(d) { 
-                    return thisAuthor[k];
-                });
-        }
-        else {
-        }            
-        }
-    }
-})
-}
 
-
-makeRects();
-function makeRects(){
-var otherData = d3.range(20);
-svg.selectAll("otherRect")
-.data(otherData)
-.enter()
-.append("rect")
-.attr("class", "otherRect")
-.attr("x", 10)
-.attr("y", function(d,i){
-    return i+10
-})
-.attr("width",5)
-.attr("height",10)
-.attr("fill",function(d){
-    return color(d);
-})
 
 }
+    //  for (j=0; j<authors[i].length-1; j++){ 
+    //     for (k=0; k<thisAuthor.length; k++){
+    //      if(authors[i][j]==thisAuthor[k] && i!=index){ 
+    //         console.log(authors[i][j]+"  authorsatij  "+thisAuthor[k])
+    //             d3.select(this).append("text")
+    //             // .attr("x", "28")
+    //             // .attr("y", "23")
+    //             .attr("fill","black")
+    //             .text(function(d) { 
+    //                 return thisAuthor[k];
+    //             });
+    //     }
+    //     else {
+    //     }            
+    //     }
+    // }
+// })
+// }
 
 $('rect').tipsy({
     gravity: 'w', 
@@ -229,6 +240,7 @@ if(totals.length>0){
         }
     }
     else {
+    makeRects();
         console.log(journalTypes.length)
     clearInterval(firstLoadVar); //and stop loading stuff in
 
@@ -273,6 +285,55 @@ d3.selectAll(".theseRects"+thisYear)
 }
 }
 
+function makeRects(){
+var otherData = d3.range(20);
+svg.selectAll("otherRect")
+.data(otherData)
+.enter()
+.append("rect")
+.attr("class", "otherRect")
+.attr("x", 10)
+.attr("y", function(d,i){
+    return i+10
+})
+.attr("width",5)
+.attr("height",10)
+.attr("fill",function(d){
+    return color(d);
+})
+// textsAre = svg.selectAll("textIs")
+//     .data(thisData)
+//     .enter()
+//     .append("text");
+
+//     textsAre
+//     .attr("class","textIs")
+//     .attr("fill","black")
+//     .attr("opacity",0)
+//     .attr("x", function(d,i){
+//         return xScale(d.Year);
+//     })
+//     .attr("y", function(d,i){
+//         for (j = 0; j<uniqueYears.length; j++){
+//             if (d.Year==uniqueYears[j]){
+//                 return (h/1.2-heightScale(totals[j]))-i*2;               
+//             }
+//         }            
+//     })
+//     .text(function(d,i){
+//         return d.Authors;
+//     //  for (j=0; j<authors[i].length-1; j++){ 
+//     //     for (k=0; k<thisAuthor.length; k++){
+//     //      if(authors[i][j]==thisAuthor[k] && i!=index){ 
+//     //         console.log(authors[i][j]+"  authorsatij  "+thisAuthor[k])
+//     //         return thisAuthor[k];
+//     //     }
+//     //     else {
+//     //     }            
+//     //     }
+//     // }
+//     }) 
+}
 </script>
 </body>
 </html>
