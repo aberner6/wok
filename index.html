@@ -49,15 +49,15 @@ var thisData = [];
     //Width and height
     var w = 1400;
     var h = 800;
-    d3.csv("smallcsv.csv", function(data) {
+    d3.csv("dMRI.csv", function(data) {
         thisData=(data);
         // console.log(data);
     for (i = 0;i<data.length; i++){ 
         years[i] = data[i].Year;
         authors[i] = data[i].Authors.split(".,");
-        journalTypes[i] = data[i].Authors;
+        // journalTypes[i] = data[i].Authors;
 
-        // journalTypes[i] = data[i].Sourcetitle;
+        journalTypes[i] = data[i].Sourcetitle;
     } //generates an array of all Names
 
 
@@ -135,7 +135,8 @@ var thisData = [];
             }
             })
         .attr("width", 20)
-        .attr("height", 10)
+        .attr("height", 2)
+        .attr("stroke-width",1)
         .attr("fill", "none")
         .on("mouseover", function(d,i){
             thisAuthor = authors[i];
@@ -145,70 +146,118 @@ var thisData = [];
         .on("mouseout", function(d,i){
             unhighlight();
         })
+
+
+// var textsAre = svg.selectAll("textIs")
+//     .data(data)
+//     .enter()
+//     .append("text")
+//         .attr("class", function(d,i){
+//             // for (j = 0; j<uniqueYears.length; j++){
+//             //     if (d.Year==uniqueYears[j]){
+//                     return "textIs"+i;               
+//                 // }
+//             // }
+//         })
+//         .attr("x", function(d,i) {
+//             // console.log(d.Year)
+//             return  xScale(d.Year);
+//          })
+//         .attr("y", function(d,i){
+//                      //if your year matches the unique name year
+//                      //go through the unique name year's total at index of unique name
+//                      // map on the y region according to this
+//             for (j = 0; j<uniqueYears.length; j++){
+//                 if (d.Year==uniqueYears[j]){
+//                     return (h/1.2-heightScale(totals[j]));               
+//                 }
+//                 else {
+//                     return 10;
+//                 }
+//             }
+//             });
+
+
 function unhighlight(){
     // d3.selectAll("text.textIs")
     // .transition()
     // .attr("opacity",0)
     d3.selectAll("rect")
     .transition()
-    .attr("width", 20)
+    // .attr("height", 10)
+    .attr("stroke-width",1)
+    .attr("stroke-opacity", function(d,i){
+        return opacityMap(d.Cited);
+    })       
+    .attr("stroke", function(d,i){
+        for (j=0; j<uniqueTypes.length; j++){
+            if(d.Sourcetitle==uniqueTypes[j]){
+               return color(j);
+            }       
+        }  
+    })
 }
 function highlightAll(thisAuthor, index){
-// d3.selectAll("text.textIs")
-//     .transition()
-//     .attr("opacity", function(d,i){
-//         // console.log("in here")
-//      for (j=0; j<authors[i].length-1; j++){ 
-//         for (k=0; k<thisAuthor.length; k++){
-//          if(authors[i][j]==thisAuthor[k] && i!=index){ 
-//             console.log("YES"+authors[i][j]+"  authorsatij  "+thisAuthor[k])
-//             return 1;
-//         }
-//         else {
-//             return 0;
-//         }            
-//         }
-
-//     }        
-//     })
-
+// for (b=0; b<years.length; b++){
 d3.selectAll("rect")
     .transition()
-    .attr("width",function(d,i){
-     for (j=0; j<authors[i].length-1; j++){ 
+    .attr("stroke-width",function(d,i){
+     for (j=0; j<authors[i].length; j++){ 
+        if(authors[i].length==='undefined'){
+            return 1;
+        }
+        else{
         for (k=0; k<thisAuthor.length; k++){
-         if(authors[i][j]==thisAuthor[k] && i!=index){ 
+         if(authors[i][j]==thisAuthor[k]){ 
             console.log(authors[i][j]+"  authorsatij  "+thisAuthor[k])
-            return 100;
+            return 8;
         }
         else {
-            return 10;
+            return 1;
         }            
         }
-
+    }
     }
     })
-
+    .attr("stroke",function(d,i){
+     for (j=0; j<authors[i].length; j++){ 
+        if(authors[i].length==='undefined'){
+            return "white";
+        }
+        else{
+        for (k=0; k<thisAuthor.length; k++){
+         if(authors[i][j]==thisAuthor[k]){ 
+            console.log(authors[i][j]+"  authorsatij  "+thisAuthor[k])
+            return "black";
+        }
+        else {
+            return "white";
+        }            
+        }
+    }
+    }
+    })
+    .attr("stroke-opacity",function(d,i){
+     for (j=0; j<authors[i].length; j++){ 
+        if(authors[i].length==='undefined'){
+            return ".1";
+        }
+        else{
+        for (k=0; k<thisAuthor.length; k++){
+         if(authors[i][j]==thisAuthor[k]){ 
+            console.log(authors[i][j]+"  authorsatij  "+thisAuthor[k])
+            return "1";
+        }
+        else {
+            return ".1";
+        }            
+        }
+    }
+    }
+    })
+    .each(moveToFront);
 
 }
-    //  for (j=0; j<authors[i].length-1; j++){ 
-    //     for (k=0; k<thisAuthor.length; k++){
-    //      if(authors[i][j]==thisAuthor[k] && i!=index){ 
-    //         console.log(authors[i][j]+"  authorsatij  "+thisAuthor[k])
-    //             d3.select(this).append("text")
-    //             // .attr("x", "28")
-    //             // .attr("y", "23")
-    //             .attr("fill","black")
-    //             .text(function(d) { 
-    //                 return thisAuthor[k];
-    //             });
-    //     }
-    //     else {
-    //     }            
-    //     }
-    // }
-// })
-// }
 
 $('rect').tipsy({
     gravity: 'w', 
@@ -223,7 +272,7 @@ $('rect').tipsy({
         else {
             whichCited = 0;
         }
-        return d.Year+" "+", Journal: "+d.Sourcetitle+", Cited by "+whichCited+" other sources";         
+        return d.Year+" "+", Journal: "+d.Sourcetitle+"<br/>Cited by "+whichCited+" other sources"+"<br/>Author: "+d.Authors;         
     }
 });
 
@@ -240,7 +289,9 @@ if(totals.length>0){
         }
     }
     else {
+        if(totals.length==10){
     makeRects();
+}
         console.log(journalTypes.length)
     clearInterval(firstLoadVar); //and stop loading stuff in
 
@@ -261,6 +312,7 @@ var moveToFront = function() {
 // var color = d3.scale.cubehelix()
 //     .domain([0, 14 / 2,14 - 1])
 //     .range([d3.hsl(-40, 1, .4), d3.hsl(60, 1, 1), d3.hsl(160, 1, .4)]);
+var theHeight = [];
 function agh(z,tots, thisYear){
 if(totals.length>0){    
 d3.selectAll(".theseRects"+thisYear)
@@ -269,19 +321,61 @@ d3.selectAll(".theseRects"+thisYear)
         if (d.Year==thisYear){
             total1++;
              // return h/1.2-totals[j];               
-            return (h/1.2)-heightScale(total1*3);                        
+            return (h/1.2)-heightScale(total1*3);   
+            // theHeight.push((h/1.2)-heightScale(total1*3))                     
         }
     })
     .attr("fill", function(d,i){
         for (j=0; j<uniqueTypes.length; j++){
-            if(d.Authors==uniqueTypes[j]){
+            if(d.Sourcetitle==uniqueTypes[j]){
                return color(j);
             }       
         }   
     })
     .attr("opacity", function(d,i){
         return opacityMap(d.Cited);
-    }) 
+    })
+    .attr("stroke-opacity", function(d,i){
+        return opacityMap(d.Cited);
+    })
+    .attr("stroke", function(d,i){
+        for (j=0; j<uniqueTypes.length; j++){
+            if(d.Sourcetitle==uniqueTypes[j]){
+               return color(j);
+            }       
+        }   
+    })
+
+// d3.selectAll(".textIs"+z)
+//     .transition()
+//     .attr('y', function(d,i) {
+//         if (i==z){
+//             total2++;
+//            var thisGuy =  (h/1.2)-heightScale(total2*3);
+//            if (thisGuy<0){
+//             return thisGuy*-1;
+//            }   
+//            else {
+//             return thisGuy;
+//            }
+//             // return theHeight[i];                  
+//         }
+//     })
+//         .text(function(d,i){
+//             for (j=0; j<authors[i].length; j++){ 
+//             if(authors[i].length==='undefined'){
+//             }
+//             else{
+//         // for (k=0; k<thisAuthor.length; k++){
+//          // if(authors[i][j]==thisAuthor[k] && i!=index){ 
+//                 return authors[i][j];
+//             // console.log(authors[i][j]+"  authorsatij  "+thisAuthor[k])
+//             // return 100;
+//             }         
+//         }
+//     // }
+//     // }            
+//         })     
 }
 }
 
@@ -290,49 +384,19 @@ var otherData = d3.range(20);
 svg.selectAll("otherRect")
 .data(otherData)
 .enter()
-.append("rect")
+.append("circle")
 .attr("class", "otherRect")
-.attr("x", 10)
-.attr("y", function(d,i){
+.attr("cx", 10)
+.attr("cy", function(d,i){
     return i+10
 })
-.attr("width",5)
-.attr("height",10)
+.attr("r",10)
+// .attr("height",10)
 .attr("fill",function(d){
     return color(d);
 })
-// textsAre = svg.selectAll("textIs")
-//     .data(thisData)
-//     .enter()
-//     .append("text");
+//Add the SVG Text Element to the svgContainer
 
-//     textsAre
-//     .attr("class","textIs")
-//     .attr("fill","black")
-//     .attr("opacity",0)
-//     .attr("x", function(d,i){
-//         return xScale(d.Year);
-//     })
-//     .attr("y", function(d,i){
-//         for (j = 0; j<uniqueYears.length; j++){
-//             if (d.Year==uniqueYears[j]){
-//                 return (h/1.2-heightScale(totals[j]))-i*2;               
-//             }
-//         }            
-//     })
-//     .text(function(d,i){
-//         return d.Authors;
-//     //  for (j=0; j<authors[i].length-1; j++){ 
-//     //     for (k=0; k<thisAuthor.length; k++){
-//     //      if(authors[i][j]==thisAuthor[k] && i!=index){ 
-//     //         console.log(authors[i][j]+"  authorsatij  "+thisAuthor[k])
-//     //         return thisAuthor[k];
-//     //     }
-//     //     else {
-//     //     }            
-//     //     }
-//     // }
-//     }) 
 }
 </script>
 </body>
