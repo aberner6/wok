@@ -301,6 +301,14 @@ if(totals.length>0){
 d3.selectAll(".theseRects"+thisYear)
     .transition()
     .attr('y', function(d,i) {
+            for (j=0; j<authors[i].length; j++){ 
+                if(authors[i][j]==" Kandel, E.R."){ 
+                    console.log(authors[i][j]+"  eric?")
+                    return h/2;
+                    }
+                }
+
+                
         if (d.Year==thisYear){
             total1++;
              // return h/1.2-totals[j];               
