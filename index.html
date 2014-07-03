@@ -50,12 +50,14 @@ var thisData = [];
     //Width and height
     var w = 1400;
     var h = 800;
-    d3.csv("memory.csv", function(data) {
+    d3.csv("dMRI.csv", function(data) {
         thisData=(data);
         // console.log(data);
     for (i = 0;i<data.length; i++){ 
         years[i] = data[i].Year;
-        authors[i] = data[i].Authors.split(";");
+        authors[i] = data[i].Authors.split(".,");
+
+        // authors[i] = data[i].Authors.split(";");
         // journalTypes[i] = data[i].Authors;
 
         journalTypes[i] = data[i].Sourcetitle;
@@ -127,13 +129,13 @@ var thisData = [];
             }
         })
         .attr("x", function(d,i) {
-            for (j=0; j<authors[i].length; j++){ 
-                if(authors[i][j]==" Kandel, E.R."){ 
-                    console.log(authors[i][j]+"  eric?")
-            return alongWidth(i);
-                    // return 100;
-                    }
-                }
+            // for (j=0; j<authors[i].length; j++){ 
+            //     if(authors[i][j]==" Dietrich, O."){ 
+            //         console.log(authors[i][j]+"  eric?")
+            //         return alongWidth(d.Year);
+            //         // return 100;
+            //         }
+            //     }
                 // else {
                   return  xScale(d.Year);                  
                 // }
@@ -183,72 +185,6 @@ function unhighlight(){
         }  
     })
 }
-function highlightAll(thisYear, index){
-//     .attr("stroke-opacity",function(d,i){
-//      for (j=0; j<authors[i].length; j++){ 
-//         if(authors[i].length==='undefined'){
-//             return ".1";
-//         }
-//         else{
-//         for (k=0; k<thisAuthor.length; k++){
-//          if(authors[i][j]==thisAuthor[k]){ 
-//             console.log(authors[i][j]+"  authorsatij  "+thisAuthor[k])
-//             return "1";
-//         }
-//         else {
-//             return ".1";
-//         }            
-//         }
-//     }
-//     }
-//     })
-//     .each(moveToFront);
-if(authors.length==thisData.length){    
-d3.selectAll(".theseRects"+thisYear)
-    .transition()
-    // .attr('x', function(d,i) {
-    .attr('x',function(d,i){
-     for (j=0; j<authors[i].length; j++){ 
-        if(authors[i].length==='undefined'){
-            // return xScale(d.Year)
-        }
-        else{
-        // for (k=0; k<thisAuthor.length; k++){
-         if(authors[i][j]==" Kandel, E.R."){ 
-            console.log(authors[i][j]+"  authorsatij  "+thisAuthor[k])
-            return alongWidth(i);
-        }
-        else {
-            // return xScale(d.Year);
-        }            
-    }
-    }
-    })
-
-    .attr('y',function(d,i){
-     for (j=0; j<authors[i].length; j++){ 
-        if(authors[i].length==='undefined'){
-            // return xScale(d.Year)
-        }
-        else{
-        // for (k=0; k<thisAuthor.length; k++){
-         if(authors[i][j]=="Kandel, E.R."){ 
-            // console.log(authors[i][j]+"  authorsatij  "+thisAuthor[k])
-            return height/2;
-        }
-        else {
-        // if (d.Year==thisYear){
-            // total1++;
-            // return (h/1.2)-heightScale(total1*3);   
-        // }
-
-        }            
-        }
-    }
-    // }
-    })
-}
-}
 
 $('rect').tipsy({
     gravity: 'w', 
@@ -281,6 +217,10 @@ if(totals.length>0){
     }
     else {
     makeRects();
+    if (theHeight.length==17081){
+        console.log(theHeight.length)
+changeY();
+}
     console.log(journalTypes.length)
     clearInterval(firstLoadVar); //and stop loading stuff in
 
@@ -295,25 +235,32 @@ var moveToFront = function() {
     this.parentNode.appendChild(this); 
 }
 
+
+
+
+
+
+
 var theHeight = [];
 function agh(z,tots, thisYear){
 if(totals.length>0){    
 d3.selectAll(".theseRects"+thisYear)
     .transition()
     .attr('y', function(d,i) {
-            for (j=0; j<authors[i].length; j++){ 
-                if(authors[i][j]==" Kandel, E.R."){ 
-                    console.log(authors[i][j]+"  eric?")
-                    return h/2;
-                    }
-                }
+        // if (authors.length==17081){
+        //     // console.log("yes")
+        //     for (j=0; j<authors[i].length; j++){ 
+        //         if(authors[i][j]==" Dietrich, O."){ 
+        //             console.log(authors[i][j]+"  eric?")
+        //             return h/6;
+        //             }
+        //         }
+        // }
 
-                
         if (d.Year==thisYear){
             total1++;
-             // return h/1.2-totals[j];               
+            theHeight.push((h/1.2)-heightScale(total1*3))                     
             return (h/1.2)-heightScale(total1*3);   
-            // theHeight.push((h/1.2)-heightScale(total1*3))                     
         }
     })
     .attr("fill", function(d,i){
@@ -335,41 +282,29 @@ d3.selectAll(".theseRects"+thisYear)
                return color(j);
             }       
         }   
+    })  
+}
+}
+
+function changeY(){
+    d3.selectAll("rect")
+    .transition()
+    .attr('y', function(d,i) {
+        if (authors.length==17081){
+            // console.log("yes")
+            for (j=0; j<authors[i].length; j++){ 
+                if(authors[i][j]==" Dietrich, O"){ 
+                    console.log(authors[i][j]+"  eric?")
+                    return h/6;
+                    }
+                }
+                    return theHeight[i];
+        }
     })
+    // .attr("x", function(d,i){
 
-// d3.selectAll(".textIs"+z)
-//     .transition()
-//     .attr('y', function(d,i) {
-//         if (i==z){
-//             total2++;
-//            var thisGuy =  (h/1.2)-heightScale(total2*3);
-//            if (thisGuy<0){
-//             return thisGuy*-1;
-//            }   
-//            else {
-//             return thisGuy;
-//            }
-//             // return theHeight[i];                  
-//         }
-//     })
-//         .text(function(d,i){
-//             for (j=0; j<authors[i].length; j++){ 
-//             if(authors[i].length==='undefined'){
-//             }
-//             else{
-//         // for (k=0; k<thisAuthor.length; k++){
-//          // if(authors[i][j]==thisAuthor[k] && i!=index){ 
-//                 return authors[i][j];
-//             // console.log(authors[i][j]+"  authorsatij  "+thisAuthor[k])
-//             // return 100;
-//             }         
-//         }
-//     // }
-//     // }            
-//         })     
+    // })
 }
-}
-
 
 function makeRects(){
 var otherData = d3.range(20);
