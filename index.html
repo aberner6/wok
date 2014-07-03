@@ -5,6 +5,27 @@
 <link href="tipsy.css" rel="stylesheet" type="text/css" /> 
 
     <style type="text/css">
+body {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke: gray;
+  stroke-width: .4px;
+}
+
     </style>
 </head>
 <body>
@@ -20,11 +41,13 @@ var xScale;
 var years = [];
 var alongWidth;
 var uniqueYears;
+var uniqueAuthors;
 var journalTypes = [];
 var authors = [];
 var uniqueTypes;
 var goSecond = false;
 var totals = [];
+var totalAuthors = [];
 var huh = [];
 var total1 = 0;
 var total2 = 0;
@@ -41,21 +64,29 @@ var secLoad = -1;
 var secondLoadVar;
 var secondLoad = -1;
 
-
+var minYear;
+var maxYear;
+var maxAuthor;
 var thisTotal;
 var totalsCircles;
 var textsAre;
 var heightScale;
+var singleScale;
 var thisData = [];
+var theseAuthors = [];
+var theX = [];
     //Width and height
     var w = 1400;
-    var h = 800;
-    d3.csv("dMRI.csv", function(data) {
+    var h = 720;
+    d3.csv("smallcsv.csv", function(data) {
         thisData=(data);
         // console.log(data);
     for (i = 0;i<data.length; i++){ 
         years[i] = data[i].Year;
-        authors[i] = data[i].Authors.split(".,");
+        authors[i] = data[i].Authors.split("; ");
+        for (j=0; j<authors[i].length; j++){
+        theseAuthors.push(authors[i][j]);            
+        }
 
         // authors[i] = data[i].Authors.split(";");
         // journalTypes[i] = data[i].Authors;
@@ -73,6 +104,9 @@ var thisData = [];
     // uniqueTypes.split(".,")
     //split on names
     uniqueYears = years.filter( onlyUnique ); //finds unique names
+
+    uniqueAuthors = theseAuthors.filter( onlyUnique ); //finds unique authors
+
     console.log("Unique Years: " + uniqueYears);
 
     function valueConsolidation(givenYear, i) { 
@@ -85,25 +119,58 @@ var thisData = [];
             }}
          return total;
      } 
+    function authorConsolidation(givenAuthor,i) { 
+    //consolodates the Value for all values of a given Name
+        var total = 0;
+        for (i = 0;i<theseAuthors.length; i++){ 
+        // for (j=0; j<authors[i].length; j++){
+            if(theseAuthors[i] == givenAuthor){
+                total++;
+                // console.log(givenAuthor+theseAuthors[i])
+            }else{
+            }
+        }
+         return total;
+     } 
     console.log("Sum of All 1996's: " + valueConsolidation("1996"))
  
     for (i = 0; i<uniqueYears.length; i++){
         totals[i]= valueConsolidation(uniqueYears[i])
     } //creates a new aray with the sums of all the different Names
     
+    for (i = 0; i<theseAuthors.length; i++){
+        totalAuthors[i]= authorConsolidation(theseAuthors[i])
+    } //creates a new aray with the sums of all the different Names
+
     svg = d3.select("body")
             .append("svg")
             .attr("width", w)
             .attr("height", h);
     
+            // for (j=0; j<authors[i].length; j++){ 
+            //     if(authors[i][j]=="Moseley, M.E"||authors[i][j]==" Moseley, M.E"){ 
+            //         console.log(authors[i][j]+"  eric?")
+            //         total3++;
+
+   maxAuthor = d3.max(totalAuthors, function(d) { return d; });
+   singleScale = d3.scale.linear()
+        .domain([1, maxAuthor*5])
+        .range([1, h/6-100]);
+        // .range([1, h-100]);
+
+
+
     var maxEntries = d3.max(totals, function(d) { return d; });
     // var thisLength = data.length;
     alongWidth = d3.scale.linear()
         .domain([0, thisData.length])
         .range([100, w-100]);
 
+    minYear = d3.min(years, function(d) { return d; });
+    maxYear = d3.max(years, function(d) { return d; });
+
     xScale = d3.scale.linear()
-        .domain([1984, 2014])
+        .domain([minYear, maxYear])
         .range([100, w-100]);
 
     var maxCited = d3.max(data, function(d) { return d.Cited; });
@@ -114,6 +181,7 @@ var thisData = [];
     heightScale = d3.scale.linear()
         .domain([0, maxEntries*3])
         .range([1, h-100]);
+
 
 
     totalsCircles = svg.selectAll("theseRects")  //draw circles with the newly parsed data values, the scale difference makes it weird!
@@ -137,6 +205,7 @@ var thisData = [];
             //         }
             //     }
                 // else {
+                    theX.push(xScale(d.Year));
                   return  xScale(d.Year);                  
                 // }
                 // }
@@ -217,7 +286,7 @@ if(totals.length>0){
     }
     else {
     makeRects();
-    if (theHeight.length==17081){
+    if (theHeight.length==thisData.length){
         console.log(theHeight.length)
 changeY();
 }
@@ -286,25 +355,242 @@ d3.selectAll(".theseRects"+thisYear)
 }
 }
 
+
+
+
+var whichGuys = [];
+var straightLine = [];
+
 function changeY(){
     d3.selectAll("rect")
     .transition()
     .attr('y', function(d,i) {
-        if (authors.length==17081){
-            // console.log("yes")
-            for (j=0; j<authors[i].length; j++){ 
-                if(authors[i][j]==" Dietrich, O"){ 
-                    console.log(authors[i][j]+"  eric?")
-                    return h/6+theHeight[i]/50;
-                    }
+        for (j=0; j<authors[i].length; j++){ 
+            if(authors[i][j]=="Moseley, M.E"){ 
+            for (z = 0; z<uniqueYears.length; z++){
+                if (d.Year==uniqueYears[z]){
+                    total3++;
+                    straightLine.push([h/6, theX[i]]);
+                    whichGuys.push([theHeight[i], theX[i]]);
+                    return h/6-(singleScale(total3*5)); 
                 }
-                    return theHeight[i];
+                total3 = 0;
+                }
+                }
+            }
+            for (z = 0; z<uniqueYears.length; z++){
+                if (d.Year==uniqueYears[z]){
+    smallScale = d3.scale.linear()
+        .domain([0,d3.max(theHeight, function(d,i){ return d;})])
+        .range([h/1.2, (h/1.2)+100]);
+                    return smallScale(theHeight[i]);   
+                }                
+            }
+    })  
+    .attr("fill", function(d,i){
+        for (j=0; j<authors[i].length; j++){ 
+            if(authors[i][j]=="Moseley, M.E"){ 
+                if(d.Sourcetitle==uniqueTypes[j]){
+                    return color(j);
+                }
+            }
+            else {
+                return "gray";
+            }       
         }
     })
-    // .attr("x", function(d,i){
+// var lineData = [1]
+// svg.selectAll("lineIs")
+//     .data(lineData)
+//     .enter()
+//     .append("line")
+//     .attr("class", "lineIs")
+//     .attr("x1", xScale(minYear))
+//     .attr("x2", xScale(maxYear)+20)
+//     .attr("y1", h/6)
+//     .attr("y2", h/6)
+//     .attr("stroke","gray")
+//     .attr("stroke-width",.09);
+    // .attr("fill","gray");
 
-    // })
+
+
+if(whichGuys.length==7){
+
+thisMin = (d3.min(whichGuys, function(d) {
+    return (d);
+    }));
+thisMax = (d3.max(whichGuys, function(d) {
+    return (d);
+    }));
+
+var x = d3.scale.linear()
+    .domain([0, whichGuys.length])
+    .range([100, w-100]);
+
+var y = d3.scale.linear()
+    .domain([thisMin, thisMax])
+        .range([h/1.1, 1]);      
+        // .range([1, h-100]);
+
+    // heightScale = d3.scale.linear()
+    //     .domain([0, maxEntries*3])
+    //     .range([1, h-100]);
+                    // return (h/1.2-heightScale(totals[j]));               
+
+
+
+var addData = function() {
+var line = d3.svg.line()
+    .interpolate("cardinal") //cardinal is cool also monotone
+    .x(function(d, i) { 
+        return d[1];
+        // console.log(i+"which"); 
+        // return x(i); 
+    })
+    .y(function(d, i) { 
+        console.log((d[0])+"y"); 
+        return d[0];
+        // return y(d); 
+    });
+
+
+
+
+
+
+thisd = [1];
+    var people = svg.selectAll(".people")
+        .data(thisd);    
+    people
+        .enter()
+        .append("g")
+        .attr("class", "people")
+        .append("path")
+        .attr("class", "line")
+        .attr("d", function(d){
+            console.log(d);
+            return line(straightLine);
+        })
+        .transition()
+        .duration(3000)
+        .style("stroke", "gray")
+        .each("end", function(){
+
+d3.selectAll("rect")
+    .transition()
+.duration(2000)
+    .attr('y', function(d,i) {
+        for (j=0; j<authors[i].length; j++){ 
+            if(authors[i][j]=="Moseley, M.E"){ 
+            for (z = 0; z<uniqueYears.length; z++){
+                if (d.Year==uniqueYears[z]){
+                    // total3++;
+                    // straightLine.push([h/6, theX[i]]);
+                    // whichGuys.push([theHeight[i], theX[i]]);
+                    return (theHeight[i]);
+                    // return h/6-(singleScale(total3*5)); 
+                }
+                total3 = 0;
+                }
+                }
+            }
+            for (z = 0; z<uniqueYears.length; z++){
+                if (d.Year==uniqueYears[z]){
+    smallScale = d3.scale.linear()
+        .domain([0,d3.max(theHeight, function(d,i){ return d;})])
+        .range([h/1.2, (h/1.2)+100]);
+                    return smallScale(theHeight[i]);   
+                }                
+            }
+    })
+    // .each("end", function(){
+d3.selectAll("path.line")
+.transition()
+// .delay(6000)
+.duration(2000)
+.attr("d", function(d){
+    console.log(d);
+    return line(whichGuys);
+})
+    // })  
+
+        })
+
+
+
+
+// d3.selectAll("rect")
+//     .transition()
+//     // .delay(6000)
+//     .attr('y', function(d,i) {
+//         for (j=0; j<authors[i].length; j++){ 
+//             if(authors[i][j]=="Moseley, M.E"){ 
+//             for (z = 0; z<uniqueYears.length; z++){
+//                 if (d.Year==uniqueYears[z]){
+//                     // total3++;
+//                     // straightLine.push([h/6, theX[i]]);
+//                     // whichGuys.push([theHeight[i], theX[i]]);
+//                     return (theHeight[i]);
+//                     // return h/6-(singleScale(total3*5)); 
+//                 }
+//                 total3 = 0;
+//                 }
+//                 }
+//             }
+//             for (z = 0; z<uniqueYears.length; z++){
+//                 if (d.Year==uniqueYears[z]){
+//     smallScale = d3.scale.linear()
+//         .domain([0,d3.max(theHeight, function(d,i){ return d;})])
+//         .range([h/1.2, (h/1.2)+100]);
+//                     return smallScale(theHeight[i]);   
+//                 }                
+//             }
+//     })
+//     // .each("end", function(){
+// d3.selectAll("path.line")
+// .transition()
+// // .delay(6000)
+// .duration(2000)
+// .attr("d", function(d){
+//     console.log(d);
+//     return line(whichGuys);
+// })
+//     // })  
+
+
+// d3.selectAll("path.line")
+// .transition()
+// .delay(6000)
+// .duration(6000)
+// .attr("d", function(d){
+//     console.log(d);
+//     return line(whichGuys);
+// })
+
+
+
+
+// thisd = [1];
+//     var people = svg.selectAll(".people")
+//         .data(thisd);    
+//     people
+//         .enter()
+//         .append("g")
+//         .attr("class", "people")
+//         .append("path")
+//         .attr("class", "line")
+//         .attr("d", function(d){
+//             console.log(d);
+//             return line(whichGuys);
+//         })
+//         .style("stroke", "gray");
 }
+addData();
+
+}
+}
+
 
 function makeRects(){
 var otherData = d3.range(20);
