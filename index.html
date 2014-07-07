@@ -11,21 +11,28 @@ body {
 
 .axis path,
 .axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
 }
 
-.x.axis path {
+.axis text {
+    font-family: "Helvetica";
+    font-size: 8px;
+}
+
+/*.x.axis path {
   display: none;
 }
-
+*/
 .line {
   fill: none;
-  stroke: gray;
-  stroke-width: .4px;
-}
 
+}
+.kandelText{
+     font-family: "Helvetica";
+    font-size: 18px;   
+}
     </style>
 </head>
 <body>
@@ -38,6 +45,7 @@ body {
 var svg;
 var eachEntry;
 var xScale;
+var xAxis;
 var years = [];
 var alongWidth;
 var uniqueYears;
@@ -63,6 +71,7 @@ var firstLoad = -1;
 var secLoad = -1;
 var secondLoadVar;
 var secondLoad = -1;
+var padding = 35;
 
 var minYear;
 var maxYear;
@@ -75,15 +84,18 @@ var singleScale;
 var thisData = [];
 var theseAuthors = [];
 var theX = [];
+var maxEntries;
     //Width and height
     var w = 1400;
     var h = 720;
-    d3.csv("smallcsv.csv", function(data) {
+    // d3.csv("smallcsv.csv", function(data) {
+
+    d3.csv("memory_neuro_only_some_scientists.csv", function(data) {
         thisData=(data);
         // console.log(data);
     for (i = 0;i<data.length; i++){ 
         years[i] = data[i].Year;
-        authors[i] = data[i].Authors.split("; ");
+        authors[i] = data[i].Authors.split("., ");
         for (j=0; j<authors[i].length; j++){
         theseAuthors.push(authors[i][j]);            
         }
@@ -160,18 +172,18 @@ var theX = [];
 
 
 
-    var maxEntries = d3.max(totals, function(d) { return d; });
+    maxEntries = d3.max(totals, function(d) { return d; });
     // var thisLength = data.length;
-    alongWidth = d3.scale.linear()
-        .domain([0, thisData.length])
-        .range([100, w-100]);
+    // alongWidth = d3.scale.linear()
+    //     .domain([0, thisData.length])
+    //     .range([100, w-100]);
 
     minYear = d3.min(years, function(d) { return d; });
     maxYear = d3.max(years, function(d) { return d; });
 
     xScale = d3.scale.linear()
-        .domain([minYear, maxYear])
-        .range([100, w-100]);
+        .domain([minYear, maxYear]) //not min year to max year
+        .range([61, w-65]);
 
     var maxCited = d3.max(data, function(d) { return d.Cited; });
     opacityMap = d3.scale.linear()
@@ -180,9 +192,31 @@ var theX = [];
 
     heightScale = d3.scale.linear()
         .domain([0, maxEntries*3])
-        .range([1, h-100]);
+        .range([padding, h/1.2]);
+        // .range([h/1.2, (h/1.2)+100-padding]);
 
 
+// 2010, 7, 1), new Date(2012, 7, 1
+
+
+
+// var formatNumber = d3.format(".1f");
+var xTime = d3.time.scale()
+    .domain([new Date(1965,7,1), new Date(2014,7,1)])
+        .range([65, w-46]);
+
+xAxis = d3.svg.axis()
+    .scale(xTime)
+    .ticks(d3.time.years)
+    .tickSize(6,0)
+    .orient("bottom");
+
+
+
+svg.append("g")
+    .attr("class", "axis")  //Assign "axis" class
+    .attr("transform", "translate(0," + (h - padding+5) + ")")
+    .call(xAxis);
 
     totalsCircles = svg.selectAll("theseRects")  //draw circles with the newly parsed data values, the scale difference makes it weird!
         .data(data)
@@ -197,18 +231,8 @@ var theX = [];
             }
         })
         .attr("x", function(d,i) {
-            // for (j=0; j<authors[i].length; j++){ 
-            //     if(authors[i][j]==" Dietrich, O."){ 
-            //         console.log(authors[i][j]+"  eric?")
-            //         return alongWidth(d.Year);
-            //         // return 100;
-            //         }
-            //     }
-                // else {
                     theX.push(xScale(d.Year));
                   return  xScale(d.Year);                  
-                // }
-                // }
 
          })
         .attr("y", function(d,i){
@@ -218,14 +242,14 @@ var theX = [];
                      // map on the y region according to this
             for (j = 0; j<uniqueYears.length; j++){
                 if (d.Year==uniqueYears[j]){
-                    return (h/1.2-heightScale(totals[j]));               
+                    return ((h)-heightScale(totals[j]));               
                 }
             }
             })
         .attr("width", 20)
-        .attr("height", 2)
-        .attr("stroke-width",1)
-        .attr("fill", "none")
+        .attr("height", 5)
+        .attr("stroke-width",.5)
+        // .attr("fill", "none")
         .on("mouseover", function(d,i){
             thisAuthor = authors[i];
             console.log(thisAuthor)
@@ -239,21 +263,21 @@ var theX = [];
 
 
 
-function unhighlight(){
-    d3.selectAll("rect")
-    .transition()
-    .attr("stroke-width",1)
-    .attr("stroke-opacity", function(d,i){
-        return opacityMap(d.Cited);
-    })       
-    .attr("stroke", function(d,i){
-        for (j=0; j<uniqueTypes.length; j++){
-            if(d.Sourcetitle==uniqueTypes[j]){
-               return color(j);
-            }       
-        }  
-    })
-}
+// function unhighlight(){
+//     d3.selectAll("rect")
+//     .transition()
+//     .attr("stroke-width",1)
+//     .attr("stroke-opacity", function(d,i){
+//         return opacityMap(d.Cited);
+//     })       
+//     .attr("stroke", function(d,i){
+//         for (j=0; j<uniqueTypes.length; j++){
+//             if(d.Sourcetitle==uniqueTypes[j]){
+//                return color(j);
+//             }       
+//         }  
+//     })
+// }
 
 $('rect').tipsy({
     gravity: 'w', 
@@ -288,7 +312,7 @@ if(totals.length>0){
     makeRects();
     if (theHeight.length==thisData.length){
         console.log(theHeight.length)
-changeY();
+// changeY();
 }
     console.log(journalTypes.length)
     clearInterval(firstLoadVar); //and stop loading stuff in
@@ -305,8 +329,17 @@ var moveToFront = function() {
 }
 
 
-
-
+var b=0;
+$("body").keypress(function(){
+    (b+=1);
+    if (b==1){
+        changeY();
+        makeText();
+    }
+    if (b==2){
+        changeAgain();
+    }
+  });
 
 
 
@@ -316,20 +349,11 @@ if(totals.length>0){
 d3.selectAll(".theseRects"+thisYear)
     .transition()
     .attr('y', function(d,i) {
-        // if (authors.length==17081){
-        //     // console.log("yes")
-        //     for (j=0; j<authors[i].length; j++){ 
-        //         if(authors[i][j]==" Dietrich, O."){ 
-        //             console.log(authors[i][j]+"  eric?")
-        //             return h/6;
-        //             }
-        //         }
-        // }
 
         if (d.Year==thisYear){
             total1++;
-            theHeight.push((h/1.2)-heightScale(total1*3))                     
-            return (h/1.2)-heightScale(total1*3);   
+            theHeight.push((h)-heightScale(total1*3))                     
+            return (h)-heightScale(total1*3);   
         }
     })
     .attr("fill", function(d,i){
@@ -342,37 +366,51 @@ d3.selectAll(".theseRects"+thisYear)
     .attr("opacity", function(d,i){
         return opacityMap(d.Cited);
     })
-    .attr("stroke-opacity", function(d,i){
-        return opacityMap(d.Cited);
+    // .attr("stroke-opacity",1)
+    // .attr("stroke","lightgray")
+
+    // .attr("stroke-opacity", function(d,i){
+    //     return opacityMap(d.Cited);
+    // })
+    // .attr("fill", function(d,i){
+    //     for (j=0; j<uniqueTypes.length; j++){
+    //         if(d.Sourcetitle==uniqueTypes[j]){
+    //            return color(j);
+    //         }       
+    //     }   
+    // })  
+}
+}
+
+
+
+var line = d3.svg.line()
+    .interpolate("monotone") //cardinal is cool also monotone
+    .x(function(d, i) { 
+        return d[1];
     })
-    .attr("stroke", function(d,i){
-        for (j=0; j<uniqueTypes.length; j++){
-            if(d.Sourcetitle==uniqueTypes[j]){
-               return color(j);
-            }       
-        }   
-    })  
-}
-}
-
-
-
+    .y(function(d, i) { 
+        // console.log((d[0])+"y"); 
+        return d[0];
+    });
 
 var whichGuys = [];
 var straightLine = [];
 
 function changeY(){
+    console.log("change y")
     d3.selectAll("rect")
     .transition()
+    // .delay(3000)
     .attr('y', function(d,i) {
         for (j=0; j<authors[i].length; j++){ 
-            if(authors[i][j]=="Moseley, M.E"){ 
+            if(authors[i][j]=="Kandel, E.R."){ //"Moseley, M.E"){ //"Kandel, E.R."){ 
             for (z = 0; z<uniqueYears.length; z++){
                 if (d.Year==uniqueYears[z]){
                     total3++;
                     straightLine.push([h/6, theX[i]]);
                     whichGuys.push([theHeight[i], theX[i]]);
-                    return h/6-(singleScale(total3*5)); 
+                    return h/6-(singleScale(total3*15)); 
                 }
                 total3 = 0;
                 }
@@ -380,42 +418,58 @@ function changeY(){
             }
             for (z = 0; z<uniqueYears.length; z++){
                 if (d.Year==uniqueYears[z]){
-    smallScale = d3.scale.linear()
-        .domain([0,d3.max(theHeight, function(d,i){ return d;})])
-        .range([h/1.2, (h/1.2)+100]);
-                    return smallScale(theHeight[i]);   
+
+  smallScale = d3.scale.linear()
+        .domain([0,(d3.max(theHeight, function(d) {
+    return (d);
+    }))])
+        .range([100,padding]);
+
+                   return h-smallScale(theHeight[i]);   
                 }                
             }
     })  
-    .attr("fill", function(d,i){
+    .attr('height', function(d,i) {
         for (j=0; j<authors[i].length; j++){ 
-            if(authors[i][j]=="Moseley, M.E"){ 
-                if(d.Sourcetitle==uniqueTypes[j]){
-                    return color(j);
-                }
-            }
-            else {
-                return "gray";
+            if(authors[i][j]=="Kandel, E.R."){ //"Moseley, M.E"){ //"Kandel, E.R."){ 
+        for (z=0; z<uniqueTypes.length; z++){
+            if(d.Sourcetitle==uniqueTypes[z]){
+               // return color(z);
+               return 10;
+            }       
+        }   
+        }
+        else {
+         for (z=0; z<uniqueTypes.length; z++){
+            if(d.Sourcetitle==uniqueTypes[z]){
+               return 5;
             }       
         }
+        }
+        }   
     })
-// var lineData = [1]
-// svg.selectAll("lineIs")
-//     .data(lineData)
-//     .enter()
-//     .append("line")
-//     .attr("class", "lineIs")
-//     .attr("x1", xScale(minYear))
-//     .attr("x2", xScale(maxYear)+20)
-//     .attr("y1", h/6)
-//     .attr("y2", h/6)
-//     .attr("stroke","gray")
-//     .attr("stroke-width",.09);
-    // .attr("fill","gray");
+    .attr('stroke', function(d,i) {
+        for (j=0; j<authors[i].length; j++){ 
+            if(authors[i][j]=="Kandel, E.R."){ //"Moseley, M.E"){ //"Kandel, E.R."){ 
+        for (z=0; z<uniqueTypes.length; z++){
+            if(d.Sourcetitle==uniqueTypes[z]){
+               // return color(z);
+               return "black"
+            }       
+        }   
+        }
+        else {
+         for (z=0; z<uniqueTypes.length; z++){
+            if(d.Sourcetitle==uniqueTypes[z]){
+               return "none"
+            }       
+        }
+        }
+        }   
+    })
 
-
-
-if(whichGuys.length==7){
+//HAVE TO CHANGE THIS EACH TIME
+if(whichGuys.length==46){
 
 thisMin = (d3.min(whichGuys, function(d) {
     return (d);
@@ -430,33 +484,7 @@ var x = d3.scale.linear()
 
 var y = d3.scale.linear()
     .domain([thisMin, thisMax])
-        .range([h/1.1, 1]);      
-        // .range([1, h-100]);
-
-    // heightScale = d3.scale.linear()
-    //     .domain([0, maxEntries*3])
-    //     .range([1, h-100]);
-                    // return (h/1.2-heightScale(totals[j]));               
-
-
-
-var addData = function() {
-var line = d3.svg.line()
-    .interpolate("cardinal") //cardinal is cool also monotone
-    .x(function(d, i) { 
-        return d[1];
-        // console.log(i+"which"); 
-        // return x(i); 
-    })
-    .y(function(d, i) { 
-        console.log((d[0])+"y"); 
-        return d[0];
-        // return y(d); 
-    });
-
-
-
-
+        .range([h/1.1+padding, 1]);      
 
 
 thisd = [1];
@@ -468,28 +496,36 @@ thisd = [1];
         .attr("class", "people")
         .append("path")
         .attr("class", "line")
+        .attr("stroke","black")
+        .attr("stroke-width",.2)
         .attr("d", function(d){
             console.log(d);
             return line(straightLine);
-        })
-        .transition()
-        .duration(3000)
-        .style("stroke", "gray")
-        .each("end", function(){
+        });
+}
+}
+
+
+
+
+
+
+
+
+
+
+function changeAgain(){
+    console.log("change again")
 
 d3.selectAll("rect")
     .transition()
 .duration(2000)
     .attr('y', function(d,i) {
         for (j=0; j<authors[i].length; j++){ 
-            if(authors[i][j]=="Moseley, M.E"){ 
+            if(authors[i][j]=="Kandel, E.R."){ 
             for (z = 0; z<uniqueYears.length; z++){
                 if (d.Year==uniqueYears[z]){
-                    // total3++;
-                    // straightLine.push([h/6, theX[i]]);
-                    // whichGuys.push([theHeight[i], theX[i]]);
                     return (theHeight[i]);
-                    // return h/6-(singleScale(total3*5)); 
                 }
                 total3 = 0;
                 }
@@ -497,98 +533,31 @@ d3.selectAll("rect")
             }
             for (z = 0; z<uniqueYears.length; z++){
                 if (d.Year==uniqueYears[z]){
-    smallScale = d3.scale.linear()
-        .domain([0,d3.max(theHeight, function(d,i){ return d;})])
-        .range([h/1.2, (h/1.2)+100]);
-                    return smallScale(theHeight[i]);   
+                    return theHeight[i];   
                 }                
             }
     })
-    // .each("end", function(){
+var newLine = [];
+newLine.push([0,h]);
+
 d3.selectAll("path.line")
 .transition()
-// .delay(6000)
-.duration(2000)
+.duration(1000)
+.attr("stroke","white")
+.attr("stroke-width",4)
 .attr("d", function(d){
-    console.log(d);
-    return line(whichGuys);
+    d3.selectAll("path.line").each(moveToFront);
+    return line(newLine);
 })
-    // })  
-
-        })
-
-
-
-
-// d3.selectAll("rect")
-//     .transition()
-//     // .delay(6000)
-//     .attr('y', function(d,i) {
-//         for (j=0; j<authors[i].length; j++){ 
-//             if(authors[i][j]=="Moseley, M.E"){ 
-//             for (z = 0; z<uniqueYears.length; z++){
-//                 if (d.Year==uniqueYears[z]){
-//                     // total3++;
-//                     // straightLine.push([h/6, theX[i]]);
-//                     // whichGuys.push([theHeight[i], theX[i]]);
-//                     return (theHeight[i]);
-//                     // return h/6-(singleScale(total3*5)); 
-//                 }
-//                 total3 = 0;
-//                 }
-//                 }
-//             }
-//             for (z = 0; z<uniqueYears.length; z++){
-//                 if (d.Year==uniqueYears[z]){
-//     smallScale = d3.scale.linear()
-//         .domain([0,d3.max(theHeight, function(d,i){ return d;})])
-//         .range([h/1.2, (h/1.2)+100]);
-//                     return smallScale(theHeight[i]);   
-//                 }                
-//             }
-//     })
-//     // .each("end", function(){
-// d3.selectAll("path.line")
-// .transition()
-// // .delay(6000)
-// .duration(2000)
-// .attr("d", function(d){
-//     console.log(d);
-//     return line(whichGuys);
-// })
-//     // })  
-
-
-// d3.selectAll("path.line")
-// .transition()
-// .delay(6000)
-// .duration(6000)
-// .attr("d", function(d){
-//     console.log(d);
-//     return line(whichGuys);
-// })
-
-
-
-
-// thisd = [1];
-//     var people = svg.selectAll(".people")
-//         .data(thisd);    
-//     people
-//         .enter()
-//         .append("g")
-//         .attr("class", "people")
-//         .append("path")
-//         .attr("class", "line")
-//         .attr("d", function(d){
-//             console.log(d);
-//             return line(whichGuys);
-//         })
-//         .style("stroke", "gray");
-}
-addData();
-
-}
+.each("end", function(){
+d3.selectAll("path.line")
+.transition()
+.duration(4000)
+ .attr("d", function(d){
+    d3.selectAll("path.line").each(moveToFront);
+    return line(whichGuys);
+})   
+})
 }
 
 
@@ -608,7 +577,26 @@ svg.selectAll("otherRect")
 .attr("fill",function(d){
     return color(d);
 })
+
 }
+
+
+function makeText(){
+    textd = [1];
+ 
+// var ericData = "Eric Kandel"
+svg.selectAll("kandelText")
+.data(textd)
+.enter()
+.append("text")
+.attr("class", "kandelText")
+.attr("x", 60)
+.attr("y", 30)
+.attr("fill", "black")
+// .attr("height",10)
+.text("Searching... 'Eric Kandel'")
+}
+
 </script>
 </body>
 </html>
