@@ -10,27 +10,6 @@ var rotationZ = 0;
 var svg, dots, d3chart3d;
 var dotCitedFlag = true;
 
-function initChart(csvFilename) {
-
-svg = d3.select("body").append("svg").attr("id", "chart");
-
-d3.csv(csvFilename, function(error, data) {
-
-	// just make dots. don't position them
-	dots = svg.selectAll(".dot")
-	.data(data)
-	.enter()
-	.append("circle")
-	.attr("r", 3)
-	.attr("class", "dot");
-
-	dotCited();
-});
-
-console.log(d3.selectAll(".paper"));
-
-}
-
 
 function dotCited() {
 /*	dots
@@ -219,8 +198,6 @@ function threejs_animate() {
 $( document ).ready(function() {
 
 	threejs_init();
-
-//	initChart("memory_allyears_smallBatch.csv");
 
 	drawThreejsChart("memory_allyears_smallBatch.csv");
 
