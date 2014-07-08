@@ -19,21 +19,22 @@ body {
     font-size: 8px;
 }
 .line {
-  fill: none;
-
+    stroke-width:.1px;
+    fill: none;
+    stroke: black;
 }
 </style>
 </head>
 <body>
-<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="js/d3.min.js"></script>
+<script src="js/jquery-1.7.2.min.js"></script>
 <script src="js/jquery.tipsy.js"></script>
-<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script type="text/javascript">
 var svg;
 
 var xScale;
 var xAxis;
-
+var straightLine = [];
 var years = [];
 var uniqueYears;
 var uniqueAuthors;
@@ -71,10 +72,10 @@ var theseAuthors = [];
 var theseKeywords = [];
 var theX = [];
 var maxEntries;
-    //Width and height
-    var width = 1400;
-    var height = 720;
-    d3.csv("memory_allyears_smallBatch.csv", function(data) {
+var width = 1400;
+var height = 720;
+
+d3.csv("memory_allyears_smallBatch.csv", function(data) {
         thisData=(data);
     for (i = 0;i<thisData.length; i++){ 
         years[i] = data[i].Year;
@@ -159,6 +160,7 @@ svg = d3.select("body")
         .append("rect");
     eachPaper
         .attr("class", function(d,i){
+            theX.push(xScale(d.Year));
             for (j = 0; j<uniqueYears.length; j++){
                 if (d.Year==uniqueYears[j]){
                     return "theseRects"+uniqueYears[j];               
@@ -166,7 +168,6 @@ svg = d3.select("body")
             }
         })
         .attr("x", function(d,i) {
-            theX.push(xScale(d.Year));
             return  xScale(d.Year);               
          })
         .attr("y", function(d,i){
@@ -223,9 +224,15 @@ var b=0;
 $("body").keypress(function(){
     (b+=1);
     if (b==1){
-        goRandom();
+        for (i=0; i<thisData.length; i++){
+            straightLine.push([theX[i], theHeight[i]]);    
+        }
     }
     if (b==2){
+        addLines();
+    }
+    if (b==3){
+        goRandom();
     }
   });
 
@@ -244,6 +251,7 @@ d3.selectAll(".theseRects"+thisYear)
         }
     })
     .attr("fill", function(d,i){
+
         for (j=0; j<uniqueTypes.length; j++){
             if(d.Sourcetitle==uniqueTypes[j]){
                return color(j);
@@ -256,9 +264,47 @@ d3.selectAll(".theseRects"+thisYear)
 }
 }
 
+
+var line = d3.svg.line()
+    .interpolate("cardinal") //cardinal is cool also monotone
+    .x(function(d, i) { 
+        return d[0];
+    })
+    .y(function(d, i) { 
+        return d[1];
+    });
+
+function addLines(){
+var thisd = [1];
+var people = svg.selectAll(".people")
+    .data(thisd);    
+people
+    .enter()
+    .append("g")
+    .attr("class", "people")
+    .append("path")
+    .attr("class", "line")
+    .attr("d", function(d){
+        return line(straightLine);
+    });
+
+}
 function goRandom(){
 console.log("random")
+straightLine.length = 0;
+var newLine = [];
+newLine.push([0,height]);
 
+d3.selectAll("path.line")
+.transition()
+.attr("d", function(d){
+    return line(newLine);
+})
+
+
+
+var newX = [];
+var newY = [];
 var randomX = d3.scale.linear()
     .domain([0,1]) 
     .range([padding, width-padding]);
@@ -266,6 +312,16 @@ var randomY = d3.scale.linear()
     .domain([0,1]) 
     .range([padding, height-padding]);
 
+
+for (i=0; i<thisData.length; i++){
+    newX.push(randomX(Math.random()))
+    newY.push(randomY(Math.random()))
+}
+for (i=0; i<thisData.length; i++){
+    straightLine.push([newX[i], newY[i]]); 
+}
+
+if (straightLine.length==thisData.length){
 d3.selectAll("rect")
     .transition()
     // .duration(3000)
@@ -302,26 +358,52 @@ eachNode = svg.selectAll("nodeCircs")
     })
     .attr("r",0)
     .transition()
-    .attr("cx", function(d,i){ 
-        return randomX(Math.random())
+    .attr("cx", function(d,i){
+        return newX[i];
     })
     .attr("cy", function(d,i){ 
-        return randomY(Math.random())
+        return newY[i];
     })
-    .attr("r", 5)
-    .attr("fill", function(d){
+    .attr("r", function(){
+        return 5;        
+    })
+    .attr("fill", function(d,i){
         for (j=0; j<uniqueTypes.length; j++){
             if(d.Sourcetitle==uniqueTypes[j]){
                return color(j);
             }       
         }
-    })
+    });
+d3.selectAll("path.line")
+.transition()
+.attr("d", function(d){
+    return line(straightLine);
+})   
     .each("end", function(){
         d3.selectAll("rect")
             .transition()
             .attr("width",.1)
             .attr("height",.1)
     })
+}
+
+$('circle').tipsy({
+    gravity: 'w', 
+    html: true, 
+    delayIn: 500, 
+    title: function() {
+        var d = this.__data__;     
+        var whichCited;
+        if (d.Cited>0){
+            whichCited = d.Cited;
+        } 
+        else {
+            whichCited = 0;
+        }
+        return d.Year+" "+", Journal: "+d.Sourcetitle+"<br/>Cited by "+whichCited+" other sources"+"<br/>Author: "+d.Authors;         
+    }
+});
+
 }
 
 </script>
