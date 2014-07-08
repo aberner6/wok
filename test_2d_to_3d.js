@@ -4,12 +4,11 @@ var rotationX = 0;
 var rotationY = 0;
 var rotationZ = 0;
 
-
 var svg, dots, d3chart3d;
 var dotCitedFlag = true;
 
 
-function threejs_init() {
+function threejs_d3_functions() {
 	/* THIS IS EVERYTHING TO KNIT D3 AND THREEJS TOGETHER */
 
 	// these are, as before, to make D3's .append() and .selectAll() work
@@ -55,6 +54,12 @@ function threejs_init() {
 	THREE.Object3D.prototype.appendChild = function (c) { this.add(c); c.parentNode = this; return c; };
 	THREE.Object3D.prototype.removeChild = function (c) { this.remove(c); }
 
+}
+
+
+
+function threejs_init() {
+
 	//setup
 	scene = new THREE.Scene();
 
@@ -65,17 +70,13 @@ function threejs_init() {
 
 	//camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
 	//camera = new THREE.PerspectiveCamera( 105, 1, 1, 10000 );
-var div = 1/4;
-	camera = new THREE.OrthographicCamera( window.innerWidth / - div, window.innerWidth / div, window.innerHeight / div, window.innerHeight / - div, 0.01, 100000 );
-	var dim = 1000;
-//	camera = new THREE.OrthographicCamera( -dim, dim, dim, -dim, 0.1, 1000 );
-
-	camera.position.z = 1000;
+	var camerazoom = 1/4;
+	camera = new THREE.OrthographicCamera( window.innerWidth / - camerazoom, window.innerWidth / camerazoom, window.innerHeight / camerazoom, window.innerHeight / - camerazoom, 0.01, 100000 );
+	camera.position.z = 10000;
 	camera.position.x = 1000;
 	renderer = new THREE.WebGLRenderer( { alpha: true, clearColor: 0xff0000 } );
 
 	renderer.setClearColor( 0xffffff, 1 );
-
 
 	renderer.setSize( window.innerWidth , window.innerHeight);
 //	renderer.setSize( 500, 500);
@@ -85,8 +86,8 @@ var div = 1/4;
 	//geometry = new THREE.BoxGeometry( 20, 20, 20 );
 	geometry = new THREE.SphereGeometry( 50, 10, 10);
 //	geometry = new THREE.CircleGeometry( 50, 8);
-	material = new THREE.MeshBasicMaterial( { color: 0xff00ff, wireframe: false } );
-	material2 = new THREE.MeshLambertMaterial( { color: 0x4682B4, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
+//	material = new THREE.MeshBasicMaterial( { color: 0xff00ff, wireframe: false } );
+//	material2 = new THREE.MeshLambertMaterial( { color: 0x4682B4, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
 	
 	getMaterial = function(thiscolor) {
 		return new THREE.MeshLambertMaterial( { color: thiscolor, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
@@ -95,11 +96,10 @@ var div = 1/4;
 
 	// create container for our 3D chart
 	chart3d = new THREE.Object3D();
-//	chart3d.rotation.x = 0.6;
 	scene.add( chart3d );
 
     // create function for D3 to set up 3D bars
-    newBar = function(thiscolor) { return new THREE.Mesh( geometry, getMaterial(thiscolor) ); }
+    newSphere = function(thiscolor) { return new THREE.Mesh( geometry, getMaterial(thiscolor) ); }
 
 }
 
@@ -120,15 +120,12 @@ d3.csv(csvFilename, function(error, data) {
 		.enter()
 		.append(function(d, i) { 
 			console.log(color(i));
-			return newBar(parseInt("0x" + color(i).substr(1), 16));
+			return newSphere(parseInt("0x" + color(i).substr(1), 16));
 		});
 
 });
 
 
-
-
-//console.log(d3.selectAll(".paper"));
 
 }
 
@@ -172,6 +169,7 @@ function threejs_animate() {
 	// note: three.js includes requestAnimationFrame shim
 	requestAnimationFrame( threejs_animate );
 
+	// this is the global rotation, so that each data-manipulation function can control the global rotation
 	chart3d.rotation.x += rotationX;
 	chart3d.rotation.y += rotationY;
 	chart3d.rotation.z += rotationZ;
@@ -183,6 +181,8 @@ function threejs_animate() {
 
 $( document ).ready(function() {
 
+	threejs_d3_functions();
+	
 	threejs_init();
 
 	drawThreejsChart("memory_allyears_smallBatch.csv");
