@@ -124,14 +124,22 @@ function threejs_init() {
 
 	//camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
 	//camera = new THREE.PerspectiveCamera( 105, 1, 1, 10000 );
-var div = 1/5;
+var div = 1/4;
 	camera = new THREE.OrthographicCamera( window.innerWidth / - div, window.innerWidth / div, window.innerHeight / div, window.innerHeight / - div, 0.01, 100000 );
 	var dim = 1000;
 //	camera = new THREE.OrthographicCamera( -dim, dim, dim, -dim, 0.1, 1000 );
 
 	camera.position.z = 1000;
 	camera.position.x = 1000;
-	renderer = new THREE.CanvasRenderer();
+//	renderer = new THREE.CanvasRenderer();
+	//renderer = new THREE.WebGLRenderer();
+	renderer = new THREE.WebGLRenderer( { alpha: true, clearColor: 0xff0000 } );
+
+//	renderer.setClearColor( 0x000000, 0 ); // the default
+	renderer.setClearColor( 0xffffff, 1 );
+
+
+//
 
 	renderer.setSize( window.innerWidth , window.innerHeight);
 //	renderer.setSize( 500, 500);
@@ -139,12 +147,13 @@ var div = 1/5;
 
 	// adding geometry
 	//geometry = new THREE.BoxGeometry( 20, 20, 20 );
-	geometry = new THREE.SphereGeometry( 50, 4, 4);
+	geometry = new THREE.SphereGeometry( 50, 10, 10);
 //	geometry = new THREE.CircleGeometry( 50, 8);
 	material = new THREE.MeshBasicMaterial( { color: 0xff00ff, wireframe: false } );
 	material2 = new THREE.MeshLambertMaterial( { color: 0x4682B4, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
 	
 	getMaterial = function(thiscolor) {
+		return new THREE.MeshLambertMaterial( { color: thiscolor, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
 		return new THREE.MeshBasicMaterial( { color: thiscolor, wireframe: false } );
 	}
 
@@ -162,6 +171,7 @@ var div = 1/5;
 function drawThreejsChart(csvFilename) {
 
  //svg = d3.select("body").append("svg").attr("id", "chart");
+var color = d3.scale.category20c();
 
 d3.csv(csvFilename, function(error, data) {
 
@@ -171,8 +181,8 @@ d3.csv(csvFilename, function(error, data) {
 		.data(data)
 		.enter()
 		.append(function(d, i) { 
-			if(i % 2 == 0) return newBar(0x00ffff); 
-			else return newBar(0xff0000);
+			console.log(color(i));
+			return newBar(parseInt("0x" + color(i).substr(1), 16));
 		});
 /*
 	var temp = d3.select(chart3d).selectAll().attr("class", function(d, i) { console.log(i); });
