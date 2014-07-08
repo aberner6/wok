@@ -5,50 +5,12 @@ var rotationY = 0;
 var rotationZ = 0;
 
 
-//random = function() { thisrand = d3.random.bates(1); return thisrand() * 100; }
-
 var svg, dots, d3chart3d;
 var dotCitedFlag = true;
 
 
-function dotCited() {
-/*	dots
-	.transition()
-	.attr("cx", function(d, i) {  return i; })
-	.attr("cy", function(d, i) {  return d.Cited; }); */
-	console.log("dotCited");
-	dots
-		.transition()
-		.duration(3000)
-		.attr("position.x", function(d, i) { return 30 * i; })
-		.attr("position.y", function(d, i) { return d['Cited'] * 1 ; })
-//		.attr("position.z", function(d, i) { return d['Cited'] * 1 ; })
-
-	rotationX = 0.01;
-	rotationY = 0.03;
-	rotationZ = 0.02;
-}
-
-function dotPage() {
-	console.log("dotPage");
-/*	dots
-	.transition()
-	.attr("cx", function(d, i) {  return i; })
-	.attr("cy", function(d, i) {  return d['Page end']; }); */
-	dots
-		.transition()
-		.duration(3000)
-		.attr("position.x", function(d, i) { return 30 * i; })
-		.attr("position.y", function(d, i) { return d['Page end'] * 1 ; })
-//		.attr("position.z", function(d, i) { return d['Page end'] * 1 ; })
-//		.attr("position.z", function(d, i) { return Math.sin(i/ 10.0) * 100 ; })
-	rotationX = 0.0;
-	rotationY = 0.0;
-	rotationZ = 0.0;
-}
-
-
 function threejs_init() {
+	/* THIS IS EVERYTHING TO KNIT D3 AND THREEJS TOGETHER */
 
 	// these are, as before, to make D3's .append() and .selectAll() work
 	// this is called by append()
@@ -110,15 +72,10 @@ var div = 1/4;
 
 	camera.position.z = 1000;
 	camera.position.x = 1000;
-//	renderer = new THREE.CanvasRenderer();
-	//renderer = new THREE.WebGLRenderer();
 	renderer = new THREE.WebGLRenderer( { alpha: true, clearColor: 0xff0000 } );
 
-//	renderer.setClearColor( 0x000000, 0 ); // the default
 	renderer.setClearColor( 0xffffff, 1 );
 
-
-//
 
 	renderer.setSize( window.innerWidth , window.innerHeight);
 //	renderer.setSize( 500, 500);
@@ -147,9 +104,11 @@ var div = 1/4;
 }
 
 
-function drawThreejsChart(csvFilename) {
 
- //svg = d3.select("body").append("svg").attr("id", "chart");
+
+function drawThreejsChart(csvFilename) {
+/* MAGIC IS HERE */
+
 var color = d3.scale.category20c();
 
 d3.csv(csvFilename, function(error, data) {
@@ -163,11 +122,6 @@ d3.csv(csvFilename, function(error, data) {
 			console.log(color(i));
 			return newBar(parseInt("0x" + color(i).substr(1), 16));
 		});
-/*
-	var temp = d3.select(chart3d).selectAll().attr("class", function(d, i) { console.log(i); });
-	console.log( d3.selectAll(".threejsbar"));
-	console.log(temp);
-	console.log($(".threejsbar")); */
 
 });
 
@@ -178,6 +132,38 @@ d3.csv(csvFilename, function(error, data) {
 
 }
 
+
+
+function dotCited() {
+	console.log("dotCited");
+
+	dots
+	.transition()
+	.duration(3000)
+	.attr("position.x", function(d, i) { return 30 * i; })
+	.attr("position.y", function(d, i) { return d['Cited'] * 1 ; })
+//		.attr("position.z", function(d, i) { return d['Cited'] * 1 ; })
+
+	rotationX = 0.01;
+	rotationY = 0.03;
+	rotationZ = 0.02;
+}
+
+function dotPage() {
+	console.log("dotPage");
+
+	dots
+	.transition()
+	.duration(3000)
+	.attr("position.x", function(d, i) { return 30 * i; })
+	.attr("position.y", function(d, i) { return d['Page end'] * 1 ; })
+//		.attr("position.z", function(d, i) { return d['Page end'] * 1 ; })
+//		.attr("position.z", function(d, i) { return Math.sin(i/ 10.0) * 100 ; })
+//
+	rotationX = 0.0;
+	rotationY = 0.0;
+	rotationZ = 0.0;
+}
 
 
 
