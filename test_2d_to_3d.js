@@ -71,46 +71,6 @@ $( document ).ready(function() {
 //////
 
 
-function barChart2d(parent) {
-
-	// scales
-	var yScale = d3.scale.ordinal().domain(d3.range(0, sortedData.length)).rangeBands([0, sortedData.length * barHeight]);
-	var y = function(d, i) { return yScale(i); };
-	var x = d3.scale.linear().domain([0, d3.max(sortedData, barValue)]).range([0, maxBarWidth]);
-
-	// svg container element
-	var chart = d3.select('#chart').append("svg");
-
-	// bars
-	var barsContainer = chart.append('g')
-	  .attr('transform', 'translate(20, 20)');
-
-	var data = d3.csv.parse(d3.select('#csv').text());
-
-	barsContainer.selectAll("rect").data(sortedData).enter().append("rect")
-	  .attr('y', y)
-	  .attr('height', yScale.rangeBand())
-	  .attr('width', function(d) { return x(barValue(d)); })
-	  .attr('stroke', 'white')
-	  .attr('fill', 'steelblue');
-	// bar value labels
-	barsContainer.selectAll("text").data(sortedData).enter().append("text")
-	  .attr("x", function(d) { return x(barValue(d)); })
-	  .attr("y", yText)
-	  .attr("dx", 3) // padding-left
-	  .attr("dy", ".35em") // vertical-align: middle
-	  .attr("text-anchor", "start") // text-align: right
-	  .attr("fill", "black")
-	  .attr("stroke", "none")
-	  .text(function(d) { return d3.round(barValue(d), 2); });
-	// start line
-	barsContainer.append("line")
-	  .attr("y1", -gridChartOffset)
-	  .attr("y2", yScale.rangeExtent()[1] + gridChartOffset)
-	  .style("stroke", "#000");
-}
-
-
 
 // Create a 3d scatter plot within d3 selection parent.
 function scatterPlot3d( parent )
