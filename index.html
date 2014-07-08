@@ -497,7 +497,7 @@ function changeY(){
     // .delay(3000)
     .attr('y', function(d,i) {
         for (j=0; j<authors[i].length; j++){ 
-            if(authors[i][j]=="Kandel, E.R."){ //"Moseley, M.E"){ //"Kandel, E.R."){ 
+            if(authors[i][j]=="Gonzalez-Pina R"){ //"Moseley, M.E"){ //"Kandel, E.R."){ 
             for (z = 0; z<uniqueYears.length; z++){
                 if (d.Year==uniqueYears[z]){
                     total3++;
@@ -524,7 +524,7 @@ function changeY(){
     })  
     .attr('height', function(d,i) {
         for (j=0; j<authors[i].length; j++){ 
-            if(authors[i][j]=="Kandel, E.R."){ //"Moseley, M.E"){ //"Kandel, E.R."){ 
+            if(authors[i][j]=="Gonzalez-Pina R"){ //"Moseley, M.E"){ //"Kandel, E.R."){ 
         for (z=0; z<uniqueTypes.length; z++){
             if(d.Sourcetitle==uniqueTypes[z]){
                // return color(z);
@@ -543,7 +543,7 @@ function changeY(){
     })
     .attr('stroke', function(d,i) {
         for (j=0; j<authors[i].length; j++){ 
-            if(authors[i][j]=="Kandel, E.R."){ //"Moseley, M.E"){ //"Kandel, E.R."){ 
+            if(authors[i][j]=="Gonzalez-Pina R"){ //"Moseley, M.E"){ //"Kandel, E.R."){ 
         for (z=0; z<uniqueTypes.length; z++){
             if(d.Sourcetitle==uniqueTypes[z]){
                // return color(z);
