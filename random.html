@@ -234,6 +234,9 @@ $("body").keypress(function(){
     if (b==3){
         goRandom();
     }
+    if (b==4){
+        goBack();
+    }
   });
 
 
@@ -324,7 +327,7 @@ for (i=0; i<thisData.length; i++){
 if (straightLine.length==thisData.length){
 d3.selectAll("rect")
     .transition()
-    // .duration(3000)
+    .duration(100)
     .attr("x", function(d,i){
         return randomX(Math.random());
     })
@@ -386,7 +389,50 @@ d3.selectAll("path.line")
             .attr("height",.1)
     })
 }
+}
 
+
+function goBack(){
+straightLine.length = 0;
+var newX = [];
+var newY = [];
+
+
+for (i=0; i<thisData.length; i++){
+    newX.push(30*i)
+    newY.push(height-10-thisData[i].Cited)
+}
+for (i=0; i<thisData.length; i++){
+    straightLine.push([newX[i], newY[i]]); 
+}
+
+
+if (straightLine.length==thisData.length){
+d3.selectAll("circle")
+    .transition()
+    .attr("cx",function(d,i){
+        return 30*i;
+    })
+    .attr("cy", function(d,i){ 
+        return height-10-d.Cited*1;
+    })
+    .attr("r", function(){
+        return 5;        
+    })
+    .attr("fill", function(d,i){
+        for (j=0; j<uniqueTypes.length; j++){
+            if(d.Sourcetitle==uniqueTypes[j]){
+               return color(j);
+            }       
+        }
+    });
+d3.selectAll("path.line")
+.transition()
+.attr("d", function(d){
+    return line(straightLine);
+})   
+}
+}
 $('circle').tipsy({
     gravity: 'w', 
     html: true, 
@@ -403,8 +449,6 @@ $('circle').tipsy({
         return d.Year+" "+", Journal: "+d.Sourcetitle+"<br/>Cited by "+whichCited+" other sources"+"<br/>Author: "+d.Authors;         
     }
 });
-
-}
 
 </script>
 </body>
