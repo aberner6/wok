@@ -4,9 +4,11 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <title>3D Scatter Plot</title>
-    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
-    <script type="text/javascript" src="http://x3dom.org/x3dom/dist/x3dom-full.js"></script>
+    <script type="text/javascript" src="js/d3.v3.min.js"></script>
+    <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+<!--    <script type="text/javascript" src="http://x3dom.org/x3dom/dist/x3dom-full.js"></script>
     <link rel="stylesheet" type="text/css" href="http://www.x3dom.org/download/dev/x3dom.css"/>
+-->
 	<script type="text/javascript" src="test_2d_to_3d.js"></script>
     <style type="text/css">
 html, body {
@@ -14,18 +16,41 @@ html, body {
 	width: 100%;
 }	
 
-#divPlot {
+#chart {
 	height: 500px;
 	width: 500px;
 }	
 
+.paper {
+	height: 5px;
+	width: 5px;
+	border: 2px solid cyan;
+	
+}
+
+.button {
+	height: 30px;
+	width: 100px;
+	position: fixed;
+	right: 10px;
+	top: 10px;
+	background-color: cyan;
+	text-align: center;
+	cursor:pointer;
+}
+
+.dot {
+	fill: blue;
+}
 
 	</style>
   </head>
   <body>
-    <div id="divPlot"></div>
+<!--    <div id="chart"></div> -->
+    <div class="button" id="cited">click me</div> 
     <script>
-      scatterPlot3d( d3.select('#divPlot'));
+	  initChart("memory_allyears_smallBatch.csv");
+/*      scatterPlot3d( d3.select('#chart')); */
     </script>
   </body>
 </html>
