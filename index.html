@@ -8,6 +8,63 @@
 body {
   font: 10px sans-serif;
 }
+/* Effect 2: 3D rolling links, idea from http://hakim.se/thoughts/rolling-links */
+/*.theseRects1987 {
+    line-height: 64px;
+    -webkit-perspective: 1000px;
+    -moz-perspective: 1000px;
+    perspective: 1000px;
+      font: 12px Helvetica;
+
+}
+
+.theseRects1987{
+    position: relative;
+    display: inline-block;
+    padding: 0 44px;
+    background: lightblue;
+    -webkit-transition: -webkit-transform 0.3s;
+    -moz-transition: -moz-transform 0.3s;
+    transition: transform 0.3s;
+    -webkit-transform-origin: 50% 0;
+    -moz-transform-origin: 50% 0;
+    transform-origin: 50% 0;
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+}
+
+.csstransforms3d .theseRects1987::after {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0965a0;
+    content: attr(data-hover);
+    -webkit-transition: background 0.3s;
+    -moz-transition: background 0.3s;
+    transition: background 0.3s;
+    -webkit-transform: rotateX(-90deg);
+    -moz-transform: rotateX(-90deg);
+    transform: rotateX(-90deg);
+    -webkit-transform-origin: 50% 0;
+    -moz-transform-origin: 50% 0;
+    transform-origin: 50% 0;
+}
+
+.theseRects1987:hover,
+.theseRects1987:focus{
+    -webkit-transform: rotateX(90deg) translateY(-10px);
+    -moz-transform: rotateX(90deg) translateY(-10px);
+    transform: rotateX(90deg) translateY(-10px);
+}
+
+.csstransforms3d .theseRects1987:hover::before,
+.csstransforms3d .theseRects1987:focus::before {
+    background: #28a2ee;    
+}*/
+
 
 .axis path,
 .axis line {
@@ -40,7 +97,8 @@ body {
     <script src="js/jquery.tipsy.js"></script>
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <div id = "thing"></div>
-
+<!-- <div class = "rect.theseRects1987" data-hover="Murmurous">Advice for improving memory: Exercising, strengthening, and cultivating natural memory, 1860-1910
+</div> -->
 <script type="text/javascript">
 var svg;
 var eachEntry;
@@ -50,12 +108,15 @@ var years = [];
 var alongWidth;
 var uniqueYears;
 var uniqueAuthors;
+var uniqueKeywords;
 var journalTypes = [];
 var authors = [];
+var keywords = [];
 var uniqueTypes;
 var goSecond = false;
 var totals = [];
 var totalAuthors = [];
+var totalKeywords = [];
 var huh = [];
 var total1 = 0;
 var total2 = 0;
@@ -83,27 +144,40 @@ var heightScale;
 var singleScale;
 var thisData = [];
 var theseAuthors = [];
+var theseKeywords = [];
 var theX = [];
 var maxEntries;
     //Width and height
     var w = 1400;
     var h = 720;
-    // d3.csv("smallcsv.csv", function(data) {
+    d3.csv("memoryneuro_allfields.csv", function(data) {
 
-    d3.csv("memory_neuro_only_some_scientists.csv", function(data) {
+    // d3.csv("memory_neuro_only_some_scientists.csv", function(data) {
         thisData=(data);
         // console.log(data);
     for (i = 0;i<data.length; i++){ 
+    if(data[i].Year!="undefined"){
         years[i] = data[i].Year;
+    }
+        if (data[i].Keywords!="undefined"){
+        keywords[i] = data[i].Keywords.split("; ");
+        }
+        if(data[i].Authors!="undefined"){
         authors[i] = data[i].Authors.split("., ");
+    }
         for (j=0; j<authors[i].length; j++){
         theseAuthors.push(authors[i][j]);            
+        }
+        for (j=0; j<keywords[i].length; j++){
+        theseKeywords.push(keywords[i][j]);            
         }
 
         // authors[i] = data[i].Authors.split(";");
         // journalTypes[i] = data[i].Authors;
+        if(data[i].Sourcetitle!="undefined"){
 
         journalTypes[i] = data[i].Sourcetitle;
+    }
     } //generates an array of all Names
 
 
@@ -118,6 +192,7 @@ var maxEntries;
     uniqueYears = years.filter( onlyUnique ); //finds unique names
 
     uniqueAuthors = theseAuthors.filter( onlyUnique ); //finds unique authors
+    uniqueKeywords = theseKeywords.filter( onlyUnique ); //finds unique authors
 
     console.log("Unique Years: " + uniqueYears);
 
@@ -125,7 +200,7 @@ var maxEntries;
     //consolodates the Value for all values of a given Name
         var total = 0;
         for (i = 0;i<data.length; i++){ 
-            if(data[i].Year == givenYear){
+            if(data[i].Year!="undefined" && data[i].Year== givenYear){
                 total++;
             }else{
             }}
@@ -144,7 +219,20 @@ var maxEntries;
         }
          return total;
      } 
-    console.log("Sum of All 1996's: " + valueConsolidation("1996"))
+    function keyConsolidation(givenKey,i) { 
+    //consolodates the Value for all values of a given Name
+        var total = 0;
+        for (i = 0;i<theseKeywords.length; i++){ 
+        // for (j=0; j<authors[i].length; j++){
+            if(theseKeywords[i] == givenKey){
+                total++;
+                // console.log(givenAuthor+theseAuthors[i])
+            }else{
+            }
+        }
+         return total;
+     } 
+    // console.log("Sum of All 1996's: " + valueConsolidation("1996"))
  
     for (i = 0; i<uniqueYears.length; i++){
         totals[i]= valueConsolidation(uniqueYears[i])
@@ -152,6 +240,9 @@ var maxEntries;
     
     for (i = 0; i<theseAuthors.length; i++){
         totalAuthors[i]= authorConsolidation(theseAuthors[i])
+    } //creates a new aray with the sums of all the different Names
+    for (i = 0; i<theseKeywords.length; i++){
+        totalKeywords[i]= keyConsolidation(theseKeywords[i])
     } //creates a new aray with the sums of all the different Names
 
     svg = d3.select("body")
@@ -231,8 +322,10 @@ svg.append("g")
             }
         })
         .attr("x", function(d,i) {
+            if (d.Year!="undefined"){
                     theX.push(xScale(d.Year));
-                  return  xScale(d.Year);                  
+                  return  xScale(d.Year);  
+                  }                
 
          })
         .attr("y", function(d,i){
@@ -469,7 +562,7 @@ function changeY(){
     })
 
 //HAVE TO CHANGE THIS EACH TIME
-if(whichGuys.length==46){
+if(whichGuys.length>5){
 
 thisMin = (d3.min(whichGuys, function(d) {
     return (d);
