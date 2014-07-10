@@ -275,7 +275,6 @@ function threejs_init() {
 
 
 
-
     var geometryLine = new THREE.Geometry();
     // geometryLine.vertices.push(new THREE.Vector3(-10, 0, 0));
     // geometryLine.vertices.push(new THREE.Vector3(0, 10, 0));
@@ -297,10 +296,6 @@ function threejs_init() {
         var o = path[pt];
         geometryLine.vertices.push(new THREE.Vector3(originX+o.x, originY+o.y, 1));
     }
-
-
-
-
 
 
 //	material = new THREE.MeshBasicMaterial( { color: 0xff00ff, wireframe: false } );
@@ -326,13 +321,6 @@ function threejs_init() {
 	chart3d = new THREE.Object3D();
 	secondChart = new THREE.Object3D();
     // line = new THREE.Line(geometry, materialLine);
-
-
-
-
-
-
-
 
 
 	scene.add( chart3d );
@@ -410,7 +398,8 @@ d3.csv(csvFilename, function(error, data) {
 		.data(data)
 		.enter()
 		.append(function(d, i) { 
-			return newSphere(7057110);
+//			return newSphere(7057110);
+			return newSphere(parseInt("0x" + color(i).substr(1), 16));
 		});
 
 	// path = d3.select(line)
@@ -420,10 +409,6 @@ d3.csv(csvFilename, function(error, data) {
 	// 	.append(function(d, i) { 
 	// 		return newSphere(7057110);
 	// 	});	
-			console.log(color(i));
-			return newSphere(parseInt("0x" + color(i).substr(1), 16));
-		});
-
 });
 
 
@@ -521,14 +506,22 @@ function threejs_animate() {
 
 $( document ).ready(function() {
 
+	// initiate threejs and d3 connection
 	threejs_d3_functions();
-	
+
+	// initiate threejs renderer
 	threejs_init();
 
+	// initiate data
+	data_init();
+
+	// draw data
 	drawThreejsChart("memory_allyears_smallBatch.csv");
 
+	// animate data
 	threejs_animate(); 
 
+	// deal with other behavior
 	$("#cited").click(function() {
 		console.log("cited clicked");
 		if(dotCitedFlag == true) {
@@ -541,321 +534,4 @@ $( document ).ready(function() {
 	});
 
 });
-
-// var dd=0;
-// d3.select("canvas").on("click", function(){ console.log("hey")})
-// d3.select("canvas").on("click", function(){
-// 	console.log("keypress")
-//     (dd+=1);
-//     if (dd==1){
-//     	dod3();
-// }
-// })
-
-// function dod3(){
-// console.log("dod3")
-// svg = d3.select("canvas")
-//     .append("svg")
-//     .attr("width", width)
-//     .attr("height", height);
-// d3.csv("memory_allyears_smallBatch.csv", function(data) {
-    
-//     eachPaper = svg.selectAll("theseRects")
-//         .data(data)
-//         .enter()
-//         .append("rect");
-//     eachPaper
-//         .attr("class", function(d,i){
-//             theX.push(xScale(d.Year));
-//             for (j = 0; j<uniqueYears.length; j++){
-//                 if (d.Year==uniqueYears[j]){
-//                     return "theseRects"+uniqueYears[j];               
-//                 }
-//             }
-//         })
-//         .attr("x", function(d,i) {
-//             return  xScale(d.Year);               
-//          })
-//         .attr("y", function(d,i){
-//                      //if your year matches the unique name year
-//                      //go through the unique name year's total at index of unique name
-//                      // map on the y region according to this
-//             for (j = 0; j<uniqueYears.length; j++){
-//                 if (d.Year==uniqueYears[j]){
-//                     return ((height)-heightScale(totals[j]));               
-//                 }
-//             }
-//             })
-//         .attr("width", 20)
-//         .attr("height", 5)
-//         .attr("stroke-width",.5);
-
-// $('rect').tipsy({
-//     gravity: 'w', 
-//     html: true, 
-//     delayIn: 500, 
-//     title: function() {
-//         var d = this.__data__;     
-//         var whichCited;
-//         if (d.Cited>0){
-//             whichCited = d.Cited;
-//         } 
-//         else {
-//             whichCited = 0;
-//         }
-//         return d.Year+" "+", Journal: "+d.Sourcetitle+"<br/>Cited by "+whichCited+" other sources"+"<br/>Author: "+d.Authors;         
-//     }
-// });
-
-
-
-// firstLoadVar = setInterval(function(){ 
-// if(totals.length>0){    
-//     if (firstLoad<totals.length-1){
-//         firstLoad++; 
-//         if (firstLoad>=0){
-//             total1=0;
-//             prep(firstLoad, totals[firstLoad], uniqueYears[firstLoad]); //store inner subjects is the loading function for the big data      
-//         }
-//     }
-//     else {
-//     console.log(journalTypes.length)
-//     clearInterval(firstLoadVar); //and stop loading stuff in
-//     }
-// }
-// },100);  
-// })
-
-// var b=0;
-// $("body").keypress(function(){
-//     (b+=1);
-//     if (b==1){
-//         for (i=0; i<thisData.length; i++){
-//             straightLine.push([theX[i], theHeight[i]]);    
-//         }
-//     }
-//     if (b==2){
-//         addLines();
-//     }
-//     if (b==3){
-//         goRandom();
-//     }
-//     if (b==4){
-//         goBack();
-//     }
-//   });
-
-
-
-// var theHeight = [];
-// function prep(z,tots, thisYear){
-// if(totals.length>0){    
-// d3.selectAll(".theseRects"+thisYear)
-//     .transition()
-//     .attr('y', function(d,i) {
-//         if (d.Year==thisYear){
-//             total1++;
-//             theHeight.push((height)-heightScale(total1*3))                     
-//             return (height)-heightScale(total1*3);   
-//         }
-//     })
-//     .attr("fill", function(d,i){
-
-//         for (j=0; j<uniqueTypes.length; j++){
-//             if(d.Sourcetitle==uniqueTypes[j]){
-//                return color(j);
-//             }       
-//         }   
-//     })
-//     .attr("opacity", function(d,i){
-//         return opacityMap(d.Cited);
-//     })
-// }
-// }
-
-
-// var line = d3.svg.line()
-//     .interpolate("monotone") //cardinal is cool also monotone
-//     .x(function(d, i) { 
-//         return d[0];
-//     })
-//     .y(function(d, i) { 
-//         return d[1];
-//     });
-
-// function addLines(){
-// var thisd = [1];
-// var people = svg.selectAll(".people")
-//     .data(thisd);    
-// people
-//     .enter()
-//     .append("g")
-//     .attr("class", "people")
-//     .append("path")
-//     .attr("class", "line")
-//     .attr("d", function(d){
-//         return line(straightLine);
-//     });
-
-// }
-// function goRandom(){
-// console.log("random")
-// straightLine.length = 0;
-// var newLine = [];
-// newLine.push([0,height]);
-
-// d3.selectAll("path.line")
-// .transition()
-// .attr("d", function(d){
-//     return line(newLine);
-// })
-
-
-
-// var newX = [];
-// var newY = [];
-// var randomX = d3.scale.linear()
-//     .domain([0,1]) 
-//     .range([padding, width-padding]);
-// var randomY = d3.scale.linear()
-//     .domain([0,1]) 
-//     .range([padding, height-padding]);
-
-
-// for (i=0; i<thisData.length; i++){
-//     newX.push(randomX(Math.random()))
-//     newY.push(randomY(Math.random()))
-// }
-// for (i=0; i<thisData.length; i++){
-//     straightLine.push([newX[i], newY[i]]); 
-// }
-
-// if (straightLine.length==thisData.length){
-// d3.selectAll("rect")
-//     .transition()
-//     .duration(100)
-//     .attr("x", function(d,i){
-//         return randomX(Math.random());
-//     })
-//     .attr("y", function(d,i){
-//         return randomY(Math.random());
-//     })
-//     .attr("width",1)
-//     .attr("height",1);
-// eachNode = svg.selectAll("nodeCircs")
-//     .data(thisData)
-//     .enter()
-//     .append("circle")
-//     .attr("class", function(d,i){
-//         for (j = 0; j<uniqueYears.length; j++){
-//             if (d.Year==uniqueYears[j]){
-//                 return "nodeCircs"+uniqueYears[j];               
-//             }
-//         }
-//     })
-//     .attr("fill", "none")
-//     .attr("stroke","none")
-//     .attr("cx",function(d,i){
-//         return xScale(d.Year)
-//     })
-//     .attr("cy",function(d,i){
-//         for (j = 0; j<uniqueYears.length; j++){
-//             if (d.Year==uniqueYears[j]){
-//                 return ((height)-heightScale(totals[j]));               
-//             }
-//         }
-//     })
-//     .attr("r",0)
-//     .transition()
-//     .attr("cx", function(d,i){
-//         return newX[i];
-//     })
-//     .attr("cy", function(d,i){ 
-//         return newY[i];
-//     })
-//     .attr("r", function(){
-//         return 5;        
-//     })
-//     .attr("fill", function(d,i){
-//         for (j=0; j<uniqueTypes.length; j++){
-//             if(d.Sourcetitle==uniqueTypes[j]){
-//                return color(j);
-//             }       
-//         }
-//     });
-// d3.selectAll("path.line")
-// .transition()
-// .attr("d", function(d){
-//     return line(straightLine);
-// })   
-//     .each("end", function(){
-//         d3.selectAll("rect")
-//             .transition()
-//             .attr("width",.1)
-//             .attr("height",.1)
-//     })
-// }
-// }
-
-
-// function goBack(){
-// straightLine.length = 0;
-// var newX = [];
-// var newY = [];
-
-
-// for (i=0; i<thisData.length; i++){
-//     newX.push(xScale(years[i]))
-//     newY.push(height-10-thisData[i].Cited)
-// }
-// for (i=0; i<thisData.length; i++){
-//     straightLine.push([newX[i], newY[i]]); 
-// }
-
-
-// if (straightLine.length==thisData.length){
-// d3.selectAll("circle")
-//     .transition()
-//     .attr("cx",function(d,i){
-//         return  newX[i];               
-//     })
-//     .attr("cy", function(d,i){ 
-//         return height-10-d.Cited;
-//     })
-//     .attr("r", function(){
-//         return 5;        
-//     })
-//     .attr("fill", function(d,i){
-//         for (j=0; j<uniqueTypes.length; j++){
-//             if(d.Sourcetitle==uniqueTypes[j]){
-//                return color(j);
-//             }       
-//         }
-//     });
-// d3.selectAll("path.line")
-// .transition()
-// .attr("d", function(d){
-//     return line(straightLine);
-// })   
-// }
-// }
-// $('circle').tipsy({
-//     gravity: 'w', 
-//     html: true, 
-//     delayIn: 500, 
-//     title: function() {
-//         var d = this.__data__;     
-//         var whichCited;
-//         if (d.Cited>0){
-//             whichCited = d.Cited;
-//         } 
-//         else {
-//             whichCited = 0;
-//         }
-//         return d.Year+" "+", Journal: "+d.Sourcetitle+"<br/>Cited by "+whichCited+" other sources"+"<br/>Author: "+d.Authors;         
-//     }
-// });
-// }
-
-
 
