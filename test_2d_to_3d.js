@@ -211,23 +211,41 @@ function threejs_environment_init() {
     light.position.set( 0, 0, 1 );
     scene.add( light );
 
+	var width = window.innerWidth;
+	var height = window.innerHeight;
+
 	//camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
 	//camera = new THREE.PerspectiveCamera( 105, 1, 1, 10000 );
 	var camerazoom = 1; //not 1/4
-	camera = new THREE.OrthographicCamera( window.innerWidth / - camerazoom, window.innerWidth / camerazoom, window.innerHeight / camerazoom, window.innerHeight / - camerazoom, 0.01, 100000 );
+
+//	camera = new THREE.OrthographicCamera( window.innerWidth / - camerazoom, window.innerWidth / camerazoom, window.innerHeight / camerazoom, window.innerHeight / - camerazoom, 0.01, 100000 );
+	camera = new THREE.OrthographicCamera( - width / camerazoom, width / camerazoom, height / camerazoom, - height / camerazoom, 0.01, 100000 );
 	camera.position.z = 10000;
 	camera.position.x = 1000;
 
 	renderer = new THREE.WebGLRenderer( { alpha: true, clearColor: 0xff0000 } );
+	renderer.setSize( width, height);
 	renderer.setClearColor( 0xffffff, 1 );
 	renderer.autoClear = false;
 
-	renderer.setSize( window.innerWidth , window.innerHeight);
 //	renderer.setSize( 500, 500);
 	document.body.appendChild( renderer.domElement );
 
+	window.addEventListener( 'resize', onWindowResize, false );
 
 }
+
+
+function onWindowResize() {
+	var width = window.innerWidth;
+	var height = window.innerHeight;
+
+	camera.aspect = width / height;				
+	camera.updateProjectionMatrix();
+
+	renderer.setSize( window.innerWidth, window.innerHeight );
+}
+
 
 function addGeometry() {
 	// adding geometry
@@ -306,7 +324,9 @@ function addGeometry() {
     newSprite = function(thiscolor) { 
 		var thismap = THREE.ImageUtils.loadTexture( "images/sprite0.png" );
 		var thismaterial = new THREE.SpriteMaterial( { map: thismap, color: 0xff00ff });
-		return new THREE.Sprite( thismaterial);
+		var thissprite = new THREE.Sprite( thismaterial);
+		thissprite.scale.set(100,100,1);
+		return thissprite;
 	}
 
 }
@@ -337,8 +357,7 @@ d3.csv(csvFilename, function(error, data) {
 		.data(data)
 		.enter()
 		.append(function(d, i) { 
-			return newSprite(7057110);
-//			return newSphere(7057110);
+			return newSphere(7057110);
 			return newSprite(parseInt("0x" + color(i).substr(1), 16));
 		});
 
@@ -430,16 +449,17 @@ function threejs_animate() {
 	requestAnimationFrame( threejs_animate );
 
 	// this is the global rotation, so that each data-manipulation function can control the global rotation
-	chart3d.rotation.x += rotationX;
+/*	chart3d.rotation.x += rotationX;
 	chart3d.rotation.y += rotationY;
 	chart3d.rotation.z += rotationZ;
 
 	secondChart.rotation.x += secondRotationX;
 	secondChart.rotation.y += secondRotationY;
-	secondChart.rotation.z += secondRotationZ;
+	secondChart.rotation.z += secondRotationZ; */
 
 
 	renderer.render( scene, camera );
+//	renderSprites();
 
 }
 
