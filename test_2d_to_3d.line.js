@@ -47,7 +47,7 @@ function drawLine(thisscene) {
 	var height = 720;
 	var newX = [];
 	var newY = [];
-
+// var geometryLine;
 
 
 	d3.csv("memory_allyears_smallBatch.csv", function(data) {
@@ -138,7 +138,7 @@ function drawLine(thisscene) {
 	//     .call(xAxis);
 
 
-    var geometryLine = new THREE.Geometry();
+    geometryLine = new THREE.Geometry();
     materialLine = new THREE.LineBasicMaterial({
         color: 0x0000ff,
     });
@@ -159,6 +159,12 @@ function drawLine(thisscene) {
 	})
 
 }
+var clock = new THREE.Clock();
+var b = 0;
+$("canvas").on("click", function(){
+	console.log(b);
+    (b+=1);
+})
 
 function animateLine() {
 	if (typeof line !== 'undefined') {
@@ -166,5 +172,30 @@ function animateLine() {
 		line.rotation.x += secondRotationX;
 		line.rotation.y += secondRotationY;
 		line.rotation.z += secondRotationZ;
+		// if (b==1){
+		// 	changeLine();
+		// }
 	}
+}
+function changeLine(){
+	// console.log("change line")
+	var delta = clock.getDelta(),
+					time = clock.getElapsedTime() * 10;
+    geometryLine = new THREE.Geometry();
+
+				for ( var i = 0, l = geometryLine.vertices.length; i < l; i ++ ) {
+
+					geometryLine.vertices[ i ].y = 35 * Math.sin( i / 5 + ( time + i ) / 7 );
+
+				}
+
+				//geometry.computeFaceNormals();
+				//geometry.computeVertexNormals();
+
+				// mesh.geometryLine.verticesNeedUpdate = true;
+				//mesh.geometry.normalsNeedUpdate = true;
+
+				// controls.update( delta );
+				// renderer.render( scene, camera );
+
 }
