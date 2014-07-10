@@ -53,7 +53,10 @@ var theX = [];
 var maxEntries;
 var width = 1400;
 var height = 720;
+var newX = [];
+var newY = [];
 
+function d3scales(){
 d3.csv("memory_allyears_smallBatch.csv", function(data) {
         thisData=(data);
     for (i = 0;i<thisData.length; i++){ 
@@ -112,6 +115,36 @@ d3.csv("memory_allyears_smallBatch.csv", function(data) {
         .range([padding, height/1.2]);
 
 
+
+
+for (i=0; i<thisData.length; i++){
+    newX.push(xScale(years[i]))
+    newY.push(thisData[i].Cited) //height-10-
+}
+    // var path = [
+    //     { x:0,   y:0 },
+    //     { x:40,  y:0 },
+    //     { x:40,  y:30 },
+    //     { x:70,  y:30 },
+    //     { x:70,  y:40 },
+    //     { x:80,  y:40 },
+    //     { x:80,  y:100 },
+    //     { x:120,  y:100 },
+    //     { x:120,  y:200 }
+    // ];
+
+
+for (i=0; i<thisData.length; i++){
+    straightLine.push({
+    	x: newX[i],
+    	y: newY[i]
+    })
+    // straightLine.y.push([newY[i]]);
+    // straightLine.x.push([newX[i]]);
+    // straightLine.y.push([newY[i]]); 
+}
+
+
 ////FOR X AXIS
 // var xTime = d3.time.scale()
 //     .domain([new Date(1965,7,1), new Date(2014,7,1)])
@@ -129,6 +162,7 @@ d3.csv("memory_allyears_smallBatch.csv", function(data) {
 //     .call(xAxis);
 
 })
+}
 
 
 
@@ -180,14 +214,6 @@ d3.csv("memory_allyears_smallBatch.csv", function(data) {
 
 
 
-
-var camera, scene, renderer, chart3d, material, material2;
-var rotationX = 0;
-var rotationY = 0;
-var rotationZ = 0;
-
-var svg, dots, d3chart3d;
-var dotCitedFlag = true;
 
 
 function threejs_d3_functions() {
@@ -275,27 +301,45 @@ function threejs_init() {
 
 
 
+        geometryLine = new THREE.Geometry();
 
-    var geometryLine = new THREE.Geometry();
+	    materialLine = new THREE.LineBasicMaterial({
+        color: 0x0000ff,
+    });
     // geometryLine.vertices.push(new THREE.Vector3(-10, 0, 0));
     // geometryLine.vertices.push(new THREE.Vector3(0, 10, 0));
     // geometryLine.vertices.push(new THREE.Vector3(10, 0, 0));	
-    var path = [
-        { x:0,   y:0 },
-        { x:40,  y:0 },
-        { x:40,  y:30 },
-        { x:70,  y:30 },
-        { x:70,  y:40 },
-        { x:80,  y:40 },
-        { x:80,  y:100 },
-        { x:120,  y:100 },
-        { x:120,  y:200 }
-    ];
-    
-    var originX = -100, originY = -100;    
-    for (var pt = 0; pt < path.length; ++pt) {
-        var o = path[pt];
-        geometryLine.vertices.push(new THREE.Vector3(originX+o.x, originY+o.y, 1));
+ //    var path = [
+ //        { x:0,   y:0 },
+ //        { x:40,  y:0 },
+ //        { x:40,  y:30 },
+ //        { x:70,  y:30 },
+ //        { x:70,  y:40 },
+ //        { x:80,  y:40 },
+ //        { x:80,  y:100 },
+ //        { x:120,  y:100 },
+ //        { x:120,  y:200 }
+ //    ];
+ //    var originX = -100, originY = -100;  
+ //    if(thisData.length==straightLine.length){  
+ //    for (var pt = 0; pt < path.length; ++pt) {
+ //        var o = path[pt];
+ //        console.log(o)
+ //        console.log(o.x)
+ //        geometryLine.vertices.push(new THREE.Vector3(originX+o.x, originY+o.y, 1));
+ //    }
+	// }
+
+
+
+    var originX = 0, originY = 0; 
+
+    // if(thisData.length==straightLine.length){   
+    for (var pt = 0; pt < straightLine.length; ++pt) {
+        var o = straightLine[pt];
+        console.log(straightLine[pt])
+        console.log(straightLine[pt].x)
+        geometryLine.vertices.push(new THREE.Vector3(originX+o.x, originY+o.y, Math.sin(pt/ 10.0) * 100));
     }
 
 
@@ -306,17 +350,8 @@ function threejs_init() {
 //	material = new THREE.MeshBasicMaterial( { color: 0xff00ff, wireframe: false } );
 //	material2 = new THREE.MeshLambertMaterial( { color: 0x4682B4, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
  // Draw lines
-    materialLine = new THREE.LineBasicMaterial({
-        color: 0x0000ff,
-    });
-	
-    var line = new THREE.Line(geometryLine, material);
 
-	geometry = new THREE.SphereGeometry( 50, 10, 10);
-//	geometry = new THREE.CircleGeometry( 50, 8);
-//	material = new THREE.MeshBasicMaterial( { color: 0xff00ff, wireframe: false } );
-//	material2 = new THREE.MeshLambertMaterial( { color: 0x4682B4, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
-	
+
 	getMaterial = function(thiscolor) {
 		return new THREE.MeshLambertMaterial( { color: thiscolor, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
 		return new THREE.MeshBasicMaterial( { color: thiscolor, wireframe: false } );
@@ -325,7 +360,7 @@ function threejs_init() {
 	// create container for our 3D chart
 	chart3d = new THREE.Object3D();
 	secondChart = new THREE.Object3D();
-    // line = new THREE.Line(geometry, materialLine);
+    line = new THREE.Line(geometryLine, materialLine);
 
 
 
@@ -379,7 +414,6 @@ function threejs_init() {
     // create function for D3 to set up 3D bars
     // newLine = function(thiscolor) { return new THREE.Mesh( geometry, getMaterial(thiscolor) ); }
 
-	// scene.add( chart3d );
 
     // create function for D3 to set up 3D bars
     newSphere = function(thiscolor) { return new THREE.Mesh( geometry, getMaterial(thiscolor) ); }
@@ -420,9 +454,6 @@ d3.csv(csvFilename, function(error, data) {
 	// 	.append(function(d, i) { 
 	// 		return newSphere(7057110);
 	// 	});	
-			console.log(color(i));
-			return newSphere(parseInt("0x" + color(i).substr(1), 16));
-		});
 
 });
 
@@ -453,13 +484,6 @@ function dotCited() {
 	// rotationX = 0.01;
 	// rotationY = 0.01;
 	// rotationZ = 0.01;
-	.attr("position.x", function(d, i) { return 30 * i; })
-	.attr("position.y", function(d, i) { return d['Cited'] * 1 ; })
-//		.attr("position.z", function(d, i) { return d['Cited'] * 1 ; })
-
-	rotationX = 0.01;
-	rotationY = 0.03;
-	rotationZ = 0.02;
 }
 
 function dotPage() {
@@ -484,17 +508,6 @@ function dotPage() {
 	secondRotationX = 0.01;
 	secondRotationY = 0.01;
 	secondRotationZ = 0.01;
-	dots
-	.transition()
-	.duration(3000)
-	.attr("position.x", function(d, i) { return 30 * i; })
-	.attr("position.y", function(d, i) { return d['Page end'] * 1 ; })
-//		.attr("position.z", function(d, i) { return d['Page end'] * 1 ; })
-//		.attr("position.z", function(d, i) { return Math.sin(i/ 10.0) * 100 ; })
-//
-	rotationX = 0.0;
-	rotationY = 0.0;
-	rotationZ = 0.0;
 }
 
 
@@ -513,29 +526,48 @@ function threejs_animate() {
 	secondChart.rotation.y += secondRotationY;
 	secondChart.rotation.z += secondRotationZ;
 
-
+	line.rotation.x += secondRotationX;
+	line.rotation.y += secondRotationY;
+	line.rotation.z += secondRotationZ;
 	renderer.render( scene, camera );
 
 }
 
+var b = 0;
 
 $( document ).ready(function() {
-
+	d3scales();
 	threejs_d3_functions();
-	
-	threejs_init();
+$("body").keypress(function(){
+	console.log(b);
+    (b+=1);
+    if (b==1){
+    	threejs_init();
+    }
+    if (b==2){
+		drawThreejsChart("memory_allyears_smallBatch.csv");    	
+    }
+    if(b==3){
+		threejs_animate(); 
+    }
+})	
+	// threejs_init();
 
-	drawThreejsChart("memory_allyears_smallBatch.csv");
+	// drawThreejsChart("memory_allyears_smallBatch.csv");
 
-	threejs_animate(); 
+	// threejs_animate(); 
 
 	$("#cited").click(function() {
 		console.log("cited clicked");
 		if(dotCitedFlag == true) {
-			dotPage();
+			dotCited();
+			// dotPage();
 			dotCitedFlag = false;
 		} else {
-			dotCited();
+	// rotationX = 0.0;
+	// rotationY = 0.0;
+	// rotationZ = 0.0;
+			dotPage();
 			dotCitedFlag = true;
 		}
 	});
@@ -856,6 +888,5 @@ $( document ).ready(function() {
 //     }
 // });
 // }
-
 
 
