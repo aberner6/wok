@@ -265,8 +265,8 @@ function threejs_init() {
 	
     var line = new THREE.Line(geometryLine, material);
 
-	geometry = new THREE.SphereGeometry( 50, 10, 10);
-	geometry = new THREE.Sprite();
+	getSphere = new THREE.SphereGeometry( 50, 10, 10);
+	getSprite = new THREE.Sprite();
 //	geometry = new THREE.SphereGeometry( 50, 10, 10);
 //	geometry = new THREE.CircleGeometry( 50, 8);
 //	material = new THREE.MeshBasicMaterial( { color: 0xff00ff, wireframe: false } );
@@ -291,50 +291,10 @@ function threejs_init() {
 	scene.add( secondChart );
    
     scene.add(line);
-//to draw the path?
-
-
-
-
-    // Draw lines
-    // var material = new THREE.LineBasicMaterial({
-    //     color: 0x0000ff,
-    // });
-
-    // var path = [
-    //     { x:0,   y:0 },
-    //     { x:40,  y:0 },
-    //     { x:40,  y:30 },
-    //     { x:70,  y:30 },
-    //     { x:70,  y:40 },
-    //     { x:80,  y:40 },
-    //     { x:80,  y:100 },
-    //     { x:120,  y:100 },
-    //     { x:120,  y:200 }
-    // ];
     
-    // var originX = -100, originY = -100;
-    
-    // var geometry = new THREE.Geometry();
-    // for (var pt = 0; pt < path.length; ++pt) {
-    //     var o = path[pt];
-    //     geometry.vertices.push(new THREE.Vector3(originX+o.x, originY+o.y, 1));
-    // }
-
-    // var line = new THREE.Line(geometry, material);
-
-    // scene.add(line);
-
-
-
-
     // create function for D3 to set up 3D bars
-    // newLine = function(thiscolor) { return new THREE.Mesh( geometry, getMaterial(thiscolor) ); }
-
-	// scene.add( chart3d );
-
-    // create function for D3 to set up 3D bars
-    newSphere = function(thiscolor) { return new THREE.Sprite( { map: mapC, useScreenCoordinates: false, color: 0xff00ff } ); }
+    newSphere = function(thiscolor) { return new THREE.Mesh( getSphere, getMaterial(thiscolor) ); }
+    newSprite = function(thiscolor) { return new THREE.Sprite( { map: mapC, useScreenCoordinates: false, color: 0xff00ff } ); }
 
 }
 
