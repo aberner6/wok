@@ -124,43 +124,6 @@ function threejs_environment_init() {
 
 
 
-function drawThreejsChart(csvFilename) {
-/* MAGIC IS HERE */
-
-	var color = d3.scale.category20c();
-
-	// create objects, add them to scene
-	chart3d = new THREE.Object3D();
-	secondChart = new THREE.Object3D();
-	scene.add( secondChart );
-	scene.add( chart3d );
-
-
-	d3.csv(csvFilename, function(error, data) {
-
-		// use D3 to set up 3D bars
-		dots = d3.select( chart3d )
-			.selectAll("THREE.Mesh")
-			.data(data)
-			.enter()
-			.append(function(d, i) { 
-				return newCircleSprite(parseInt("0x" + color(i).substr(1), 16));
-			});
-
-		console.log(dots);
-		// use D3 to set up 3D bars
-		moreDots = d3.select( secondChart )
-			.selectAll("THREE.Mesh")
-			.data(data)
-			.enter()
-			.append(function(d, i) { 
-				return newSphere(7057110);
-				return newCircleSprite(parseInt("0x" + color(i).substr(1), 16));
-			});
-
-	});
-
-}
 
 
 
@@ -231,7 +194,7 @@ function onWindowResize() {
 
 function drawThings() {
 	drawLine(scene); //loaded by external js
-	drawThreejsChart("memory_allyears_smallBatch.csv");
+	drawSprite("memory_allyears_smallBatch.csv", scene);
 }
 
 
