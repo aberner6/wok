@@ -1,3 +1,8 @@
+var lineRotation = {};
+lineRotation.x = 0.01;
+lineRotation.y = 0.03;
+lineRotation.z = 0.02;
+
 function drawLine(thisscene) {
 	straightLine = [];
 	d3chart = d3chart || {};
@@ -163,8 +168,8 @@ function drawLine(thisscene) {
 function animateLine() {
 	if (typeof line !== 'undefined') {
 		// variable is defined
-		line.rotation.x += secondRotationX;
-		line.rotation.y += secondRotationY;
-		line.rotation.z += secondRotationZ;
+		line.rotation.x += lineRotation.x;
+		line.rotation.y += lineRotation.y;
+		line.rotation.z += lineRotation.z;
 	}
 }

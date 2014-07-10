@@ -250,22 +250,6 @@ $( document ).ready(function() {
 	threejs_animate();  
 
 
-/*
-	var b = 0;
-	$("body").keypress(function(){
-		console.log(b);
-		(b+=1);
-		if (b==1){
-			threejs_environment_init();
-		}
-		if (b==2){
-			drawThings();
-		}
-		if(b==3){
-			threejs_animate(); 
-		}
-	})	 
-*/
 	$("#cited").click(function() {
 		console.log("cited clicked");
 		if(dotCitedFlag == true) {
