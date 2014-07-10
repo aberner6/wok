@@ -6,129 +6,136 @@ var rotationZ = 0;
 var secondRotationX = 0;
 var secondRotationY = 0;
 var secondRotationZ = 0;
-var svg, dots, moreDots, path, line, geometryLine;
 var dotCitedFlag = true;
 
-var svg;
-
-var xScale;
-var xAxis;
-var straightLine = [];
-var years = [];
-var uniqueYears;
-var uniqueAuthors;
-var uniqueKeywords;
-var journalTypes = [];
-var authors = [];
-var keywords = [];
-var goSecond = false;
-
-var totals = [];
-var totalAuthors = [];
-var totalKeywords = [];
-
-var total1 = 0;
-
-var color =  d3.scale.category20c();
-var opacityMap;
-
-var firstLoadVar;
-var firstLoad = -1;
-var secLoad = -1;
-
-var padding = 35;
-
-var minYear;
-var maxYear;
-var maxAuthor;
-var thisTotal;
-var eachPaper;
-
-var heightScale;
-var singleScale;
-var thisData = [];
-var theseAuthors = [];
-var theseKeywords = [];
-var theX = [];
-var maxEntries;
-var width = 1400;
-var height = 720;
-
-d3.csv("memory_allyears_smallBatch.csv", function(data) {
-        thisData=(data);
-    for (i = 0;i<thisData.length; i++){ 
-        years[i] = data[i].Year;
-        authors[i] = data[i].Authors.split("., ");
-        for (j=0; j<authors[i].length; j++){
-        theseAuthors.push(authors[i][j]);            
-        }
-        journalTypes[i] = data[i].Sourcetitle;
-    }
+var d3chart = d3chart || {};
 
 
-////finds unique names etc
-    function onlyUnique(value, index, self) { 
-        return self.indexOf(value) === index;
-    } 
-    uniqueTypes = journalTypes.filter( onlyUnique ); //finds unique names
-    uniqueYears = years.filter( onlyUnique ); //finds unique names
-
-////consolidates the Value for all values of a given Name
-    function valueConsolidation(givenYear, i) { 
-        var total = 0;
-        for (i = 0;i<data.length; i++){ 
-            if(data[i].Year== givenYear){
-                total++;
-            }else{
-            }}
-         return total;
-     } 
- //creates a new aray with the sums of all the different Names 
-    for (i = 0; i<uniqueYears.length; i++){
-        totals[i]= valueConsolidation(uniqueYears[i])
-    } 
-
-   maxAuthor = d3.max(totalAuthors, function(d) { return d; });
-   singleScale = d3.scale.linear()
-        .domain([1, maxAuthor*5])
-        .range([1, height/6-100]);
-
-    maxEntries = d3.max(totals, function(d) { return d; });
-
-    minYear = d3.min(years, function(d) { return d; });
-    maxYear = d3.max(years, function(d) { return d; });
-
-    xScale = d3.scale.linear()
-        .domain([minYear, maxYear]) //not min year to max year
-        .range([100, width*1.2]);
-
-    var maxCited = d3.max(data, function(d) { return d.Cited; });
-    opacityMap = d3.scale.linear()
-        .domain([0, maxCited])
-        .range([.2, 1])        
-
-    heightScale = d3.scale.linear()
-        .domain([0, maxEntries*3])
-        .range([padding, height/1.2]);
+function drawD3Chart() {
 
 
-////FOR X AXIS
-// var xTime = d3.time.scale()
-//     .domain([new Date(1965,7,1), new Date(2014,7,1)])
-//     .range([65, w-46]);
+	var svg, dots, moreDots, path, line, geometryLine;
 
-// xAxis = d3.svg.axis()
-//     .scale(xTime)
-//     .ticks(d3.time.years)
-//     .tickSize(6,0)
-//     .orient("bottom");
+	var svg;
 
-// svg.append("g")
-//     .attr("class", "axis")  //Assign "axis" class
-//     .attr("transform", "translate(0," + (h - padding+5) + ")")
-//     .call(xAxis);
+	// var d3chart.xScale;
+	var xAxis;
+	var straightLine = [];
+	var years = [];
+	var uniqueYears;
+	var uniqueAuthors;
+	var uniqueKeywords;
+	var journalTypes = [];
+	var authors = [];
+	var keywords = [];
+	var goSecond = false;
 
-})
+	var totals = [];
+	var totalAuthors = [];
+	var totalKeywords = [];
+
+	var total1 = 0;
+
+	var color =  d3.scale.category20c();
+	var opacityMap;
+
+	var firstLoadVar;
+	var firstLoad = -1;
+	var secLoad = -1;
+
+	var padding = 35;
+
+	var minYear;
+	var maxYear;
+	var maxAuthor;
+	var thisTotal;
+	var eachPaper;
+
+	var heightScale;
+	var singleScale;
+	var thisData = [];
+	var theseAuthors = [];
+	var theseKeywords = [];
+	var theX = [];
+	var maxEntries;
+	var width = 1400;
+	var height = 720;
+
+	d3.csv("memory_allyears_smallBatch.csv", function(data) {
+	        thisData=(data);
+	    for (i = 0;i<thisData.length; i++){ 
+	        years[i] = data[i].Year;
+	        authors[i] = data[i].Authors.split("., ");
+	        for (j=0; j<authors[i].length; j++){
+	        theseAuthors.push(authors[i][j]);            
+	        }
+	        journalTypes[i] = data[i].Sourcetitle;
+	    }
+
+
+	////finds unique names etc
+	    function onlyUnique(value, index, self) { 
+	        return self.indexOf(value) === index;
+	    } 
+	    uniqueTypes = journalTypes.filter( onlyUnique ); //finds unique names
+	    uniqueYears = years.filter( onlyUnique ); //finds unique names
+
+	////consolidates the Value for all values of a given Name
+	    function valueConsolidation(givenYear, i) { 
+	        var total = 0;
+	        for (i = 0;i<data.length; i++){ 
+	            if(data[i].Year== givenYear){
+	                total++;
+	            }else{
+	            }}
+	         return total;
+	     } 
+	 //creates a new aray with the sums of all the different Names 
+	    for (i = 0; i<uniqueYears.length; i++){
+	        totals[i]= valueConsolidation(uniqueYears[i])
+	    } 
+
+	   maxAuthor = d3.max(totalAuthors, function(d) { return d; });
+	   singleScale = d3.scale.linear()
+	        .domain([1, maxAuthor*5])
+	        .range([1, height/6-100]);
+
+	    maxEntries = d3.max(totals, function(d) { return d; });
+
+	    minYear = d3.min(years, function(d) { return d; });
+	    maxYear = d3.max(years, function(d) { return d; });
+
+	    d3chart.xScale = d3.scale.linear()
+	        .domain([minYear, maxYear]) //not min year to max year
+	        .range([100, width*1.2]);
+
+	    var maxCited = d3.max(data, function(d) { return d.Cited; });
+	    opacityMap = d3.scale.linear()
+	        .domain([0, maxCited])
+	        .range([.2, 1])        
+
+	    heightScale = d3.scale.linear()
+	        .domain([0, maxEntries*3])
+	        .range([padding, height/1.2]);
+
+
+	////FOR X AXIS
+	// var xTime = d3.time.scale()
+	//     .domain([new Date(1965,7,1), new Date(2014,7,1)])
+	//     .range([65, w-46]);
+
+	// xAxis = d3.svg.axis()
+	//     .scale(xTime)
+	//     .ticks(d3.time.years)
+	//     .tickSize(6,0)
+	//     .orient("bottom");
+
+	// svg.append("g")
+	//     .attr("class", "axis")  //Assign "axis" class
+	//     .attr("transform", "translate(0," + (h - padding+5) + ")")
+	//     .call(xAxis);
+
+	})
 
 
 
@@ -136,7 +143,7 @@ d3.csv("memory_allyears_smallBatch.csv", function(data) {
 
 
 
-
+}
 
 
 
@@ -420,7 +427,7 @@ function dotCited() {
 	dots
 	.transition()
 	.duration(3000)
-	.attr("position.x", function(d, i) { return xScale(d['Year']); })
+	.attr("position.x", function(d, i) { return d3chart.xScale(d['Year']); })
 	.attr("position.y", function(d, i) { return d['Cited'] ; })
 //		.attr("position.z", function(d, i) { return d['Cited'] * 1 ; })
 
@@ -428,7 +435,7 @@ function dotCited() {
 	// moreDots
 	// .transition()
 	// .duration(3000)
-	// .attr("position.x", function(d, i) { return xScale(d['Year']); })
+	// .attr("position.x", function(d, i) { return d3chart.xScale(d['Year']); })
 	// .attr("position.y", function(d, i) { return d['Cited'] ; })
 
 
@@ -450,13 +457,13 @@ function dotPage() {
 	// moreDots
 	// .transition()
 	// .duration(3000)
-	// .attr("position.x", function(d, i) { return xScale(d['Year']); })
+	// .attr("position.x", function(d, i) { return d3chart.xScale(d['Year']); })
 	// .attr("position.y", function(d, i) { return d['Cited'] ; })
 
 	moreDots
 	.transition()
 	.duration(3000)
-	.attr("position.x", function(d, i) { return xScale(d['Year']); })
+	.attr("position.x", function(d, i) { return d3chart.xScale(d['Year']); })
 	.attr("position.y", function(d, i) { return d['Cited'] ; })
 	// .attr("position.x", function(d, i) { return 30 * i; })
 	// .attr("position.z", function(d, i) { return d['Page end'] * 1 ; })
@@ -509,7 +516,10 @@ $( document ).ready(function() {
 	// initiate threejs renderer
 	threejs_init();
 
-	// draw chart
+	// draw threejs chart
+	drawD3Chart();
+
+	// draw threejs chart
 	drawThreejsChart("memory_allyears_smallBatch.csv");
 
 	// animate data
