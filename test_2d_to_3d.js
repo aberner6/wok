@@ -1,5 +1,7 @@
 
 var camera, scene, renderer, chart3d, secondChart, material, material2, materialLine, spriteMapCircle;
+
+var dots;
 var rotationX = 0;
 var rotationY = 0;
 var rotationZ = 0;
@@ -11,16 +13,14 @@ var dotCitedFlag = true;
 var d3chart = d3chart || {};
 
 
+straightLine = [];
+
 function drawD3Chart() {
-
-
-	var svg, dots, moreDots, path, line, geometryLine;
 
 	var svg;
 
-	// var d3chart.xScale;
+	var xScale;
 	var xAxis;
-	var straightLine = [];
 	var years = [];
 	var uniqueYears;
 	var uniqueAuthors;
@@ -60,63 +60,80 @@ function drawD3Chart() {
 	var maxEntries;
 	var width = 1400;
 	var height = 720;
+	var newX = [];
+	var newY = [];
+
+
 
 	d3.csv("memory_allyears_smallBatch.csv", function(data) {
-	        thisData=(data);
-	    for (i = 0;i<thisData.length; i++){ 
-	        years[i] = data[i].Year;
-	        authors[i] = data[i].Authors.split("., ");
-	        for (j=0; j<authors[i].length; j++){
-	        theseAuthors.push(authors[i][j]);            
-	        }
-	        journalTypes[i] = data[i].Sourcetitle;
-	    }
+			thisData=(data);
+		for (i = 0;i<thisData.length; i++){ 
+			years[i] = data[i].Year;
+			authors[i] = data[i].Authors.split("., ");
+			for (j=0; j<authors[i].length; j++){
+			theseAuthors.push(authors[i][j]);            
+			}
+			journalTypes[i] = data[i].Sourcetitle;
+		}
 
 
 	////finds unique names etc
-	    function onlyUnique(value, index, self) { 
-	        return self.indexOf(value) === index;
-	    } 
-	    uniqueTypes = journalTypes.filter( onlyUnique ); //finds unique names
-	    uniqueYears = years.filter( onlyUnique ); //finds unique names
+		function onlyUnique(value, index, self) { 
+			return self.indexOf(value) === index;
+		} 
+		uniqueTypes = journalTypes.filter( onlyUnique ); //finds unique names
+		uniqueYears = years.filter( onlyUnique ); //finds unique names
 
 	////consolidates the Value for all values of a given Name
-	    function valueConsolidation(givenYear, i) { 
-	        var total = 0;
-	        for (i = 0;i<data.length; i++){ 
-	            if(data[i].Year== givenYear){
-	                total++;
-	            }else{
-	            }}
-	         return total;
-	     } 
+		function valueConsolidation(givenYear, i) { 
+			var total = 0;
+			for (i = 0;i<data.length; i++){ 
+				if(data[i].Year== givenYear){
+					total++;
+				}else{
+				}}
+			 return total;
+		 } 
 	 //creates a new aray with the sums of all the different Names 
-	    for (i = 0; i<uniqueYears.length; i++){
-	        totals[i]= valueConsolidation(uniqueYears[i])
-	    } 
+		for (i = 0; i<uniqueYears.length; i++){
+			totals[i]= valueConsolidation(uniqueYears[i])
+		} 
 
 	   maxAuthor = d3.max(totalAuthors, function(d) { return d; });
 	   singleScale = d3.scale.linear()
-	        .domain([1, maxAuthor*5])
-	        .range([1, height/6-100]);
+			.domain([1, maxAuthor*5])
+			.range([1, height/6-100]);
 
-	    maxEntries = d3.max(totals, function(d) { return d; });
+		maxEntries = d3.max(totals, function(d) { return d; });
 
-	    minYear = d3.min(years, function(d) { return d; });
-	    maxYear = d3.max(years, function(d) { return d; });
+		minYear = d3.min(years, function(d) { return d; });
+		maxYear = d3.max(years, function(d) { return d; });
 
-	    d3chart.xScale = d3.scale.linear()
-	        .domain([minYear, maxYear]) //not min year to max year
-	        .range([100, width*1.2]);
+		d3chart.xScale = d3.scale.linear()
+			.domain([minYear, maxYear]) //not min year to max year
+			.range([100, width*1.2]);
 
-	    var maxCited = d3.max(data, function(d) { return d.Cited; });
-	    opacityMap = d3.scale.linear()
-	        .domain([0, maxCited])
-	        .range([.2, 1])        
+		var maxCited = d3.max(data, function(d) { return d.Cited; });
+		opacityMap = d3.scale.linear()
+			.domain([0, maxCited])
+			.range([.2, 1])        
 
-	    heightScale = d3.scale.linear()
-	        .domain([0, maxEntries*3])
-	        .range([padding, height/1.2]);
+		heightScale = d3.scale.linear()
+			.domain([0, maxEntries*3])
+			.range([padding, height/1.2]);
+
+
+	for (i=0; i<thisData.length; i++){
+		newX.push(d3chart.xScale(years[i]))
+		newY.push(thisData[i].Cited) //height-10-
+	}
+
+	for (i=0; i<thisData.length; i++){
+		straightLine.push({
+			x: newX[i],
+			y: newY[i]
+		})
+	}
 
 
 	////FOR X AXIS
@@ -135,20 +152,32 @@ function drawD3Chart() {
 	//     .attr("transform", "translate(0," + (h - padding+5) + ")")
 	//     .call(xAxis);
 
-	})
 
+    var geometryLine = new THREE.Geometry();
+    materialLine = new THREE.LineBasicMaterial({
+        color: 0x0000ff,
+    });
+
+    var originX = 0, originY = 0; 
+
+    for (var pt = 0; pt < straightLine.length; ++pt) {
+        var o = straightLine[pt];
+        console.log(straightLine[pt])
+        console.log(straightLine[pt].x)
+        geometryLine.vertices.push(new THREE.Vector3(originX+o.x, originY+o.y, Math.sin(pt/ 10.0) * 100));
+    }
+	console.log("GEOMLINE");
+	console.log(geometryLine.vertices);
+    line = new THREE.Line(geometryLine, materialLine);
+    scene.add(line);
+	console.log(line);
+
+
+
+	})
 
 }
 
-
-
-var camera, scene, renderer, chart3d, material, material2;
-var rotationX = 0;
-var rotationY = 0;
-var rotationZ = 0;
-
-var svg, dots, d3chart3d;
-var dotCitedFlag = true;
 
 
 function threejs_d3_functions() {
@@ -234,10 +263,28 @@ function threejs_environment_init() {
 	renderer.setClearColor( 0xffffff, 1 );
 	renderer.autoClear = false;
 
+	/* geometry functions */
+
+    // given a color, creates a sphere mesh with material with color
+	meshSphere = new THREE.SphereGeometry( 50, 10, 10);
+    newSphere = function(thiscolor) { 
+		var thismaterial =  new THREE.MeshLambertMaterial( { color: thiscolor, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
+		return new THREE.Mesh( meshSphere, thismaterial ); 
+	}
+
+	// given a color, creates a sprite with color
+	spriteMapCircle = THREE.ImageUtils.loadTexture( "images/sprite_circle.png" );
+    newCircleSprite = function(thiscolor) { 
+		var thismaterial = new THREE.SpriteMaterial( { map: spriteMapCircle, color: thiscolor, fog: true });
+		var thissprite = new THREE.Sprite( thismaterial);
+		thissprite.scale.set(100,100,10);
+		return thissprite;
+	}
+
+
 //	renderer.setSize( 500, 500);
 	document.body.appendChild( renderer.domElement );
 
-	window.addEventListener( 'resize', onWindowResize, false );
 
 }
 
@@ -252,64 +299,6 @@ function onWindowResize() {
 	renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
-
-function addGeometry() {
-	// adding geometry
-
-
-	/* DRAW A LINE */
-
-    var geometryLine = new THREE.Geometry();
-    var path = [
-        { x:0,   y:0 },
-        { x:40,  y:0 },
-        { x:40,  y:30 },
-        { x:70,  y:30 },
-        { x:70,  y:40 },
-        { x:80,  y:40 },
-        { x:80,  y:100 },
-        { x:120,  y:100 },
-        { x:120,  y:200 }
-    ];
-    
-    var originX = -100, originY = -100;    
-    for (var pt = 0; pt < path.length; ++pt) {
-        var o = path[pt];
-        geometryLine.vertices.push(new THREE.Vector3(originX+o.x, originY+o.y, 1));
-    }
-
-    materialLine = new THREE.LineBasicMaterial({
-        color: 0x0000ff,
-    });
-	
-    var line = new THREE.Line(geometryLine, material);
-    scene.add(line);
-
-
-	getSphere = new THREE.SphereGeometry( 50, 10, 10);
-	getMaterial = function(thiscolor) {
-		return new THREE.MeshLambertMaterial( { color: thiscolor, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
-//		return new THREE.MeshBasicMaterial( { color: thiscolor, wireframe: false } );
-	}
-	// create container for our 3D chart
-	spriteMapCircle = THREE.ImageUtils.loadTexture( "images/sprite_circle.png" );
-
-    // given a color, creates a mesh with material with color
-    newSphere = function(thiscolor) { return new THREE.Mesh( getSphere, getMaterial(thiscolor) ); }
-
-	// given a color, creates a sphere sprite with color
-    newCircleSprite = function(thiscolor) { 
-		var thismaterial = new THREE.SpriteMaterial( { map: spriteMapCircle, color: thiscolor, fog: true });
-		var thissprite = new THREE.Sprite( thismaterial);
-		thissprite.scale.set(100,100,10);
-		return thissprite;
-	}
-
-}
-
-
-
-
 function drawThreejsChart(csvFilename) {
 /* MAGIC IS HERE */
 
@@ -320,6 +309,7 @@ function drawThreejsChart(csvFilename) {
 	secondChart = new THREE.Object3D();
 	scene.add( secondChart );
 	scene.add( chart3d );
+
 
 	d3.csv(csvFilename, function(error, data) {
 
@@ -379,13 +369,6 @@ function dotCited() {
 	// rotationX = 0.01;
 	// rotationY = 0.01;
 	// rotationZ = 0.01;
-	.attr("position.x", function(d, i) { return 30 * i; })
-	.attr("position.y", function(d, i) { return d['Cited'] * 1 ; })
-//		.attr("position.z", function(d, i) { return d['Cited'] * 1 ; })
-
-	rotationX = 0.05;
-	rotationY = 0.01;
-	rotationZ = 0.005;
 }
 
 function dotPage() {
@@ -410,17 +393,6 @@ function dotPage() {
 	secondRotationX = 0.01;
 	secondRotationY = 0.01;
 	secondRotationZ = 0.01;
-	dots
-	.transition()
-	.duration(3000)
-	.attr("position.x", function(d, i) { return 30 * i; })
-	.attr("position.y", function(d, i) { return d['Page end'] * 1 ; })
-//		.attr("position.z", function(d, i) { return d['Page end'] * 1 ; })
-//		.attr("position.z", function(d, i) { return Math.sin(i/ 10.0) * 100 ; })
-//
-	rotationX = 0.0;
-	rotationY = 0.0;
-	rotationZ = 0.0;
 }
 
 
@@ -439,44 +411,71 @@ function threejs_animate() {
 	secondChart.rotation.y += secondRotationY;
 	secondChart.rotation.z += secondRotationZ; 
 
-
+	line.rotation.x += secondRotationX;
+	line.rotation.y += secondRotationY;
+	line.rotation.z += secondRotationZ;
 	renderer.render( scene, camera );
 //	renderSprites();
 
 }
 
 
+
+function drawThings() {
+
+	// draw threejs chart
+	drawD3Chart();
+
+	drawThreejsChart("memory_allyears_smallBatch.csv");
+
+}
+
+var b = 0;
+
 $( document ).ready(function() {
 
 	// initiate threejs and d3 connection
 	threejs_d3_functions();
 
-	// initiate threejs renderer
+/*	// initiate threejs renderer
 	threejs_environment_init();
 
-	//  add geometry
-	addGeometry();
-
-	// draw threejs chart
-	drawD3Chart();
-
-	// draw threejs chart
-	drawThreejsChart("memory_allyears_smallBatch.csv");
+	// draw things
+	drawThings();
 
 	// animate data
-	threejs_animate(); 
+	threejs_animate();  */
 
-	// deal with other behavior
+
+	$("body").keypress(function(){
+		console.log(b);
+		(b+=1);
+		if (b==1){
+			threejs_environment_init();
+		}
+		if (b==2){
+			drawThings();
+		}
+		if(b==3){
+			threejs_animate(); 
+		}
+	})	
 	$("#cited").click(function() {
 		console.log("cited clicked");
 		if(dotCitedFlag == true) {
-			dotPage();
+			dotCited();
+			// dotPage();
 			dotCitedFlag = false;
 		} else {
-			dotCited();
+	// rotationX = 0.0;
+	// rotationY = 0.0;
+	// rotationZ = 0.0;
+			dotPage();
 			dotCitedFlag = true;
 		}
 	});
+
+	window.addEventListener( 'resize', onWindowResize, false );
 
 });
 
