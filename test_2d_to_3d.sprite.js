@@ -1,7 +1,18 @@
-var lineRotation = {};
-lineRotation.x = 0.01;
-lineRotation.y = 0.03;
-lineRotation.z = 0.02;
+var spriteRotation = {};
+spriteRotation.x = 0.01;
+spriteRotation.y = 0.03;
+spriteRotation.z = 0.02;
+
+
+// given a color, creates a sprite with color
+spriteMapCircle = THREE.ImageUtils.loadTexture( "images/sprite_circle.png" );
+newCircleSprite = function(thiscolor) { 
+	var thismaterial = new THREE.SpriteMaterial( { map: spriteMapCircle, color: thiscolor, fog: true });
+	var thissprite = new THREE.Sprite( thismaterial);
+	thissprite.scale.set(100,100,10);
+	return thissprite;
+}
+
 
 function drawSprite(csvFilename, thisscene) {
 /* MAGIC IS HERE */
@@ -42,10 +53,21 @@ function drawSprite(csvFilename, thisscene) {
 }
 
 function animateSprite() {
-	if (typeof sprite !== 'undefined') {
+
+
+	if (typeof secondChart !== 'undefined') {
 		// variable is defined
-		sprite.rotation.x += spriteRotation.x;
-		sprite.rotation.y += spriteRotation.y;
-		sprite.rotation.z += spriteRotation.z;
+		secondChart.rotation.x += spriteRotation.x; 
+		secondChart.rotation.y += spriteRotation.y;
+		secondChart.rotation.z += spriteRotation.z;
 	}
+
+
+	if (typeof chart3d !== 'undefined') {
+		// variable is defined
+		chart3d.rotation.x += spriteRotation.x; 
+		chart3d.rotation.y += spriteRotation.y;
+		chart3d.rotation.z += spriteRotation.z;
+	}
+
 }

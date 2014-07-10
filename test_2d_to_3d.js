@@ -100,20 +100,12 @@ function threejs_environment_init() {
 	/* geometry functions */
 
     // given a color, creates a sphere mesh with material with color
+	/*
 	meshSphere = new THREE.SphereGeometry( 50, 10, 10);
     newSphere = function(thiscolor) { 
 		var thismaterial =  new THREE.MeshLambertMaterial( { color: thiscolor, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
 		return new THREE.Mesh( meshSphere, thismaterial ); 
-	}
-
-	// given a color, creates a sprite with color
-	spriteMapCircle = THREE.ImageUtils.loadTexture( "images/sprite_circle.png" );
-    newCircleSprite = function(thiscolor) { 
-		var thismaterial = new THREE.SpriteMaterial( { map: spriteMapCircle, color: thiscolor, fog: true });
-		var thissprite = new THREE.Sprite( thismaterial);
-		thissprite.scale.set(100,100,10);
-		return thissprite;
-	}
+	}*/
 
 
 //	renderer.setSize( 500, 500);
@@ -165,21 +157,12 @@ function threejs_animate() {
 	// note: three.js includes requestAnimationFrame shim
 	requestAnimationFrame( threejs_animate );
 
-	// this is the global rotation, so that each data-manipulation function can control the global rotation
-	chart3d.rotation.x += rotationX;
-	chart3d.rotation.y += rotationY;
-	chart3d.rotation.z += rotationZ;
-
-	secondChart.rotation.x += secondRotationX;
-	secondChart.rotation.y += secondRotationY;
-	secondChart.rotation.z += secondRotationZ; 
-
+	// animation functions, loaded by each different js shim
+	animateSprite(); 
 	animateLine();
+
 	renderer.render( scene, camera );
-
 }
-
-
 
 function onWindowResize() {
 	var width = window.innerWidth;
@@ -212,7 +195,7 @@ $( document ).ready(function() {
 	// animate data
 	threejs_animate();  
 
-
+	// deal with debug button
 	$("#cited").click(function() {
 		console.log("cited clicked");
 		if(dotCitedFlag == true) {
@@ -224,6 +207,7 @@ $( document ).ready(function() {
 		}
 	});
 
+	// when window is resized, deal with that
 	window.addEventListener( 'resize', onWindowResize, false );
 
 });
