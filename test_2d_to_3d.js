@@ -271,9 +271,6 @@ function threejs_init() {
 
 	geometry = new THREE.CircleGeometry( 10, 10);
 
-    
-
-
 
     var geometryLine = new THREE.Geometry();
     // geometryLine.vertices.push(new THREE.Vector3(-10, 0, 0));
@@ -512,10 +509,7 @@ $( document ).ready(function() {
 	// initiate threejs renderer
 	threejs_init();
 
-	// initiate data
-	data_init();
-
-	// draw data
+	// draw chart
 	drawThreejsChart("memory_allyears_smallBatch.csv");
 
 	// animate data
