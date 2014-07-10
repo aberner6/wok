@@ -162,7 +162,7 @@ function drawLine(thisscene) {
 
 function animateLine() {
 	if (typeof line !== 'undefined') {
-			// variable is undefined
+		// variable is defined
 		line.rotation.x += secondRotationX;
 		line.rotation.y += secondRotationY;
 		line.rotation.z += secondRotationZ;
