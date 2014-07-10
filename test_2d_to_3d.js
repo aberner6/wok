@@ -138,53 +138,7 @@ function drawD3Chart() {
 	})
 
 
-
-
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -312,10 +266,16 @@ function threejs_init() {
     var line = new THREE.Line(geometryLine, material);
 
 	geometry = new THREE.SphereGeometry( 50, 10, 10);
+	geometry = new THREE.Sprite();
+//	geometry = new THREE.SphereGeometry( 50, 10, 10);
 //	geometry = new THREE.CircleGeometry( 50, 8);
 //	material = new THREE.MeshBasicMaterial( { color: 0xff00ff, wireframe: false } );
 //	material2 = new THREE.MeshLambertMaterial( { color: 0x4682B4, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
 	
+	getSpriteMaterial = function(thiscolor) {
+		return new THREE.SpriteMaterial( { color: thiscolor });
+	}
+
 	getMaterial = function(thiscolor) {
 		return new THREE.MeshLambertMaterial( { color: thiscolor, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
 		return new THREE.MeshBasicMaterial( { color: thiscolor, wireframe: false } );
@@ -374,7 +334,7 @@ function threejs_init() {
 	// scene.add( chart3d );
 
     // create function for D3 to set up 3D bars
-    newSphere = function(thiscolor) { return new THREE.Mesh( geometry, getMaterial(thiscolor) ); }
+    newSphere = function(thiscolor) { return new THREE.Sprite( { map: mapC, useScreenCoordinates: false, color: 0xff00ff } ); }
 
 }
 
