@@ -147,10 +147,11 @@ var theseAuthors = [];
 var theseKeywords = [];
 var theX = [];
 var maxEntries;
+var maxCited;
     //Width and height
     var w = 1400;
     var h = 720;
-    d3.csv("memoryneuro_allfields.csv", function(data) {
+    d3.csv("memory_neuro_only_some_scientists.csv", function(data) {
 
     // d3.csv("memory_neuro_only_some_scientists.csv", function(data) {
         thisData=(data);
@@ -159,18 +160,18 @@ var maxEntries;
     if(data[i].Year!="undefined"){
         years[i] = data[i].Year;
     }
-        if (data[i].Keywords!="undefined"){
-        keywords[i] = data[i].Keywords.split("; ");
-        }
+        // if (data[i].Keywords!="undefined"){
+        // keywords[i] = data[i].Keywords.split(" ");
+        // }
         if(data[i].Authors!="undefined"){
         authors[i] = data[i].Authors.split("., ");
     }
         for (j=0; j<authors[i].length; j++){
         theseAuthors.push(authors[i][j]);            
         }
-        for (j=0; j<keywords[i].length; j++){
-        theseKeywords.push(keywords[i][j]);            
-        }
+        // for (j=0; j<keywords[i].length; j++){
+        // theseKeywords.push(keywords[i][j]);            
+        // }
 
         // authors[i] = data[i].Authors.split(";");
         // journalTypes[i] = data[i].Authors;
@@ -192,7 +193,7 @@ var maxEntries;
     uniqueYears = years.filter( onlyUnique ); //finds unique names
 
     uniqueAuthors = theseAuthors.filter( onlyUnique ); //finds unique authors
-    uniqueKeywords = theseKeywords.filter( onlyUnique ); //finds unique authors
+    // uniqueKeywords = theseKeywords.filter( onlyUnique ); //finds unique authors
 
     console.log("Unique Years: " + uniqueYears);
 
@@ -276,10 +277,15 @@ var maxEntries;
         .domain([minYear, maxYear]) //not min year to max year
         .range([61, w-65]);
 
-    var maxCited = d3.max(data, function(d) { return d.Cited; });
+    maxCited = d3.max(data, function(d) { return d.Cited; });
     opacityMap = d3.scale.linear()
         .domain([0, maxCited])
         .range([.2, 1])        
+
+
+    citeMap = d3.scale.linear()
+        .domain([0, maxCited])
+        .range([2, 8]) 
 
     heightScale = d3.scale.linear()
         .domain([0, maxEntries*3])
@@ -339,8 +345,15 @@ svg.append("g")
                 }
             }
             })
-        .attr("width", 20)
-        .attr("height", 5)
+        .attr("width", 5)
+        .attr("height", function(d,i){
+            if(d.Cited>0){
+            return citeMap(d.Cited+1);
+        }
+        else {
+            return 1;
+        }
+        })
         .attr("stroke-width",.5)
         // .attr("fill", "none")
         .on("mouseover", function(d,i){
@@ -497,7 +510,7 @@ function changeY(){
     // .delay(3000)
     .attr('y', function(d,i) {
         for (j=0; j<authors[i].length; j++){ 
-            if(authors[i][j]=="Gonzalez-Pina R"){ //"Moseley, M.E"){ //"Kandel, E.R."){ 
+            if(authors[i][j]=="Kandel, E.R."){ //"Moseley, M.E"){ //"Kandel, E.R."){ 
             for (z = 0; z<uniqueYears.length; z++){
                 if (d.Year==uniqueYears[z]){
                     total3++;
@@ -524,7 +537,7 @@ function changeY(){
     })  
     .attr('height', function(d,i) {
         for (j=0; j<authors[i].length; j++){ 
-            if(authors[i][j]=="Gonzalez-Pina R"){ //"Moseley, M.E"){ //"Kandel, E.R."){ 
+            if(authors[i][j]=="Kandel, E.R."){ //"Moseley, M.E"){ //"Kandel, E.R."){ 
         for (z=0; z<uniqueTypes.length; z++){
             if(d.Sourcetitle==uniqueTypes[z]){
                // return color(z);
@@ -543,7 +556,7 @@ function changeY(){
     })
     .attr('stroke', function(d,i) {
         for (j=0; j<authors[i].length; j++){ 
-            if(authors[i][j]=="Gonzalez-Pina R"){ //"Moseley, M.E"){ //"Kandel, E.R."){ 
+            if(authors[i][j]=="Kandel, E.R."){ //"Moseley, M.E"){ //"Kandel, E.R."){ 
         for (z=0; z<uniqueTypes.length; z++){
             if(d.Sourcetitle==uniqueTypes[z]){
                // return color(z);

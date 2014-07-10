@@ -27,7 +27,7 @@ body {
 </head>
 <body>
 <script src="js/d3.min.js"></script>
-<script src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
 <script src="js/jquery.tipsy.js"></script>
 <script type="text/javascript">
 var svg;
@@ -269,7 +269,7 @@ d3.selectAll(".theseRects"+thisYear)
 
 
 var line = d3.svg.line()
-    .interpolate("cardinal") //cardinal is cool also monotone
+    .interpolate("monotone") //cardinal is cool also monotone
     .x(function(d, i) { 
         return d[0];
     })
@@ -399,7 +399,7 @@ var newY = [];
 
 
 for (i=0; i<thisData.length; i++){
-    newX.push(30*i)
+    newX.push(xScale(years[i]))
     newY.push(height-10-thisData[i].Cited)
 }
 for (i=0; i<thisData.length; i++){
@@ -411,10 +411,10 @@ if (straightLine.length==thisData.length){
 d3.selectAll("circle")
     .transition()
     .attr("cx",function(d,i){
-        return 30*i;
+        return  newX[i];               
     })
     .attr("cy", function(d,i){ 
-        return height-10-d.Cited*1;
+        return height-10-d.Cited;
     })
     .attr("r", function(){
         return 5;        
@@ -432,6 +432,23 @@ d3.selectAll("path.line")
     return line(straightLine);
 })   
 }
+$('circle').tipsy({
+    gravity: 'w', 
+    html: true, 
+    delayIn: 500, 
+    title: function() {
+        var d = this.__data__;     
+        var whichCited;
+        if (d.Cited>0){
+            whichCited = d.Cited;
+        } 
+        else {
+            whichCited = 0;
+        }
+        return d.Year+" "+", Journal: "+d.Sourcetitle+"<br/>Cited by "+whichCited+" other sources"+"<br/>Author: "+d.Authors+" Title: "+d.Title;         
+    }
+});
+
 }
 $('circle').tipsy({
     gravity: 'w', 
