@@ -100,20 +100,12 @@ function threejs_environment_init() {
 	/* geometry functions */
 
     // given a color, creates a sphere mesh with material with color
+	/*
 	meshSphere = new THREE.SphereGeometry( 50, 10, 10);
     newSphere = function(thiscolor) { 
 		var thismaterial =  new THREE.MeshLambertMaterial( { color: thiscolor, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
 		return new THREE.Mesh( meshSphere, thismaterial ); 
-	}
-
-	// given a color, creates a sprite with color
-	spriteMapCircle = THREE.ImageUtils.loadTexture( "images/sprite_circle.png" );
-    newCircleSprite = function(thiscolor) { 
-		var thismaterial = new THREE.SpriteMaterial( { map: spriteMapCircle, color: thiscolor, fog: true });
-		var thissprite = new THREE.Sprite( thismaterial);
-		thissprite.scale.set(100,100,10);
-		return thissprite;
-	}
+	}*/
 
 
 //	renderer.setSize( 500, 500);
@@ -124,43 +116,6 @@ function threejs_environment_init() {
 
 
 
-function drawThreejsChart(csvFilename) {
-/* MAGIC IS HERE */
-
-	var color = d3.scale.category20c();
-
-	// create objects, add them to scene
-	chart3d = new THREE.Object3D();
-	secondChart = new THREE.Object3D();
-	scene.add( secondChart );
-	scene.add( chart3d );
-
-
-	d3.csv(csvFilename, function(error, data) {
-
-		// use D3 to set up 3D bars
-		dots = d3.select( chart3d )
-			.selectAll("THREE.Mesh")
-			.data(data)
-			.enter()
-			.append(function(d, i) { 
-				return newCircleSprite(parseInt("0x" + color(i).substr(1), 16));
-			});
-
-		console.log(dots);
-		// use D3 to set up 3D bars
-		moreDots = d3.select( secondChart )
-			.selectAll("THREE.Mesh")
-			.data(data)
-			.enter()
-			.append(function(d, i) { 
-				return newSphere(7057110);
-				return newCircleSprite(parseInt("0x" + color(i).substr(1), 16));
-			});
-
-	});
-
-}
 
 
 
@@ -202,21 +157,12 @@ function threejs_animate() {
 	// note: three.js includes requestAnimationFrame shim
 	requestAnimationFrame( threejs_animate );
 
-	// this is the global rotation, so that each data-manipulation function can control the global rotation
-	chart3d.rotation.x += rotationX;
-	chart3d.rotation.y += rotationY;
-	chart3d.rotation.z += rotationZ;
-
-	secondChart.rotation.x += secondRotationX;
-	secondChart.rotation.y += secondRotationY;
-	secondChart.rotation.z += secondRotationZ; 
-
+	// animation functions, loaded by each different js shim
+	animateSprite(); 
 	animateLine();
+
 	renderer.render( scene, camera );
-
 }
-
-
 
 function onWindowResize() {
 	var width = window.innerWidth;
@@ -231,7 +177,7 @@ function onWindowResize() {
 
 function drawThings() {
 	drawLine(scene); //loaded by external js
-	drawThreejsChart("memory_allyears_smallBatch.csv");
+	drawSprite("memory_allyears_smallBatch.csv", scene);
 }
 
 
@@ -249,23 +195,7 @@ $( document ).ready(function() {
 	// animate data
 	threejs_animate();  
 
-
-/*
-	var b = 0;
-	$("body").keypress(function(){
-		console.log(b);
-		(b+=1);
-		if (b==1){
-			threejs_environment_init();
-		}
-		if (b==2){
-			drawThings();
-		}
-		if(b==3){
-			threejs_animate(); 
-		}
-	})	 
-*/
+	// deal with debug button
 	$("#cited").click(function() {
 		console.log("cited clicked");
 		if(dotCitedFlag == true) {
@@ -277,6 +207,7 @@ $( document ).ready(function() {
 		}
 	});
 
+	// when window is resized, deal with that
 	window.addEventListener( 'resize', onWindowResize, false );
 
 });
