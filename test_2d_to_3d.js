@@ -181,6 +181,13 @@ d3.csv("memory_allyears_smallBatch.csv", function(data) {
 
 
 
+var camera, scene, renderer, chart3d, material, material2;
+var rotationX = 0;
+var rotationY = 0;
+var rotationZ = 0;
+
+var svg, dots, d3chart3d;
+var dotCitedFlag = true;
 
 
 function threejs_d3_functions() {
@@ -305,6 +312,11 @@ function threejs_init() {
 	
     var line = new THREE.Line(geometryLine, material);
 
+	geometry = new THREE.SphereGeometry( 50, 10, 10);
+//	geometry = new THREE.CircleGeometry( 50, 8);
+//	material = new THREE.MeshBasicMaterial( { color: 0xff00ff, wireframe: false } );
+//	material2 = new THREE.MeshLambertMaterial( { color: 0x4682B4, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
+	
 	getMaterial = function(thiscolor) {
 		return new THREE.MeshLambertMaterial( { color: thiscolor, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
 		return new THREE.MeshBasicMaterial( { color: thiscolor, wireframe: false } );
@@ -367,6 +379,7 @@ function threejs_init() {
     // create function for D3 to set up 3D bars
     // newLine = function(thiscolor) { return new THREE.Mesh( geometry, getMaterial(thiscolor) ); }
 
+	// scene.add( chart3d );
 
     // create function for D3 to set up 3D bars
     newSphere = function(thiscolor) { return new THREE.Mesh( geometry, getMaterial(thiscolor) ); }
@@ -407,6 +420,9 @@ d3.csv(csvFilename, function(error, data) {
 	// 	.append(function(d, i) { 
 	// 		return newSphere(7057110);
 	// 	});	
+			console.log(color(i));
+			return newSphere(parseInt("0x" + color(i).substr(1), 16));
+		});
 
 });
 
@@ -437,6 +453,13 @@ function dotCited() {
 	// rotationX = 0.01;
 	// rotationY = 0.01;
 	// rotationZ = 0.01;
+	.attr("position.x", function(d, i) { return 30 * i; })
+	.attr("position.y", function(d, i) { return d['Cited'] * 1 ; })
+//		.attr("position.z", function(d, i) { return d['Cited'] * 1 ; })
+
+	rotationX = 0.01;
+	rotationY = 0.03;
+	rotationZ = 0.02;
 }
 
 function dotPage() {
@@ -461,6 +484,17 @@ function dotPage() {
 	secondRotationX = 0.01;
 	secondRotationY = 0.01;
 	secondRotationZ = 0.01;
+	dots
+	.transition()
+	.duration(3000)
+	.attr("position.x", function(d, i) { return 30 * i; })
+	.attr("position.y", function(d, i) { return d['Page end'] * 1 ; })
+//		.attr("position.z", function(d, i) { return d['Page end'] * 1 ; })
+//		.attr("position.z", function(d, i) { return Math.sin(i/ 10.0) * 100 ; })
+//
+	rotationX = 0.0;
+	rotationY = 0.0;
+	rotationZ = 0.0;
 }
 
 
@@ -478,6 +512,7 @@ function threejs_animate() {
 	secondChart.rotation.x += secondRotationX;
 	secondChart.rotation.y += secondRotationY;
 	secondChart.rotation.z += secondRotationZ;
+
 
 	renderer.render( scene, camera );
 
@@ -497,14 +532,10 @@ $( document ).ready(function() {
 	$("#cited").click(function() {
 		console.log("cited clicked");
 		if(dotCitedFlag == true) {
-			dotCited();
-			// dotPage();
+			dotPage();
 			dotCitedFlag = false;
 		} else {
-	// rotationX = 0.0;
-	// rotationY = 0.0;
-	// rotationZ = 0.0;
-			dotPage();
+			dotCited();
 			dotCitedFlag = true;
 		}
 	});
@@ -825,5 +856,6 @@ $( document ).ready(function() {
 //     }
 // });
 // }
+
 
 
