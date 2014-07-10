@@ -147,12 +147,12 @@ function drawLine(thisscene) {
 
     for (var pt = 0; pt < straightLine.length; ++pt) {
         var o = straightLine[pt];
-        console.log(straightLine[pt])
-        console.log(straightLine[pt].x)
+//        console.log(straightLine[pt])
+//        console.log(straightLine[pt].x)
         geometryLine.vertices.push(new THREE.Vector3(originX+o.x, originY+o.y, Math.sin(pt/ 10.0) * 100));
     }
-	console.log("GEOMLINE");
-	console.log(geometryLine.vertices);
+//	console.log("GEOMLINE");
+//	console.log(geometryLine.vertices);
     line = new THREE.Line(geometryLine, materialLine);
 
     thisscene.add(line);
@@ -161,7 +161,10 @@ function drawLine(thisscene) {
 }
 
 function animateLine() {
-	line.rotation.x += secondRotationX;
-	line.rotation.y += secondRotationY;
-	line.rotation.z += secondRotationZ;
+	if (typeof line !== 'undefined') {
+			// variable is undefined
+		line.rotation.x += secondRotationX;
+		line.rotation.y += secondRotationY;
+		line.rotation.z += secondRotationZ;
+	}
 }

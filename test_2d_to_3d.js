@@ -230,7 +230,7 @@ function onWindowResize() {
 
 
 function drawThings() {
-	drawLine(scene);
+	drawLine(scene); //loaded by external js
 	drawThreejsChart("memory_allyears_smallBatch.csv");
 }
 
@@ -240,16 +240,17 @@ $( document ).ready(function() {
 	// initiate threejs and d3 connection
 	threejs_d3_functions();
 
-/*	// initiate threejs renderer
+	// initiate threejs renderer
 	threejs_environment_init();
 
 	// draw things
 	drawThings();
 
 	// animate data
-	threejs_animate();  */
+	threejs_animate();  
 
 
+/*
 	var b = 0;
 	$("body").keypress(function(){
 		console.log(b);
@@ -264,7 +265,7 @@ $( document ).ready(function() {
 			threejs_animate(); 
 		}
 	})	 
-
+*/
 	$("#cited").click(function() {
 		console.log("cited clicked");
 		if(dotCitedFlag == true) {
