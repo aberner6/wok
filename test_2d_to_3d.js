@@ -1,5 +1,5 @@
 
-var camera, scene, renderer, chart3d, secondChart, material, material2, materialLine, spriteMap;
+var camera, scene, renderer, chart3d, secondChart, material, material2, materialLine, spriteMapCircle;
 var rotationX = 0;
 var rotationY = 0;
 var rotationZ = 0;
@@ -206,22 +206,28 @@ function threejs_environment_init() {
 	//setup
 	scene = new THREE.Scene();
 
+	// fog
+	scene.fog = new THREE.Fog( 0x000000, 1000, 7000 );
+
+
 	// set up light
     var light = new THREE.DirectionalLight( 0xffffff );
     light.position.set( 0, 0, 1 );
-    scene.add( light );
+    scene.add( light ); 
 
 	var width = window.innerWidth;
 	var height = window.innerHeight;
 
-	//camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
-	//camera = new THREE.PerspectiveCamera( 105, 1, 1, 10000 );
 	var camerazoom = 1; //not 1/4
 
 //	camera = new THREE.OrthographicCamera( window.innerWidth / - camerazoom, window.innerWidth / camerazoom, window.innerHeight / camerazoom, window.innerHeight / - camerazoom, 0.01, 100000 );
 	camera = new THREE.OrthographicCamera( - width / camerazoom, width / camerazoom, height / camerazoom, - height / camerazoom, 0.01, 100000 );
+	camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 10000 );
 	camera.position.z = 10000;
 	camera.position.x = 1000;
+	camera.position.z = 3000;
+	camera.position.x = 600;
+	camera.position.y = 300;
 
 	renderer = new THREE.WebGLRenderer( { alpha: true, clearColor: 0xff0000 } );
 	renderer.setSize( width, height);
@@ -249,17 +255,11 @@ function onWindowResize() {
 
 function addGeometry() {
 	// adding geometry
-	//geometry = new THREE.BoxGeometry( 20, 20, 20 );
-	// geometry = new THREE.SphereGeometry( 50, 10, 10);
-	// geometry = new THREE.SphereGeometry( 15, 8, 8);
 
-	geometry = new THREE.CircleGeometry( 10, 10);
 
+	/* DRAW A LINE */
 
     var geometryLine = new THREE.Geometry();
-    // geometryLine.vertices.push(new THREE.Vector3(-10, 0, 0));
-    // geometryLine.vertices.push(new THREE.Vector3(0, 10, 0));
-    // geometryLine.vertices.push(new THREE.Vector3(10, 0, 0));	
     var path = [
         { x:0,   y:0 },
         { x:40,  y:0 },
@@ -278,54 +278,30 @@ function addGeometry() {
         geometryLine.vertices.push(new THREE.Vector3(originX+o.x, originY+o.y, 1));
     }
 
-
-//	material = new THREE.MeshBasicMaterial( { color: 0xff00ff, wireframe: false } );
-//	material2 = new THREE.MeshLambertMaterial( { color: 0x4682B4, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
- // Draw lines
     materialLine = new THREE.LineBasicMaterial({
         color: 0x0000ff,
     });
 	
     var line = new THREE.Line(geometryLine, material);
+    scene.add(line);
+
 
 	getSphere = new THREE.SphereGeometry( 50, 10, 10);
-	getSprite = new THREE.Sprite();
-//	geometry = new THREE.SphereGeometry( 50, 10, 10);
-//	geometry = new THREE.CircleGeometry( 50, 8);
-//	material = new THREE.MeshBasicMaterial( { color: 0xff00ff, wireframe: false } );
-//	material2 = new THREE.MeshLambertMaterial( { color: 0x4682B4, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
-	
 	getMaterial = function(thiscolor) {
 		return new THREE.MeshLambertMaterial( { color: thiscolor, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
-		return new THREE.MeshBasicMaterial( { color: thiscolor, wireframe: false } );
+//		return new THREE.MeshBasicMaterial( { color: thiscolor, wireframe: false } );
 	}
-
 	// create container for our 3D chart
-	chart3d = new THREE.Object3D();
-	secondChart = new THREE.Object3D();
-    // line = new THREE.Line(geometry, materialLine);
-	spriteMap = THREE.ImageUtils.loadTexture( "images/sprite0.png" );
+	spriteMapCircle = THREE.ImageUtils.loadTexture( "images/sprite_circle.png" );
 
-/*	getSpriteMaterial = function(thiscolor) {
-		return new THREE.SpriteMaterial( { map: spriteMap, color: thiscolor });
-	} */
-
-	//var spriteMaterial = new THREE.SpriteMaterial( { map: spriteMap, color: thiscolor });
-	console.log(spriteMap);
-
-	scene.add( chart3d );
-	scene.add( secondChart );
-   
-    scene.add(line);
-    
-    // create function for D3 to set up 3D bars
+    // given a color, creates a mesh with material with color
     newSphere = function(thiscolor) { return new THREE.Mesh( getSphere, getMaterial(thiscolor) ); }
-    //newSprite = function(thiscolor) { return new THREE.Sprite( getSpriteMaterial(thiscolor) ); }
-    newSprite = function(thiscolor) { 
-		var thismap = THREE.ImageUtils.loadTexture( "images/sprite0.png" );
-		var thismaterial = new THREE.SpriteMaterial( { map: thismap, color: 0xff00ff });
+
+	// given a color, creates a sphere sprite with color
+    newCircleSprite = function(thiscolor) { 
+		var thismaterial = new THREE.SpriteMaterial( { map: spriteMapCircle, color: thiscolor, fog: true });
 		var thissprite = new THREE.Sprite( thismaterial);
-		thissprite.scale.set(100,100,1);
+		thissprite.scale.set(100,100,10);
 		return thissprite;
 	}
 
@@ -337,37 +313,43 @@ function addGeometry() {
 function drawThreejsChart(csvFilename) {
 /* MAGIC IS HERE */
 
-var color = d3.scale.category20c();
+	var color = d3.scale.category20c();
 
-d3.csv(csvFilename, function(error, data) {
+	// create objects, add them to scene
+	chart3d = new THREE.Object3D();
+	secondChart = new THREE.Object3D();
+	scene.add( secondChart );
+	scene.add( chart3d );
 
-	// use D3 to set up 3D bars
-	dots = d3.select( chart3d )
-		.selectAll("THREE.Mesh")
-		.data(data)
-		.enter()
-		.append(function(d, i) { 
-			return newSprite(parseInt("0x" + color(i).substr(1), 16));
-		});
+	d3.csv(csvFilename, function(error, data) {
 
-	console.log(dots);
-	// use D3 to set up 3D bars
-	moreDots = d3.select( secondChart )
-		.selectAll("THREE.Mesh")
-		.data(data)
-		.enter()
-		.append(function(d, i) { 
-			return newSphere(7057110);
-			return newSprite(parseInt("0x" + color(i).substr(1), 16));
-		});
+		// use D3 to set up 3D bars
+		dots = d3.select( chart3d )
+			.selectAll("THREE.Mesh")
+			.data(data)
+			.enter()
+			.append(function(d, i) { 
+				return newCircleSprite(parseInt("0x" + color(i).substr(1), 16));
+			});
 
-	// path = d3.select(line)
-	// 	.selectAll("THREE.Mesh")
-	// 	.data(data)
-	// 	.enter()
-	// 	.append(function(d, i) { 
-	// 		return newSphere(7057110);
-	// 	});	
+		console.log(dots);
+		// use D3 to set up 3D bars
+		moreDots = d3.select( secondChart )
+			.selectAll("THREE.Mesh")
+			.data(data)
+			.enter()
+			.append(function(d, i) { 
+				return newSphere(7057110);
+				return newCircleSprite(parseInt("0x" + color(i).substr(1), 16));
+			});
+
+		// path = d3.select(line)
+		// 	.selectAll("THREE.Mesh")
+		// 	.data(data)
+		// 	.enter()
+		// 	.append(function(d, i) { 
+		// 		return newSphere(7057110);
+		// 	});	
 });
 
 
@@ -401,9 +383,9 @@ function dotCited() {
 	.attr("position.y", function(d, i) { return d['Cited'] * 1 ; })
 //		.attr("position.z", function(d, i) { return d['Cited'] * 1 ; })
 
-	rotationX = 0.01;
-	rotationY = 0.03;
-	rotationZ = 0.02;
+	rotationX = 0.05;
+	rotationY = 0.01;
+	rotationZ = 0.005;
 }
 
 function dotPage() {
@@ -449,13 +431,13 @@ function threejs_animate() {
 	requestAnimationFrame( threejs_animate );
 
 	// this is the global rotation, so that each data-manipulation function can control the global rotation
-/*	chart3d.rotation.x += rotationX;
+	chart3d.rotation.x += rotationX;
 	chart3d.rotation.y += rotationY;
 	chart3d.rotation.z += rotationZ;
 
 	secondChart.rotation.x += secondRotationX;
 	secondChart.rotation.y += secondRotationY;
-	secondChart.rotation.z += secondRotationZ; */
+	secondChart.rotation.z += secondRotationZ; 
 
 
 	renderer.render( scene, camera );
