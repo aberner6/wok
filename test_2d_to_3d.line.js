@@ -1,7 +1,7 @@
 var lineRotation = {};
-lineRotation.x = 0.01;
-lineRotation.y = 0.03;
-lineRotation.z = 0.02;
+lineRotation.x = 0; //0.01;
+lineRotation.y = 0;//0.01;
+lineRotation.z = 0;//1.55;//0.02;
 
 function drawLine(thisscene) {
 	straightLine = [];
@@ -11,8 +11,8 @@ function drawLine(thisscene) {
 
 	var xScale;
 	var xAxis;
-	var years = [];
-	var uniqueYears;
+	// var years = [];
+	// var uniqueYears;
 	var uniqueAuthors;
 	var uniqueKeywords;
 	var journalTypes = [];
@@ -20,7 +20,7 @@ function drawLine(thisscene) {
 	var keywords = [];
 	var goSecond = false;
 
-	var totals = [];
+	// var totals = [];
 	var totalAuthors = [];
 	var totalKeywords = [];
 
@@ -43,13 +43,13 @@ function drawLine(thisscene) {
 
 	var heightScale;
 	var singleScale;
-	var thisData = [];
+	// var thisData = [];
 	var theseAuthors = [];
 	var theseKeywords = [];
 	var theX = [];
 	var maxEntries;
-	var width = 1400;
-	var height = 720;
+	// var width = 1400;
+	// var height = 720;
 	var newX = [];
 	var newY = [];
 // var geometryLine;
@@ -108,7 +108,7 @@ function drawLine(thisscene) {
 			.domain([0, maxCited])
 			.range([.2, 1])        
 
-		heightScale = d3.scale.linear()
+		d3chart.heightScale = d3.scale.linear()
 			.domain([0, maxEntries*3])
 			.range([padding, height/1.2]);
 
@@ -143,62 +143,55 @@ function drawLine(thisscene) {
 	//     .call(xAxis);
 
 
-    geometryLine = new THREE.Geometry();
-    materialLine = new THREE.LineBasicMaterial({
-        color: 0x0000ff,
-    });
 
-    var originX = 0, originY = 0; 
 
-    for (var pt = 0; pt < straightLine.length; ++pt) {
-        var o = straightLine[pt];
-//        console.log(straightLine[pt])
-//        console.log(straightLine[pt].x)
-        geometryLine.vertices.push(new THREE.Vector3(originX+o.x, originY+o.y, Math.sin(pt/ 10.0) * 100));
-    }
-//	console.log("GEOMLINE");
-//	console.log(geometryLine.vertices);
-    line = new THREE.Line(geometryLine, materialLine);
 
-    thisscene.add(line);
+
+
+
+    // geometryLine = new THREE.Geometry();
+    // materialLine = new THREE.LineBasicMaterial({
+    //     color: 0x0000ff,
+    // });
+
+    // var originX = 0, originY = 0; 
+
+    // for (var pt = 0; pt < straightLine.length; ++pt) {
+    //     var o = straightLine[pt];
+    //     geometryLine.vertices.push(new THREE.Vector3(originX+o.x, originY+o.y, Math.sin(pt/ 10.0) * 100));
+    // }
+
+    // line = new THREE.Line(geometryLine, materialLine);
+
+    // thisscene.add(line);
+
 	})
 
 }
-var clock = new THREE.Clock();
-var b = 0;
-$("canvas").on("click", function(){
-	console.log(b);
-    (b+=1);
-})
+
+			var clock = new THREE.Clock();
+
 
 function animateLine() {
 	if (typeof line !== 'undefined') {
 
 		// variable is defined
-		line.rotation.x += lineRotation.x;
-		line.rotation.y += lineRotation.y;
-		line.rotation.z += lineRotation.z;
+		line.rotation.x = lineRotation.x;
+		line.rotation.y = lineRotation.y;
+		line.rotation.z = lineRotation.z;
 	}
-}
-function changeLine(){
-	// console.log("change line")
-	var delta = clock.getDelta(),
-					time = clock.getElapsedTime() * 10;
-    geometryLine = new THREE.Geometry();
 
-				for ( var i = 0, l = geometryLine.vertices.length; i < l; i ++ ) {
+	// 				var delta = clock.getDelta(),
+	// 				time = clock.getElapsedTime() * 10;
+	
+	// for ( var i = 0; i <  geometryLine.vertices.length; i ++ ) {
 
-					geometryLine.vertices[ i ].y = 35 * Math.sin( i / 5 + ( time + i ) / 7 );
+	// 	geometryLine.vertices[ i ].y = 35 * Math.sin( i / 5 + ( time + i ) / 7 );
 
-				}
+	// }
 
-				//geometry.computeFaceNormals();
-				//geometry.computeVertexNormals();
 
-				// mesh.geometryLine.verticesNeedUpdate = true;
-				//mesh.geometry.normalsNeedUpdate = true;
-
-				// controls.update( delta );
-				// renderer.render( scene, camera );
+	geometryLine.verticesNeedUpdate = true;
 
 }
+

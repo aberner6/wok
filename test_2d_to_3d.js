@@ -1,7 +1,8 @@
 
-var camera, scene, renderer, chart3d, secondChart, material, material2, materialLine, spriteMapCircle;
+var camera, scene, renderer, chart3d, secondChart, lineChart, material, material2, materialLine, spriteMapCircle;
+	var thisData = [];
 
-var dots;
+var dots, mowreDots, aLine;
 var rotationX = 0;
 var rotationY = 0;
 var rotationZ = 0;
@@ -10,6 +11,17 @@ var secondRotationY = 0;
 var secondRotationZ = 0;
 var dotCitedFlag = true;
 
+
+var years = [];
+var uniqueYears;
+var width = 1400;
+var height = 720;
+var totals = [];
+var b = 0;
+var total1 = 0;
+var theHeight = [];
+var firstLoadVar;
+var firstLoad = 0;
 var d3chart = d3chart || {};
 
 
@@ -92,7 +104,7 @@ function threejs_environment_init() {
 	camera.position.x = 600;
 	camera.position.y = 300;
 
-	renderer = new THREE.WebGLRenderer( { alpha: true, clearColor: 0xff0000 } );
+	renderer = new THREE.WebGLRenderer( { alpha: true, clearColor: 0xff0000, antialias: true } );
 	renderer.setSize( width, height);
 	renderer.setClearColor( 0xffffff, 1 );
 	renderer.autoClear = false;
@@ -113,25 +125,72 @@ function threejs_environment_init() {
 
 
 }
+// var b = 0;
+// $( document ).ready(function() {
+// $("body").keypress(function(){
+// (b+=1);
+// console.log(b);
+// })
+// })
 
+function loadDots(){
+// $( document ).ready(function() {
 
+console.log("setting interval");
+firstLoadVar = setInterval(function(){ 
+	console.log("inside interval");
+// console.log(totals.length);
 
+if(totals.length>0){    
+    if (firstLoad<totals.length){
+//         console.log("yyy");
+
+            if(uniqueYears[firstLoad]!=undefined){
+            	var oneYear = uniqueYears[firstLoad];
+            	console.log("going into loadbar TO READ " + oneYear);
+            	// loadBar2(oneYear); //store inner subjects is the loading function for the big data      
+
+            	loadBar(oneYear); //store inner subjects is the loading function for the big data      
+//            	console.log("came back from loadbar");
+
+        	}
+
+    	firstLoad++; 
+
+    }
+    else {
+    	clearInterval(firstLoadVar); //and stop loading stuff in
+    }
+	console.log("finishing last if");
+
+}
+},500);	
+console.log("done with set inverfal");
+
+// })
+
+}
 
 
 
 function dotCited() {
-	console.log("dotCited");
+
+
+	console.log("dotCited2");
 
 	dots
 	.transition()
 	.duration(3000)
 	.attr("position.x", function(d, i) { return d3chart.xScale(d['Year']); })
-	.attr("position.y", function(d, i) { return d['Cited'] ; })
+	.attr("position.y", function(d, i) { 
+            for (j = 0; j<uniqueYears.length; j++){
+                if (d.Year==uniqueYears[j]){
+                    return ((height)-d3chart.heightScale(totals[j]));               
+                }
+            }		
+		// return d['Cited'] ; 
+	})
 
-
-	 rotationX = 0.01;
-	 rotationY = 0.01;
-	 rotationZ = 0.01;
 }
 
 function dotPage() {
@@ -145,11 +204,49 @@ function dotPage() {
 	.attr("position.y", function(d, i) { return d['Cited'] ; })
 	.attr("position.z", function(d, i) { return Math.sin(i/ 10.0) * 100 ; })
 
-	secondRotationX = 0.01;
-	secondRotationY = 0.01;
-	secondRotationZ = 0.01;
+	// aLine
+	// .transition()
+	// .duration(3000)
+	// .attr("")
+		// aLine = d3.select( lineChart )
+		// 	.selectAll("THREE.Mesh")
+		// 	.data(data)
+		// 	.enter()
+		// 	.append(function(d,i) {
+  //       var o = straightLine[i];
+  //       geometryLine.vertices.push(new THREE.Vector3(originX+o.x, originY+o.y, Math.sin(i/ 10.0) * 100)); 
+		// 		return new THREE.Line(geometryLine, materialLine);
+		// 	});	
 }
 
+
+
+function loadBar(thisYear) {
+
+	// console.log("dotBarDraft");
+
+	// var thisYear = 2013;
+	var total1 = 0;
+
+	dots
+	.transition()
+	.duration(300)
+	.attr("position.y", function(d, i) {
+
+			console.log(this);
+			if (d['Year']==thisYear){
+				total1++;	
+			// }
+
+            	var tempvar = (height-d3chart.heightScale(total1*3)); 
+            return tempvar;
+        	}
+        	
+        	return this.position.y;
+        	
+		// return d['Cited'] ; 
+	})
+}
 
 
 function threejs_animate() {
@@ -202,7 +299,9 @@ $( document ).ready(function() {
 			dotCited();
 			dotCitedFlag = false;
 		} else {
-			dotPage();
+			loadDots();
+
+			// dotPage();
 			dotCitedFlag = true;
 		}
 	});
