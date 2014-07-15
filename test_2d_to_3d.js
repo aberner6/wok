@@ -1,5 +1,5 @@
 
-var camera, scene, renderer, controls;
+var camera, scene, renderer, controls, stats;
 var chart3d, secondChart, lineChart, material, material2, materialLine, spriteMapCircle;
 	var thisData = [];
 
@@ -129,7 +129,7 @@ function threejs_environment_init() {
 	stats.domElement.style.position = 'absolute';
 	stats.domElement.style.bottom = '0px';
 	stats.domElement.style.zIndex = 100;
-	document.getElementByID('stats').appendChild( stats.domElement );
+	document.getElementById('stats').appendChild( stats.domElement );
 
 }
 // var b = 0;
@@ -305,6 +305,7 @@ function threejs_render() {
 
 function threejs_update() {
 	controls.update();
+	stats.update();
 }
 
 function onWindowResize() {
