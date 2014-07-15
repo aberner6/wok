@@ -97,101 +97,101 @@ function buildAxis( src, dst, colorHex, dashed ) {
 
 }
 // var b = 0;
-$( document ).ready(function() {
+// $( document ).ready(function() {
 
-$("body").keypress(function(){
-	console.log(b);
-    (b+=1);
-if(b==1){
-	//SETTING UP A LINE WITH D3
+// $("body").keypress(function(){
+// 	console.log(b);
+//     (b+=1);
+// if(b==1){
+// 	//SETTING UP A LINE WITH D3
 
 	
 
-	if (straightLine.length==thisData.length){	
+// 	if (straightLine.length==thisData.length){	
 
-		geometryLine.dynamic = true;
+// 		geometryLine.dynamic = true;
 
-	    for (i=0; i<thisData.length; i++){
-	        var o = straightLine[i];
-	        geometryLine.vertices[i]=(new THREE.Vector3(originX+o.x, originY+o.y, 0)); //Math.sin(i/ 10.0) * 100)
+// 	    for (i=0; i<thisData.length; i++){
+// 	        var o = straightLine[i];
+// 	        geometryLine.vertices[i]=(new THREE.Vector3(originX+o.x, originY+o.y, 0)); //Math.sin(i/ 10.0) * 100)
 			
-		}
+// 		}
 
 
-		dummyLine = d3
-			.select('dummyLine')
-			.data(geometryLine.vertices)
-			.enter()
-			.append('dummyLine')
-			.attr("x", function(d, i) {	return geometryLine.vertices[i].x; })
-			.attr("y", function(d, i) {	return geometryLine.vertices[i].y; })
-			.attr("z", function(d, i) {	return geometryLine.vertices[i].z; });
+// 		dummyLine = d3
+// 			.select('dummyLine')
+// 			.data(geometryLine.vertices)
+// 			.enter()
+// 			.append('dummyLine')
+// 			.attr("x", function(d, i) {	return geometryLine.vertices[i].x; })
+// 			.attr("y", function(d, i) {	return geometryLine.vertices[i].y; })
+// 			.attr("z", function(d, i) {	return geometryLine.vertices[i].z; });
 
 
 
 
-		console.log("geometryLine = ");
-		console.log(geometryLine);
+// 		console.log("geometryLine = ");
+// 		console.log(geometryLine);
 	    
-		var gLine = [1];
-			aLine = d3.select( lineChart )
-				.selectAll("THREE.Mesh")
-				.data(gLine)
-				.enter()
-				.append(function() {
-					return new THREE.Line(geometryLine, materialLine);
-				});
-				// .transition()
-				// .duration(3000)
-				// .attr("position.x",  function(d, i) { return Math.sin(i/ 10.0) * 100; })
-				// .attr("position.y",  function(d, i) { 
-				// 	console.log("changing position.y");
-				// 	console.log(this);
-				// 	return 100; 
-				// })	
+// 		var gLine = [1];
+// 			aLine = d3.select( lineChart )
+// 				.selectAll("THREE.Mesh")
+// 				.data(gLine)
+// 				.enter()
+// 				.append(function() {
+// 					return new THREE.Line(geometryLine, materialLine);
+// 				});
+// 				// .transition()
+// 				// .duration(3000)
+// 				// .attr("position.x",  function(d, i) { return Math.sin(i/ 10.0) * 100; })
+// 				// .attr("position.y",  function(d, i) { 
+// 				// 	console.log("changing position.y");
+// 				// 	console.log(this);
+// 				// 	return 100; 
+// 				// })	
 
-				// .each("end", function(){
-				// 	lineRotation.z += 0.02;
-				// })		
+// 				// .each("end", function(){
+// 				// 	lineRotation.z += 0.02;
+// 				// })		
 
 
-	}
-}
+// 	}
+// }
 
-if(b == 2) {
+// if(b == 2) {
 
-	aLine
-		.transition()
-		.duration(3000)
-		// .attr("position.x",  function(d, i) { return Math.sin(i/ 10.0) * 100; })
-		.attr("position.z",  function(d, i) { 
-			console.log("changing position.y");
-			for (j = 0; j < this.geometry.vertices.length; j++) {
-				this.geometry.vertices[j].set(0,0,0);
-				console.log(this.geometry.vertices[j]);
-						geometryLine.vertices[ i ].y = 350 * Math.sin( i / 5 + ( 3+ i ) / 7 );
-			}
-			return 10; 
-		});
+// 	aLine
+// 		.transition()
+// 		.duration(3000)
+// 		// .attr("position.x",  function(d, i) { return Math.sin(i/ 10.0) * 100; })
+// 		.attr("position.z",  function(d, i) { 
+// 			console.log("changing position.y");
+// 			for (j = 0; j < this.geometry.vertices.length; j++) {
+// 				this.geometry.vertices[j].set(0,0,0);
+// 				console.log(this.geometry.vertices[j]);
+// 						geometryLine.vertices[ i ].y = 350 * Math.sin( i / 5 + ( 3+ i ) / 7 );
+// 			}
+// 			return 10; 
+// 		});
 
 	
-	// 	console.log(geometryLine.vertices);
+// 	// 	console.log(geometryLine.vertices);
 
-	// var d3gl = d3.select(geometryLine.vertices).data([1])
-	// 			.enter().attr("fill", function(d, i) {
-	// 				console.log(d);
-	// 			});
-	// console.log(d3gl);
+// 	// var d3gl = d3.select(geometryLine.vertices).data([1])
+// 	// 			.enter().attr("fill", function(d, i) {
+// 	// 				console.log(d);
+// 	// 			});
+// 	// console.log(d3gl);
 
-	dummyLine
-		.transition()
-		.duration(3000)
-		.attr("x", function(d,i) {
-			return 30;
-		});
-}
-})
-})
+// 	dummyLine
+// 		.transition()
+// 		.duration(3000)
+// 		.attr("x", function(d,i) {
+// 			return 30;
+// 		});
+// }
+// })
+// })
 function animateSprite() {
 
 

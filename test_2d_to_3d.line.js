@@ -9,7 +9,7 @@ function drawLine(thisscene) {
 
 	var svg;
 
-	var xScale;
+	var xScale, sevenScale;
 	var xAxis;
 	// var years = [];
 	// var uniqueYears;
@@ -47,8 +47,7 @@ function drawLine(thisscene) {
 	var theseKeywords = [];
 	var theX = [];
 	var maxEntries;
-	// var width = 1400;
-	// var height = 720;
+
 
 
 	var randomX, randomY, randomZ;
@@ -65,7 +64,14 @@ function drawLine(thisscene) {
 			}
 			journalTypes[i] = data[i].Sourcetitle;
 		}
-
+var sevenYears = ["2014", "2013", "2012", "2011", "2010", "2009", "2008"];
+		for (i = 0;i<thisData.length; i++){ 
+			for (j=0; j<sevenYears.length; j++){
+			if (thisData[i].Year == sevenYears[j]){
+				sevenData.push(thisData[i]);
+				}
+			}
+		}	
 
 	////finds unique names etc
 		function onlyUnique(value, index, self) { 
@@ -101,7 +107,13 @@ function drawLine(thisscene) {
 
 		d3chart.xScale = d3.scale.linear()
 			.domain([minYear, maxYear]) //not min year to max year
-			.range([100, width*1.2]);
+			.range([0, maxX]);
+
+var sevenYears = ["2014", "2013", "2012", "2011", "2010", "2009", "2008"];
+		
+		d3chart.sevenScale = d3.scale.linear()
+			.domain([2008, 2014]) //not min year to max year
+			.range([0, maxX]);
 
 		var maxCited = d3.max(data, function(d) { return d.Cited; });
 		opacityMap = d3.scale.linear()
@@ -110,7 +122,7 @@ function drawLine(thisscene) {
 
 		d3chart.heightScale = d3.scale.linear()
 			.domain([0, maxEntries])
-			.range([0, height*1.6]);
+			.range([0, maxY]);
 
 // d3chart.randomX = d3.scale.linear()
 //     .domain([0,1]) 
