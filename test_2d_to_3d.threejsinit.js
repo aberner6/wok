@@ -99,9 +99,10 @@ function threejs_environment_init() {
 	// CAMERA
 	var camerazoom = 1; //not 1/4
 
-	cameraPersp = new THREE.PerspectiveCamera( 35, width / height, 1, 5000 );
+	cameraPersp = new THREE.PerspectiveCamera( 50, width / height, 1, 5000 );
 	cameraOrtho = new THREE.OrthographicCamera( - width / camerazoom, width / camerazoom, height / camerazoom, - height / camerazoom, 0.01, 100000 );
-	camera = cameraOrtho;
+	//camera = cameraOrtho;
+	camera = cameraPersp;
 	camera.position.z = 3000;
 	camera.position.x = 0;
 	camera.position.y = 0;
@@ -249,10 +250,12 @@ $( document ).ready(function() {
 /* **************** */
 
 var whirlcount = 0;
+var pyramidcount = 0;
+
 $( document ).ready(function() {
 	$("#camera").click(function() {
 		var thisbutton = $("#camera");
-		var formercamera = camera;
+		var formercamera = camera;// this doesn't work because formercamera is also a reference
 		if(thisbutton.attr("name") == "ortho") {
 			thisbutton.attr("name", "persp");
 			thisbutton.removeClass("ortho");
@@ -264,28 +267,31 @@ $( document ).ready(function() {
 			thisbutton.html("ORTHO CAMERA");
 			camera = cameraOrtho; 
 		} 
-		//camera.position = formercamera.position;
-		camera.target = {x: 0, y:0, z:0};
+		camera.position = formercamera.position;
+		camera.target = formercamera.target;
+	});
+
+	$("#pyramids").click(function() {
+		switch(pyramidcount++) {
+			case 0:
+				drawTestPyramids(scene); //just for testing
+				break;
+		}
 	});
 
 	$("#whirl").click(function() {
 		switch(whirlcount++) {
 			case 0:
-				drawTestPyramids(scene); //just for testing
-				console.log("campos = ");
-				console.log(camera.position);
-				break;
-			case 1:
-				cameraTween();
+				cameraTweenSetup();
 				break;
 			default:
-				cameraTween();
+				cameraTweenSetup();
 				break;
 		}
 	});
 });
 
-function cameraTween() {
+function cameraTweenSetup() {
 	//https://github.com/sole/tween.js/blob/master/docs/user_guide.md
 
 	var distFromCenter = 500;
@@ -307,53 +313,48 @@ function cameraTween() {
 	//var randomMesh = pyramidMeshes[Math.floor(Math.random()*pyramidMeshes.length)];
 	//var endPosition = randomMesh.position;
 
-	console.log(intermediatePosition);
-	console.log("to");
-	console.log(endPosition);
 
-	// we have to copy the position as to not change all their values by reference
-	var intermediatePosition = $.extend({}, endPosition);
+	cameraPositionTween(camera.position, endPosition, 4000, 0);
 
-	if( endPosition.x != 0) { intermediatePosition.y = 1000; }
-	else if( endPosition.y != 0) { intermediatePosition.z = 1000; }
-	else { intermediatePosition.x = 1000; }
+	//cameraFOVTween(camera.position, 300, 4000, 0);
 
-	var randomMesh2 = pyramidMeshes[Math.floor(Math.random()*pyramidMeshes.length)];
-	var endTarget = randomMesh2.position;
+}
+
+
+function cameraPositionTween(position, destination, duration, delay) {
+
+	var thistween = new TWEEN.Tween(position)
+		.to(destination, duration)
+		.delay(delay)
+		.easing(TWEEN.Easing.Cubic.InOut)
+		.onUpdate(function() {
+		//	console.log(this);
+		});
 
 	console.log("alright, tweening! from" );
-	
-	console.log(camera.position);
+	console.log(position);
 	console.log("to");
-	console.log(intermediatePosition);
-	console.log("to");
-	console.log(endPosition);
+	console.log(destination);
 
-	// TWEENING CAMERA POSITION
-	var tweenIntermediatePosition = new TWEEN.Tween(camera.position)
-		.to(intermediatePosition, 4000)
-		.easing(TWEEN.Easing.Cubic.InOut)
-		.onUpdate(function() {
-			console.log(this);
-		});
-		
-	tweenIntermediatePosition.chain(tweenPosition);
-
-	// TWEENING CAMERA POSITION
-	var tweenPosition = new TWEEN.Tween(camera.position)
-		.to(endPosition, 4000)
-		.easing(TWEEN.Easing.Cubic.InOut)
-		.onUpdate(function() {
-			console.log(this);
-		});
-
-	//tweenIntermediatePosition.start();
-	tweenPosition.start();
-	// TWEENING CAMERA TARGET
-
-	var tweenTarget = new TWEEN.Tween(controls.target)
-		.to(endTarget, 3000)
-		.easing(TWEEN.Easing.Cubic.InOut)
-//		tweenTarget.start();
+	thistween.start();
 }
+
+/*function cameraFOVTween(camera, destFOV, duration, delay) {
+
+	var thistween = new TWEEN.Tween({ fov: camera.fov })
+		.to({ fov: destFOV }, duration)
+		.delay(delay)
+		.easing(TWEEN.Easing.Cubic.InOut)
+		.onUpdate(function() {
+			camera.fov = this.fov;
+			console.log(this);
+		});
+
+	console.log("alright, tweening! from" );
+	console.log(camera.fov);
+	console.log("to");
+	console.log(destFOV);
+
+	thistween.start();
+} */
 
