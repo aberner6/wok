@@ -9,14 +9,14 @@ function drawLine(thisscene) {
 
 	var svg;
 
-	var xScale, sevenScale;
+	var xScale, sevenScale, maxSevenCited, citeYScale;
 	var xAxis;
 	// var years = [];
 	// var uniqueYears;
 	var uniqueAuthors;
 	var uniqueKeywords;
 	var journalTypes = [];
-	var authors = [];
+	// var authors = [];
 	var keywords = [];
 	var goSecond = false;
 
@@ -43,11 +43,13 @@ function drawLine(thisscene) {
 	var heightScale;
 	var singleScale;
 	// var thisData = [];
-	var theseAuthors = [];
+	// var theseAuthors = [];
 	var theseKeywords = [];
 	var theX = [];
 	var maxEntries;
 
+	var lineX = [];
+	var lineY = [];
 
 
 	var randomX, randomY, randomZ;
@@ -58,12 +60,25 @@ function drawLine(thisscene) {
 			thisData=(data);
 		for (i = 0;i<thisData.length; i++){ 
 			years[i] = data[i].Year;
+
 			authors[i] = data[i].Authors.split("., ");
 			for (j=0; j<authors[i].length; j++){
 			theseAuthors.push(authors[i][j]);            
 			}
+
 			journalTypes[i] = data[i].Sourcetitle;
 		}
+		console.log(theseAuthors[0])
+
+
+
+
+
+
+
+
+
+
 var sevenYears = ["2014", "2013", "2012", "2011", "2010", "2009", "2008"];
 		for (i = 0;i<thisData.length; i++){ 
 			for (j=0; j<sevenYears.length; j++){
@@ -72,7 +87,14 @@ var sevenYears = ["2014", "2013", "2012", "2011", "2010", "2009", "2008"];
 				}
 			}
 		}	
-
+		moreDots = d3.select( secondChart )
+			.selectAll("THREE.Mesh")
+			.data(sevenData)
+			.enter()
+			.append(function(d, i) { 
+				// return newSphere(7057110);
+				return newCircleSprite(parseInt("0x" + color(i).substr(1), 16));
+			});	
 	////finds unique names etc
 		function onlyUnique(value, index, self) { 
 			return self.indexOf(value) === index;
@@ -110,16 +132,28 @@ var sevenYears = ["2014", "2013", "2012", "2011", "2010", "2009", "2008"];
 			.range([0, maxX]);
 
 var sevenYears = ["2014", "2013", "2012", "2011", "2010", "2009", "2008"];
-		
 		d3chart.sevenScale = d3.scale.linear()
 			.domain([2008, 2014]) //not min year to max year
-			.range([0, maxX]);
+			.range([100, maxX]);
 
-		var maxCited = d3.max(data, function(d) { return d.Cited; });
+var maxSevenCited = d3.max(sevenData, function(d) { return d.Cited; });
+		d3chart.citeSevenYScale = d3.scale.linear()
+			.domain([0, maxSevenCited])
+			.range([0, 300])        
+
+var maxCited = d3.max(data, function(d) { return d.Cited; });
+		d3chart.citeYScale = d3.scale.linear()
+			.domain([0, maxCited])
+			.range([0, 300])        
+
+		
+
+
 		opacityMap = d3.scale.linear()
 			.domain([0, maxCited])
 			.range([.2, 1])        
 
+//FOR TOTALS
 		d3chart.heightScale = d3.scale.linear()
 			.domain([0, maxEntries])
 			.range([0, maxY]);
@@ -149,8 +183,8 @@ for (i=0; i<thisData.length; i++){
 
 
 	for (i=0; i<thisData.length; i++){
-		newX.push(d3chart.xScale(years[i]))
-		newY.push(thisData[i].Cited) //height-10-
+		lineX.push(d3chart.xScale(years[i]))
+		lineY.push(thisData[i].Cited) //height-10-
 	}
 
 	for (i=0; i<thisData.length; i++){

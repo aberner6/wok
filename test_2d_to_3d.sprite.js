@@ -3,6 +3,13 @@ spriteRotation.x = 0.0;
 spriteRotation.y = 0.0;
 spriteRotation.z = 0.0;
 
+
+var authors = [];
+var theseAuthors = [];
+
+
+
+
 var geometryLine = new THREE.Geometry();
 var materialLine = new THREE.LineBasicMaterial({
     color: 0x0000ff,
@@ -47,16 +54,16 @@ function drawSprite(csvFilename, thisscene) {
 			});
 
 		console.log(dots);
-		// use D3 to set up 3D bars
-		moreDots = d3.select( secondChart )
-			.selectAll("THREE.Mesh")
-			.data(data)
-			.enter()
-			.append(function(d, i) { 
-				// return newSphere(7057110);
-				return newCircleSprite(parseInt("0x" + color(i).substr(1), 16));
-			});
 	});
+
+		// moreDots = d3.select( secondChart )
+		// 	.selectAll("THREE.Mesh")
+		// 	.data(sevenData)
+		// 	.enter()
+		// 	.append(function(d, i) { 
+		// 		// return newSphere(7057110);
+		// 		return newCircleSprite(parseInt("0x" + color(i).substr(1), 16));
+		// 	});	
 }
 
 
