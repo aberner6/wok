@@ -16,6 +16,8 @@ var years = [];
 var uniqueYears;
 var width = 1400;
 var height = 720;
+var padding = 35;
+
 var totals = [];
 var b = 0;
 var total1 = 0;
@@ -164,7 +166,7 @@ if(totals.length>0){
 	console.log("finishing last if");
 
 }
-},500);	
+},100);	
 console.log("done with set inverfal");
 
 // })
@@ -177,18 +179,19 @@ function dotCited() {
 
 
 	console.log("dotCited2");
-
 	dots
 	.transition()
 	.duration(3000)
-	.attr("position.x", function(d, i) { return d3chart.xScale(d['Year']); })
+	.attr("position.x", function(d, i) { 
+		return d3chart.xScale(d['Year']); 
+	})
 	.attr("position.y", function(d, i) { 
             for (j = 0; j<uniqueYears.length; j++){
                 if (d.Year==uniqueYears[j]){
                     return (d3chart.heightScale(totals[j]));  //not height-             
                 }
             }		
-	})
+	});
 	// .attr("position.z", -10000)
 }
 
@@ -256,6 +259,29 @@ function loadBar(thisYear) {
  //       })
 }
 
+function dotRandom() {
+
+// var newX = [];
+// var newY = [];
+
+// for (i=0; i<thisData.length; i++){
+//     newX.push(randomX(Math.random()))
+//     newY.push(randomY(Math.random()))
+// }
+
+	console.log("random");
+	dots
+	.transition()
+	.duration(3000)
+	.attr("position.x", function(d, i) { 
+		return d3chart.randomX(Math.random())
+		// newX[i];
+	})
+	.attr("position.y", function(d, i) { 
+		return d3chart.randomY(Math.random());
+		// newY[i];
+	});
+}
 
 function threejs_animate() {
 
@@ -282,7 +308,7 @@ function onWindowResize() {
 
 function drawThings() {
 	drawLine(scene); //loaded by external js
-	drawSprite("memory_allyears_smallBatch.csv", scene);
+	drawSprite("memory_neuro_only_some_scientists.csv", scene);
 }
 
 
@@ -307,7 +333,11 @@ $( document ).ready(function() {
 			dotCited();
 			dotCitedFlag = false;
 		} else {
-			loadDots();
+			dotRandom();
+
+			// dotCited();
+
+			// loadDots();
 
 			// dotPage();
 			dotCitedFlag = true;
