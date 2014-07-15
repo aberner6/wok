@@ -15,6 +15,7 @@ var dotCitedFlag = true;
 
 var years = [];
 var uniqueYears;
+var threeJSDiv;
 var width = 1400;
 var height = 720;
 var totals = [];
@@ -84,16 +85,17 @@ function threejs_environment_init() {
 	scene.fog = new THREE.Fog( 0x000000, 1000, 7000 );
 
 
-	// set up light
+	// LIGHT
     var light = new THREE.DirectionalLight( 0xffffff );
     light.position.set( 0, 0, 1 );
     scene.add( light ); 
 
-	var threeJSWindow = $("#threeJS");
+	threeJSDiv = $("#threeJS");
 
-	var width = threeJSWindow.width(); 
-	var height = threeJSWindow.height();
+	var width = threeJSDiv.width(); 
+	var height = threeJSDiv.height();
 
+	// CAMERA
 	var camerazoom = 1; //not 1/4
 
 //	camera = new THREE.OrthographicCamera( - width / camerazoom, width / camerazoom, height / camerazoom, - height / camerazoom, 0.01, 100000 );
@@ -104,25 +106,18 @@ function threejs_environment_init() {
 	camera.position.x = 600;
 	camera.position.y = 300;
 
+	// RENDERER
 	renderer = new THREE.WebGLRenderer( { alpha: true, clearColor: 0xff0000, antialias: true } );
 	renderer.setSize( width, height);
 	renderer.setClearColor( 0xffffff, 1 );
 	renderer.autoClear = false;
-
-	/* geometry functions */
-
-    // given a color, creates a sphere mesh with material with color
-	/*
-	meshSphere = new THREE.SphereGeometry( 50, 10, 10);
-    newSphere = function(thiscolor) { 
-		var thismaterial =  new THREE.MeshLambertMaterial( { color: thiscolor, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
-		return new THREE.Mesh( meshSphere, thismaterial ); 
-	}*/
-
-
-//	renderer.setSize( 500, 500);
 	container = document.getElementById( 'threeJS' );
 	container.appendChild( renderer.domElement );
+
+	// CONTROLS
+	controls = new THREE.OrbitControls( camera );
+	controls.addEventListener( 'change', threejs_render );
+
 
 
 }
@@ -260,24 +255,33 @@ function loadBar(thisYear) {
 
 function threejs_animate() {
 
-	// note: three.js includes requestAnimationFrame shim
 	requestAnimationFrame( threejs_animate );
 
 	// animation functions, loaded by each different js shim
 	animateSprite(); 
 	animateLine();
 
+	threejs_render();
+
+	threejs_update();
+}
+
+function threejs_render() {
 	renderer.render( scene, camera );
 }
 
+function threejs_update() {
+	controls.update();
+}
+
 function onWindowResize() {
-	var width = window.innerWidth;
-	var height = window.innerHeight;
+	width = threeJSDiv.width(); 
+	height = threeJSDiv.height();
 
 	camera.aspect = width / height;				
 	camera.updateProjectionMatrix();
 
-	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.setSize( width, height);
 }
 
 

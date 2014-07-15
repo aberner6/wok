@@ -12,6 +12,7 @@
 
     <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="js/three.min.js"></script>
+    <script type="text/javascript" src="js/threejs.OrbitControls.js"></script>
 	<script src="js/jquery.tipsy.js"></script>
 	<script type="text/javascript" src="test_2d_to_3d.sprite.js"></script>
 	<script type="text/javascript" src="test_2d_to_3d.line.js"></script>
@@ -57,10 +58,13 @@ body {
 }
 
 
+#container {
+}
+
 #threeJS {
-	width: 50vw;
-	height: 50vw;
-	border: 10px solid cyan;
+	width: 100vh;
+	height: 100vh;
+	border: 2px solid black;
 	margin: auto;
 }
 
@@ -68,12 +72,14 @@ body {
 	</style>
   </head>
   <body>
-    <div id="threeJS"></div> 
-    <div class="button" id="cited">click me</div> 
-    <script>
-/*	  initChart("memory_allyears_smallBatch.csv"); */
-/*      scatterPlot3d( d3.select('#chart')); */
-    </script>
+	<div id="container">
+		<div id="threeJS"></div> 
+		<div class="button" id="cited">click me</div> 
+		<script>
+	/*	  initChart("memory_allyears_smallBatch.csv"); */
+	/*      scatterPlot3d( d3.select('#chart')); */
+</script>
+	</div>
   </body>
 </html>
 
