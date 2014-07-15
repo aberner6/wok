@@ -49,10 +49,9 @@ function drawLine(thisscene) {
 	var maxEntries;
 	// var width = 1400;
 	// var height = 720;
-	var newX = [];
-	var newY = [];
 
-	var randomX, randomY;
+
+	var randomX, randomY, randomZ;
 // var geometryLine;
 
 
@@ -113,14 +112,28 @@ function drawLine(thisscene) {
 			.domain([0, maxEntries])
 			.range([0, height*1.6]);
 
+// d3chart.randomX = d3.scale.linear()
+//     .domain([0,1]) 
+//     .range([-width*3, width*3]);
+// d3chart.randomY = d3.scale.linear()
+//     .domain([0,1]) 
+//     .range([-height*3, height*3]);
+
 d3chart.randomX = d3.scale.linear()
     .domain([0,1]) 
-    .range([padding, width-padding]);
+    .range([-width*3, width*3]);
 d3chart.randomY = d3.scale.linear()
     .domain([0,1]) 
-    .range([padding, height-padding]);
+    .range([-height*3, height*3]);
+d3chart.randomZ = d3.scale.linear()
+    .domain([0,1]) 
+    .range([-2000, 2000]);
 
-
+for (i=0; i<thisData.length; i++){
+    newX.push(d3chart.randomX(Math.random()))
+    newY.push(d3chart.randomY(Math.random()))
+	newZ.push(d3chart.randomZ(Math.random()))
+}
 
 
 	for (i=0; i<thisData.length; i++){

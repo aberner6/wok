@@ -14,6 +14,9 @@ var dotCitedFlag = true;
 
 var years = [];
 var uniqueYears;
+var newX = [];
+var newY = [];
+var newZ = [];
 var width = 1400;
 var height = 720;
 var padding = 35;
@@ -261,26 +264,24 @@ function loadBar(thisYear) {
 
 function dotRandom() {
 
-// var newX = [];
-// var newY = [];
 
-// for (i=0; i<thisData.length; i++){
-//     newX.push(randomX(Math.random()))
-//     newY.push(randomY(Math.random()))
-// }
+
 
 	console.log("random");
 	dots
 	.transition()
-	.duration(3000)
+	.duration(5000)
 	.attr("position.x", function(d, i) { 
-		return d3chart.randomX(Math.random())
-		// newX[i];
+		return newX[i];
+		// return d3chart.randomX(Math.random())
 	})
 	.attr("position.y", function(d, i) { 
-		return d3chart.randomY(Math.random());
-		// newY[i];
-	});
+		// return d3chart.randomY(Math.random());
+		return newY[i];
+	})
+	.attr("position.z", function(d,i){
+		return newZ[i];
+	})
 }
 
 function threejs_animate() {
