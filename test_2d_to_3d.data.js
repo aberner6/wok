@@ -88,18 +88,17 @@ function prepCitations(){
 	moreDots
 	.transition()
 	.attr("position.z", function(d){
-
-		return Math.sin(d.Cited/ 100.0) * 300 ; 
+		return d.Cited; 
 	})	
 }
 
 function doCitations(){
 	moreDots
 	.transition()
-	.attr("position.z", function(d){
+	.attr("position.y", function(d){
 		return 0;
 	})		
-	.attr("position.y", function(d){		
+	.attr("position.z", function(d){		
 		if (d.Cited>0){
 		return (d.Cited);
 		}
