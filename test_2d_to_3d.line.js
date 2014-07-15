@@ -33,7 +33,6 @@ function drawLine(thisscene) {
 	var firstLoad = -1;
 	var secLoad = -1;
 
-	var padding = 35;
 
 	var minYear;
 	var maxYear;
@@ -50,12 +49,13 @@ function drawLine(thisscene) {
 	var maxEntries;
 	// var width = 1400;
 	// var height = 720;
-	var newX = [];
-	var newY = [];
+
+
+	var randomX, randomY, randomZ;
 // var geometryLine;
 
 
-	d3.csv("memory_allyears_smallBatch.csv", function(data) {
+	d3.csv("memory_neuro_only_some_scientists.csv", function(data) {
 			thisData=(data);
 		for (i = 0;i<thisData.length; i++){ 
 			years[i] = data[i].Year;
@@ -110,7 +110,30 @@ function drawLine(thisscene) {
 
 		d3chart.heightScale = d3.scale.linear()
 			.domain([0, maxEntries])
-			.range([-50, height+100]);
+			.range([0, height*1.6]);
+
+// d3chart.randomX = d3.scale.linear()
+//     .domain([0,1]) 
+//     .range([-width*3, width*3]);
+// d3chart.randomY = d3.scale.linear()
+//     .domain([0,1]) 
+//     .range([-height*3, height*3]);
+
+d3chart.randomX = d3.scale.linear()
+    .domain([0,1]) 
+    .range([-width*3, width*3]);
+d3chart.randomY = d3.scale.linear()
+    .domain([0,1]) 
+    .range([-height*3, height*3]);
+d3chart.randomZ = d3.scale.linear()
+    .domain([0,1]) 
+    .range([-2000, 2000]);
+
+for (i=0; i<thisData.length; i++){
+    newX.push(d3chart.randomX(Math.random()))
+    newY.push(d3chart.randomY(Math.random()))
+	newZ.push(d3chart.randomZ(Math.random()))
+}
 
 
 	for (i=0; i<thisData.length; i++){
