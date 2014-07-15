@@ -88,6 +88,7 @@ function prepCitations(){
 	moreDots
 	.transition()
 	.attr("position.z", function(d){
+
 		return Math.sin(d.Cited/ 100.0) * 300 ; 
 	})	
 }
@@ -98,10 +99,41 @@ function doCitations(){
 	.attr("position.z", function(d){
 		return 0;
 	})		
-	.attr("position.y", function(d){
+	.attr("position.y", function(d){		
+		if (d.Cited>0){
 		return (d.Cited);
+		}
+		else {
+			return 0;
+		}
 	})
 }
+
+function allCitations(){
+	dots
+	.transition()	
+	.attr("position.y", function(d){
+		if (d.Cited>0){
+		return (d.Cited);
+		}
+		else {
+			return 0;
+		}
+	})
+	.each("end", function(d,i){
+		d3.select(this)
+		.attr("position.x", function(d){
+			return d3chart.xScale(d.Year); 
+		})		
+	})
+	moreDots
+		.transition()
+		.attr("position.x", function(d){
+			return d3chart.xScale(d.Year); 
+		})	
+}
+
+
 
 function dotRandom() {
 	console.log("random");
@@ -221,6 +253,9 @@ $( document ).ready(function() {
 	if(b==3){
 		doCitations();
 	}	
+	if(b==4){
+		allCitations();
+	}		
 	});
 })
 

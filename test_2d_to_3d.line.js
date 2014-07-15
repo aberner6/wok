@@ -60,6 +60,7 @@ function drawLine(thisscene) {
 			thisData=(data);
 		for (i = 0;i<thisData.length; i++){ 
 			years[i] = data[i].Year;
+			
 			authors[i] = data[i].Authors.split("., ");
 			for (j=0; j<authors[i].length; j++){
 			theseAuthors.push(authors[i][j]);            
@@ -119,21 +120,22 @@ var sevenYears = ["2014", "2013", "2012", "2011", "2010", "2009", "2008"];
 			.range([0, maxX]);
 
 var sevenYears = ["2014", "2013", "2012", "2011", "2010", "2009", "2008"];
-		
 		d3chart.sevenScale = d3.scale.linear()
 			.domain([2008, 2014]) //not min year to max year
 			.range([100, maxX]);
 
 var maxSevenCited = d3.max(sevenData, function(d) { return d.Cited; });
-		
-		d3chart.citeYScale = d3.scale.linear()
+		d3chart.citeSevenYScale = d3.scale.linear()
 			.domain([0, maxSevenCited])
-			.range([0, 200])        
+			.range([0, 300])        
 
+var maxCited = d3.max(data, function(d) { return d.Cited; });
+		d3chart.citeYScale = d3.scale.linear()
+			.domain([0, maxCited])
+			.range([0, 300])        
 
+		
 
-
-		var maxCited = d3.max(data, function(d) { return d.Cited; });
 
 		opacityMap = d3.scale.linear()
 			.domain([0, maxCited])
