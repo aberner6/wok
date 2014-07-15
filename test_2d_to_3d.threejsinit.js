@@ -229,10 +229,15 @@ function cameraTween() {
 
 
 	console.log("alright, tweening!");
+
+	// TWEENING CAMERA POSITION
+
 	var tweenPosition = new TWEEN.Tween(camera.position)
 		.to(endPosition, 3000)
 		.easing(TWEEN.Easing.Cubic.InOut);
 		tweenPosition.start();
+
+	// TWEENING CAMERA TARGET
 
 	var tweenTarget = new TWEEN.Tween(controls.target)
 		.to(endTarget, 3000)
