@@ -81,10 +81,14 @@ function threejs_environment_init() {
 	//scene.fog = new THREE.Fog( 0x000000, 1000, 7000 );
 
 
-	// LIGHT
+	// LIGHTS
     var light = new THREE.DirectionalLight( 0xffffff );
     light.position.set( 0, 0, 1 );
     scene.add( light ); 
+
+    var light2= new THREE.DirectionalLight( 0xaaaaaa );
+    light.position.set( 1, 1, 0 );
+    scene.add( light2 ); 
 
 	threeJSDiv = $("#threeJS");
 
@@ -94,8 +98,8 @@ function threejs_environment_init() {
 	// CAMERA
 	var camerazoom = 1; //not 1/4
 
-//	camera = new THREE.OrthographicCamera( - width / camerazoom, width / camerazoom, height / camerazoom, - height / camerazoom, 0.01, 100000 );
-	camera = new THREE.PerspectiveCamera( 35, width / height, 1, 10000 );
+	camera = new THREE.OrthographicCamera( - width / camerazoom, width / camerazoom, height / camerazoom, - height / camerazoom, 0.01, 100000 );
+//	camera = new THREE.PerspectiveCamera( 100, width / height, 1, 10000 );
 	camera.position.z = 3000;
 	camera.position.x = 600;
 	camera.position.y = 300;
@@ -222,7 +226,7 @@ $( document ).ready(function() {
 function cameraTween() {
 	//https://github.com/sole/tween.js/blob/master/docs/user_guide.md
 
-	var distFromCenter = 1000;
+	var distFromCenter = 500;
 
 	cameraPoses = [	{x: distFromCenter, y:0, z:0},
 					{x: 0, y:distFromCenter, z:0},
@@ -266,13 +270,13 @@ function cameraTween() {
 	// TWEENING CAMERA POSITION
 	var tweenIntermediatePosition = new TWEEN.Tween(camera.position)
 		.to(intermediatePosition, 4000)
-		.easing(TWEEN.Easing.Quartic.InOut);
+		.easing(TWEEN.Easing.Cubic.InOut);
 	tweenIntermediatePosition.chain(tweenPosition);
 
 	// TWEENING CAMERA POSITION
 	var tweenPosition = new TWEEN.Tween(camera.position)
 		.to(endPosition, 4000)
-		.easing(TWEEN.Easing.Quartic.InOut);
+		.easing(TWEEN.Easing.Cubic.InOut);
 
 	//tweenIntermediatePosition.start();
 	tweenPosition.start();
