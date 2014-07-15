@@ -50,16 +50,16 @@ function drawSprite(csvFilename, thisscene) {
 			});
 
 		console.log(dots);
-		// use D3 to set up 3D bars
-		moreDots = d3.select( secondChart )
-			.selectAll("THREE.Mesh")
-			.data(data)
-			.enter()
-			.append(function(d, i) { 
-				// return newSphere(7057110);
-				return newCircleSprite(parseInt("0x" + color(i).substr(1), 16));
-			});
 	});
+
+		// moreDots = d3.select( secondChart )
+		// 	.selectAll("THREE.Mesh")
+		// 	.data(sevenData)
+		// 	.enter()
+		// 	.append(function(d, i) { 
+		// 		// return newSphere(7057110);
+		// 		return newCircleSprite(parseInt("0x" + color(i).substr(1), 16));
+		// 	});	
 }
 
 function buildAxes( length ) {

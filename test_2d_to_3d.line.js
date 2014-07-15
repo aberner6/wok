@@ -72,7 +72,14 @@ var sevenYears = ["2014", "2013", "2012", "2011", "2010", "2009", "2008"];
 				}
 			}
 		}	
-
+		moreDots = d3.select( secondChart )
+			.selectAll("THREE.Mesh")
+			.data(sevenData)
+			.enter()
+			.append(function(d, i) { 
+				// return newSphere(7057110);
+				return newCircleSprite(parseInt("0x" + color(i).substr(1), 16));
+			});	
 	////finds unique names etc
 		function onlyUnique(value, index, self) { 
 			return self.indexOf(value) === index;
