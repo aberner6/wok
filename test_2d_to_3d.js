@@ -1,5 +1,6 @@
 
-var camera, scene, renderer, chart3d, secondChart, lineChart, material, material2, materialLine, spriteMapCircle;
+var camera, scene, renderer, controls;
+var chart3d, secondChart, lineChart, material, material2, materialLine, spriteMapCircle;
 	var thisData = [];
 
 var dots, mowreDots, aLine;
@@ -78,10 +79,8 @@ function threejs_d3_functions() {
 
 function threejs_environment_init() {
 
-	//setup
+	// SCENE
 	scene = new THREE.Scene();
-
-	// fog
 	scene.fog = new THREE.Fog( 0x000000, 1000, 7000 );
 
 
@@ -90,14 +89,15 @@ function threejs_environment_init() {
     light.position.set( 0, 0, 1 );
     scene.add( light ); 
 
-	var width = window.innerWidth;
-	var height = window.innerHeight;
+	var threeJSWindow = $("#threeJS");
+
+	var width = threeJSWindow.width(); 
+	var height = threeJSWindow.height();
 
 	var camerazoom = 1; //not 1/4
 
-//	camera = new THREE.OrthographicCamera( window.innerWidth / - camerazoom, window.innerWidth / camerazoom, window.innerHeight / camerazoom, window.innerHeight / - camerazoom, 0.01, 100000 );
-	camera = new THREE.OrthographicCamera( - width / camerazoom, width / camerazoom, height / camerazoom, - height / camerazoom, 0.01, 100000 );
-	camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 10000 );
+//	camera = new THREE.OrthographicCamera( - width / camerazoom, width / camerazoom, height / camerazoom, - height / camerazoom, 0.01, 100000 );
+	camera = new THREE.PerspectiveCamera( 35, width / height, 1, 10000 );
 	camera.position.z = 10000;
 	camera.position.x = 1000;
 	camera.position.z = 3000;
@@ -121,7 +121,8 @@ function threejs_environment_init() {
 
 
 //	renderer.setSize( 500, 500);
-	document.body.appendChild( renderer.domElement );
+	container = document.getElementById( 'threeJS' );
+	container.appendChild( renderer.domElement );
 
 
 }
