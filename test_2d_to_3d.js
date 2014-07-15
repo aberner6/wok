@@ -323,8 +323,8 @@ function onWindowResize() {
 
 function drawThings() {
 	drawLine(scene); //loaded by external js
-//	drawSprite("memory_allyears_smallBatch.csv", scene);
-	drawSprite("memory_neuro_only_some_scientists.csv", scene);
+	drawSprite("memory_allyears_smallBatch.csv", scene);
+//	drawSprite("memory_neuro_only_some_scientists.csv", scene);
 
 //	drawTestPyramids(scene);
 
