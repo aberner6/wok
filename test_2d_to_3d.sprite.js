@@ -3,6 +3,13 @@ spriteRotation.x = 0.0;
 spriteRotation.y = 0.0;
 spriteRotation.z = 0.0;
 
+
+var authors = [];
+var theseAuthors = [];
+
+
+
+
 var geometryLine = new THREE.Geometry();
 var materialLine = new THREE.LineBasicMaterial({
     color: 0x0000ff,

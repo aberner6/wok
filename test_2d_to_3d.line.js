@@ -16,7 +16,7 @@ function drawLine(thisscene) {
 	var uniqueAuthors;
 	var uniqueKeywords;
 	var journalTypes = [];
-	var authors = [];
+	// var authors = [];
 	var keywords = [];
 	var goSecond = false;
 
@@ -43,7 +43,7 @@ function drawLine(thisscene) {
 	var heightScale;
 	var singleScale;
 	// var thisData = [];
-	var theseAuthors = [];
+	// var theseAuthors = [];
 	var theseKeywords = [];
 	var theX = [];
 	var maxEntries;
@@ -60,13 +60,25 @@ function drawLine(thisscene) {
 			thisData=(data);
 		for (i = 0;i<thisData.length; i++){ 
 			years[i] = data[i].Year;
-			
+
 			authors[i] = data[i].Authors.split("., ");
 			for (j=0; j<authors[i].length; j++){
 			theseAuthors.push(authors[i][j]);            
 			}
+
 			journalTypes[i] = data[i].Sourcetitle;
 		}
+		console.log(theseAuthors[0])
+
+
+
+
+
+
+
+
+
+
 var sevenYears = ["2014", "2013", "2012", "2011", "2010", "2009", "2008"];
 		for (i = 0;i<thisData.length; i++){ 
 			for (j=0; j<sevenYears.length; j++){

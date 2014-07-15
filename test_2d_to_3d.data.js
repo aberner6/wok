@@ -133,7 +133,21 @@ function allCitations(){
 		})	
 }
 
+function kandel(){
+var total3 = 0;
 
+	dots
+	.transition()	
+	.attr("position.y", function(d, i) {
+        for (j=0; j<authors[i].length; j++){ 
+            if(authors[i][j]=="Kandel, E.R."){
+				total3++;	
+            	var kandY = -5*(d3chart.heightScale(total3)); //not height-
+            	return kandY;
+            }} 
+        	return this.position.y;
+     }) 	
+}
 
 function dotRandom() {
 	console.log("random");
@@ -255,7 +269,11 @@ $( document ).ready(function() {
 	}	
 	if(b==4){
 		allCitations();
-	}		
+	}	
+	if(b==5){
+		// loadDots();		
+		kandel();
+	}			
 	});
 })
 
