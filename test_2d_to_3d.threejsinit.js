@@ -17,8 +17,9 @@ var origPosition;
 var threeJSDiv;
 var width = 1400;
 var height = 720;
-var maxX = 850;
-var maxY = 700;
+var maxAxis = 850;
+var maxX = maxAxis;
+var maxY = maxAxis;
 var padding = 35;
 
 
@@ -106,6 +107,7 @@ function threejs_environment_init() {
 	camera.position.z = 3000;
 	camera.position.x = 0;
 	camera.position.y = 0;
+	camera.lookAt(new THREE.Vector3(maxAxis,maxAxis,maxAxis));
 /*	camera.target.x = 500;
 	camera.target.y = 500;
 	camera.target.z = 500; */
@@ -317,6 +319,7 @@ function cameraTweenSetup() {
 	//var endPosition = randomMesh.position;
 
 
+//	cameraPositionTween(camera.position, {x: 500, y:0, z: 0}, 4000, 0);
 	cameraPositionTween(camera.position, endPosition, 4000, 0);
 
 	//cameraFOVTween(camera.position, 300, 4000, 0);
