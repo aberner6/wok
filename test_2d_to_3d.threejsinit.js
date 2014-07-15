@@ -11,7 +11,7 @@ var secondRotationX = 0;
 var secondRotationY = 0;
 var secondRotationZ = 0;
 var dotCitedFlag = true;
-
+var origPosition;
 
 var threeJSDiv;
 var width = 1400;
@@ -96,11 +96,10 @@ function threejs_environment_init() {
 
 //	camera = new THREE.OrthographicCamera( - width / camerazoom, width / camerazoom, height / camerazoom, - height / camerazoom, 0.01, 100000 );
 	camera = new THREE.PerspectiveCamera( 35, width / height, 1, 10000 );
-	camera.position.z = 10000;
-	camera.position.x = 1000;
 	camera.position.z = 3000;
 	camera.position.x = 600;
 	camera.position.y = 300;
+	origPosition = camera.position;
 
 	// RENDERER
 	renderer = new THREE.WebGLRenderer( { alpha: false, antialias: true } );
@@ -111,8 +110,26 @@ function threejs_environment_init() {
 	container.appendChild( renderer.domElement );
 
 	// CONTROLS
+//	controls.addEventListener( 'change', threejs_render );
+
 	controls = new THREE.OrbitControls( camera );
-	controls.addEventListener( 'change', threejs_render );
+
+/*    controls.rotateSpeed = 10.0;
+    controls.zoomSpeed = 1.2;
+    controls.panSpeed = 0.2;
+
+    controls.noZoom = false;
+    controls.noPan = false; */
+
+//    controls.staticMoving = true;
+    controls.dynamicDampingFactor = 1.0;
+
+    var radius = 5;
+    controls.minDistance = radius * 1.1;
+    controls.maxDistance = radius * 100;
+/*
+    controls.keys = [ 65, 83, 68 ]; // [ rotateKey, zoomKey, panKey ]*/
+
 
 	// STATS
 	// displays current and past frames per second attained by scene
@@ -144,6 +161,7 @@ function threejs_render() {
 function threejs_update() {
 	controls.update();
 	stats.update();
+	TWEEN.update();
 }
 
 function onWindowResize() {
@@ -185,25 +203,45 @@ $( document ).ready(function() {
 		switch(whirlcount++) {
 			case 0:
 				drawTestPyramids(scene); //just for testing
+				console.log("campos = ");
+				console.log(camera.position);
 				break;
 			case 1:
-				cameraTweenTest();
+				cameraTween();
+				break;
+			default:
+				cameraTween();
 				break;
 		}
 	});
 });
 
-function cameraTweenTest() {
+function cameraTween() {
 
-	var targetPosition = pyramidMeshes[0].position;
+	var randomMesh = pyramidMeshes[Math.floor(Math.random()*pyramidMeshes.length)];
+	var randomMesh2 = pyramidMeshes[Math.floor(Math.random()*pyramidMeshes.length)];
+	// clone so we're not actually changing the camera position as a reference
+	var endPosition = randomMesh.position;
+	var endTarget = randomMesh2.position;
 
-	var tween = new TWEEN.Tween(camera.position)
-		.to(targetPosition)
-		.easing(TWEEN.Easing.Linear.None).onUpdate(function () {
-		    camera.lookAt(camera.target);
-	}).onComplete(function () {
-		    camera.lookAt(selectedObject.position);
-	}).start();
+//	targetPosition.x = sourcePosition.x + 100; targetPosition.y = sourcePosition.x + 100;
+	
+	console.log(camera.position);
+	console.log("to");
+	console.log(endPosition);
 
+	console.log("alright, tweening!");
+	var tweenPosition = new TWEEN.Tween(camera.position)
+		.to(endPosition, 3000)
+		.easing(TWEEN.Easing.Linear.None)
+	tweenPosition.start();
+
+	var tweenTarget = new TWEEN.Tween(controls.target)
+		.to(endTarget, 3000)
+		.easing(TWEEN.Easing.Linear.None)
+		.onComplete(function () {
+			camera.lookAt(endTarget);
+		})
+	tweenTarget.start();
 }
 
