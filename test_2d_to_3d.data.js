@@ -141,9 +141,10 @@ var total3 = 0;
 	.attr("position.y", function(d, i) {
         for (j=0; j<authors[i].length; j++){ 
             if(authors[i][j]=="Kandel, E.R."){
-				total3++;	
-            	var kandY = -5*(d3chart.heightScale(total3)); //not height-
-            	return kandY;
+				// total3++;	
+				return -1*d.Cited;
+            	// var kandY = -5*(d3chart.heightScale(total3)); //not height-
+            	// return kandY;
             }} 
         	return this.position.y;
      }) 	
