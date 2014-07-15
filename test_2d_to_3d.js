@@ -2,7 +2,7 @@
 var camera, scene, renderer, controls;
 var chart3d, secondChart, lineChart, material, material2, materialLine, spriteMapCircle;
 	var thisData = [];
-
+var sevenData = [];
 var dots, mowreDots, aLine;
 var rotationX = 0;
 var rotationY = 0;
@@ -128,51 +128,43 @@ function threejs_environment_init() {
 
 
 }
-// var b = 0;
-// $( document ).ready(function() {
-// $("body").keypress(function(){
-// (b+=1);
-// console.log(b);
-// })
-// })
 
+var sevenYears = ["2014", "2013", "2012", "2011", "2010", "2009", "2008"];
 function loadDots(){
-// $( document ).ready(function() {
-
-console.log("setting interval");
 firstLoadVar = setInterval(function(){ 
-	console.log("inside interval");
-// console.log(totals.length);
-
 if(totals.length>0){    
-    if (firstLoad<totals.length){
-//         console.log("yyy");
-
-            if(uniqueYears[firstLoad]!=undefined){
-            	var oneYear = uniqueYears[firstLoad];
-            	console.log("going into loadbar TO READ " + oneYear);
-            	// loadBar2(oneYear); //store inner subjects is the loading function for the big data      
-
-            	loadBar(oneYear); //store inner subjects is the loading function for the big data      
-//            	console.log("came back from loadbar");
-				// rotationY
-        	}
-
+    if (firstLoad<=sevenYears.length){
+        var oneYear = sevenYears[firstLoad];
+        console.log("going into loadbar TO READ " + oneYear);
+        loadBar(oneYear); //store inner subjects is the loading function for the big data      
     	firstLoad++; 
-
     }
     else {
     	clearInterval(firstLoadVar); //and stop loading stuff in
     }
-	console.log("finishing last if");
-
 }
 },100);	
-console.log("done with set inverfal");
-
-// })
-
 }
+
+// function loadDots(){
+// firstLoadVar = setInterval(function(){ 
+// if(totals.length>0){    
+//     if (firstLoad<totals.length){
+
+//             if(uniqueYears[firstLoad]!=undefined){
+//             	var oneYear = uniqueYears[firstLoad];
+//             	console.log("going into loadbar TO READ " + oneYear);
+
+//             	loadBar(oneYear); //store inner subjects is the loading function for the big data      
+//         	}
+//     	firstLoad++; 
+//     }
+//     else {
+//     	clearInterval(firstLoadVar); //and stop loading stuff in
+//     }
+// }
+// },100);	
+// }
 
 
 
@@ -225,63 +217,64 @@ function dotPage() {
 
 
 function loadBar(thisYear) {
-
-	// console.log("dotBarDraft");
-
-	// var thisYear = 2013;
 	var total1 = 0;
-
 	dots
 	.transition()
 	.duration(300)
 	.attr("position.y", function(d, i) {
-
-			console.log(this);
 			if (d['Year']==thisYear){
 				total1++;	
-
             	var tempvar = (d3chart.heightScale(total1)); //not height-
             return tempvar;
         	}
-        	
+        	if (d['Year']<2008){
+        		return newY[i]*-1;
+        	}   
+        	console.log("these are the elses:");
+        	console.log()
         	return this.position.y;
        })
-	// .attr("position.y", function(d, i) {
-
-	// 		console.log(this);
-	// 		if (d['Year']==thisYear){
-	// 			total1++;	
-
- //            	var tempvar = (d3chart.heightScale(total1)); //not height-
- //            return tempvar;
- //        	}
-        	
- //        	return this.position.y;
- //       })
+	.attr("position.x", function(d, i) {
+			console.log(this);
+			if (d['Year']==thisYear){
+				total1++;	
+            	var tempvar = (d3chart.sevenScale(thisYear)); //not height-
+            return tempvar;
+        	}
+        	if (d['Year']<2008){
+        		return newX[i]*-1;
+        	}        	
+        	// else{
+        	// 	return newX[i];
+        	// }
+        	return this.position.x;
+       })
 }
 
 function dotRandom() {
-
-
-
-
 	console.log("random");
 	dots
 	.transition()
 	.duration(5000)
 	.attr("position.x", function(d, i) { 
 		return newX[i];
-		// return d3chart.randomX(Math.random())
 	})
 	.attr("position.y", function(d, i) { 
-		// return d3chart.randomY(Math.random());
 		return newY[i];
 	})
 	.attr("position.z", function(d,i){
 		return newZ[i];
 	})
 }
-
+$( document ).ready(function() {
+$("body").keypress(function(){
+b+=1;
+console.log(b);
+if(b==1){
+	loadDots();
+}
+})
+})
 function threejs_animate() {
 
 	requestAnimationFrame( threejs_animate );
