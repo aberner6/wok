@@ -47,8 +47,7 @@ function drawLine(thisscene) {
 	var theseKeywords = [];
 	var theX = [];
 	var maxEntries;
-	// var width = 1400;
-	// var height = 720;
+
 
 
 	var randomX, randomY, randomZ;
@@ -101,7 +100,7 @@ function drawLine(thisscene) {
 
 		d3chart.xScale = d3.scale.linear()
 			.domain([minYear, maxYear]) //not min year to max year
-			.range([100, width*1.2]);
+			.range([0, maxX]);
 
 		var maxCited = d3.max(data, function(d) { return d.Cited; });
 		opacityMap = d3.scale.linear()
@@ -110,7 +109,7 @@ function drawLine(thisscene) {
 
 		d3chart.heightScale = d3.scale.linear()
 			.domain([0, maxEntries])
-			.range([0, height*1.6]);
+			.range([0, maxY]);
 
 // d3chart.randomX = d3.scale.linear()
 //     .domain([0,1]) 

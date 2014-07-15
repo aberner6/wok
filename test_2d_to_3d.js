@@ -21,6 +21,8 @@ var newY = [];
 var newZ = [];
 var width = 1400;
 var height = 720;
+var maxX = 850;
+var maxY = 700;
 var padding = 35;
 
 var totals = [];
