@@ -124,9 +124,9 @@ function threejs_environment_init() {
 //    controls.staticMoving = true;
     controls.dynamicDampingFactor = 1.0;
 
-    var radius = 5;
+/*    var radius = 5;
     controls.minDistance = radius * 1.1;
-    controls.maxDistance = radius * 100;
+    controls.maxDistance = radius * 100; */
 /*
     controls.keys = [ 65, 83, 68 ]; // [ rotateKey, zoomKey, panKey ]*/
 
@@ -220,31 +220,67 @@ $( document ).ready(function() {
 });
 
 function cameraTween() {
+	//https://github.com/sole/tween.js/blob/master/docs/user_guide.md
 
-	// clone so we're not actually changing the camera position as a reference
-	var randomMesh = pyramidMeshes[Math.floor(Math.random()*pyramidMeshes.length)];
-	var endPosition = randomMesh.position;
+	var distFromCenter = 1000;
+
+	cameraPoses = [	{x: distFromCenter, y:0, z:0},
+					{x: 0, y:distFromCenter, z:0},
+					{x: 0, y:0, z:distFromCenter},
+					{x: -distFromCenter, y:0, z:0},
+					{x: 0, y:-distFromCenter, z:0},
+					{x: 0, y:0, z:-distFromCenter}];
+
+	var endPosition;
+	while(true) {
+ 		endPosition = cameraPoses[Math.floor(Math.random()*cameraPoses.length)];
+		if(Math.abs(camera.position.x - endPosition.x)  
+		 + Math.abs(camera.position.x - endPosition.x)  
+		 + Math.abs(camera.position.x - endPosition.x) > distFromCenter)  { break; }
+	}
+	//var randomMesh = pyramidMeshes[Math.floor(Math.random()*pyramidMeshes.length)];
+	//var endPosition = randomMesh.position;
+
+	console.log(intermediatePosition);
+	console.log("to");
+	console.log(endPosition);
+
+	// we have to copy the position as to not change all their values by reference
+	var intermediatePosition = $.extend({}, endPosition);
+
+	if( endPosition.x != 0) { intermediatePosition.y = 1000; }
+	else if( endPosition.y != 0) { intermediatePosition.z = 1000; }
+	else { intermediatePosition.x = 1000; }
+
 	var randomMesh2 = pyramidMeshes[Math.floor(Math.random()*pyramidMeshes.length)];
 	var endTarget = randomMesh2.position;
 
-
-	console.log("alright, tweening!");
+	console.log("alright, tweening! from" );
+	
+	console.log(camera.position);
+	console.log("to");
+	console.log(intermediatePosition);
+	console.log("to");
+	console.log(endPosition);
 
 	// TWEENING CAMERA POSITION
+	var tweenIntermediatePosition = new TWEEN.Tween(camera.position)
+		.to(intermediatePosition, 4000)
+		.easing(TWEEN.Easing.Quartic.InOut);
+	tweenIntermediatePosition.chain(tweenPosition);
 
+	// TWEENING CAMERA POSITION
 	var tweenPosition = new TWEEN.Tween(camera.position)
-		.to(endPosition, 3000)
-		.easing(TWEEN.Easing.Cubic.InOut);
-		tweenPosition.start();
+		.to(endPosition, 4000)
+		.easing(TWEEN.Easing.Quartic.InOut);
 
+	//tweenIntermediatePosition.start();
+	tweenPosition.start();
 	// TWEENING CAMERA TARGET
 
 	var tweenTarget = new TWEEN.Tween(controls.target)
 		.to(endTarget, 3000)
 		.easing(TWEEN.Easing.Cubic.InOut)
-		.onComplete(function () {
-			camera.lookAt(endTarget);
-		})
-		tweenTarget.start();
+//		tweenTarget.start();
 }
 
