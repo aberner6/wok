@@ -52,15 +52,11 @@ function dotTotals() {
 
 function dotCited() {
 	console.log("dotCited");
-
-
 	moreDots
 	.transition()
 	.duration(3000)
 	.attr("position.x", function(d, i) { return d3chart.xScale(d['Year']); })
 	.attr("position.y", function(d, i) { return d['Cited'] ; })
-	// .attr("position.z", function(d, i) { return Math.sin(i/ 10.0) * 100 ; })
-
 }
 
 
@@ -94,6 +90,17 @@ function prepCitations(){
 	.attr("position.z", function(d){
 		return Math.sin(d.Cited/ 100.0) * 300 ; 
 	})	
+}
+
+function doCitations(){
+	moreDots
+	.transition()
+	.attr("position.z", function(d){
+		return 0;
+	})		
+	.attr("position.y", function(d){
+		return (d.Cited);
+	})
 }
 
 function dotRandom() {
@@ -211,6 +218,9 @@ $( document ).ready(function() {
 	if(b==2){
 		prepCitations();
 	}
+	if(b==3){
+		doCitations();
+	}	
 	});
 })
 
