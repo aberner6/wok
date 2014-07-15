@@ -106,6 +106,9 @@ function threejs_environment_init() {
 	camera.position.z = 3000;
 	camera.position.x = 0;
 	camera.position.y = 0;
+/*	camera.target.x = 500;
+	camera.target.y = 500;
+	camera.target.z = 500; */
 	origPosition = camera.position;
 
 	// RENDERER
@@ -160,11 +163,11 @@ function buildAxes( length ) {
 	var axesdashed = false;
 
 	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( length, 0, 0 ), axescolor, axesdashed ) ); // +X
-	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( -length, 0, 0 ), axescolor, axesdashed) ); // -X
+//	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( -length, 0, 0 ), axescolor, axesdashed) ); // -X
 	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, length, 0 ), axescolor, axesdashed ) ); // +Y
-	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, -length, 0 ), axescolor, axesdashed ) ); // -Y
+//	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, -length, 0 ), axescolor, axesdashed ) ); // -Y
 	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, length ), axescolor, axesdashed ) ); // +Z
-	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, -length ), axescolor, axesdashed) ); // -Z
+//	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, -length ), axescolor, axesdashed) ); // -Z
 
 	return axes;
 }
