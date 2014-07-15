@@ -60,13 +60,19 @@ body {
 
 
 #container {
+	margin-top: 3vmin;
+}
+
+#threeJS-wrapper {
+	width: 94vmin;
+	height: 94vmin;
+	margin: auto;
+	border: 2px dotted black;
 }
 
 #threeJS {
-	width: 100vh;
-	height: 100vh;
-	border: 2px solid black;
-	margin: auto;
+	width: 100%;
+	height: 100%;
 }
 
 
@@ -74,7 +80,9 @@ body {
   </head>
   <body>
 	<div id="container">
-		<div id="threeJS"></div> 
+		<div id="threeJS-wrapper">
+			<div id="threeJS"></div> 
+		</div>
 		<div id="stats"></div>
 		<div class="button" id="cited">click me</div> 
 	</div>

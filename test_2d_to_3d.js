@@ -87,7 +87,9 @@ function threejs_environment_init() {
 
 	// SCENE
 	scene = new THREE.Scene();
-	scene.fog = new THREE.Fog( 0x000000, 1000, 7000 );
+	scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
+
+	//scene.fog = new THREE.Fog( 0x000000, 1000, 7000 );
 
 
 	// LIGHT
@@ -112,7 +114,7 @@ function threejs_environment_init() {
 	camera.position.y = 300;
 
 	// RENDERER
-	renderer = new THREE.WebGLRenderer( { alpha: true, clearColor: 0xff0000, antialias: true } );
+	renderer = new THREE.WebGLRenderer( { alpha: false, antialias: true } );
 	renderer.setSize( width, height);
 	renderer.setClearColor( 0xffffff, 1 );
 	renderer.autoClear = false;
@@ -321,8 +323,30 @@ function onWindowResize() {
 
 function drawThings() {
 	drawLine(scene); //loaded by external js
-	drawSprite("memory_neuro_only_some_scientists.csv", scene);
+//	drawSprite("memory_allyears_smallBatch.csv", scene);
+	//drawSprite("memory_neuro_only_some_scientists.csv", scene);
+
+	drawTestPyramids(scene);
+
 }
+
+function drawTestPyramids(thisscene) {
+	var geometry = new THREE.CylinderGeometry( 0, 10, 30, 4, 1 );
+	  var material = new THREE.MeshLambertMaterial( { color:0xffffff, shading: THREE.FlatShading } );
+
+	  for ( var i = 0; i < 5000; i ++ ) {
+
+		var mesh = new THREE.Mesh( geometry, material );
+		mesh.position.x = ( Math.random() - 0.5 ) * 1000;
+		mesh.position.y = ( Math.random() - 0.5 ) * 1000;
+		mesh.position.z = ( Math.random() - 0.5 ) * 1000;
+		mesh.updateMatrix();
+		mesh.matrixAutoUpdate = false;
+		thisscene.add( mesh );
+
+	  }
+}
+
 
 
 $( document ).ready(function() {
