@@ -134,13 +134,6 @@ function threejs_environment_init() {
 	document.getElementById('stats').appendChild( stats.domElement );
 
 }
-// var b = 0;
-// $( document ).ready(function() {
-// $("body").keypress(function(){
-// (b+=1);
-// console.log(b);
-// })
-// })
 
 function loadDots(){
 // $( document ).ready(function() {
