@@ -177,3 +177,33 @@ $( document ).ready(function() {
 });
 
 
+/* **************** */
+
+var whirlcount = 0;
+$( document ).ready(function() {
+	$("#whirl").click(function() {
+		switch(whirlcount++) {
+			case 0:
+				drawTestPyramids(scene); //just for testing
+				break;
+			case 1:
+				cameraTweenTest();
+				break;
+		}
+	});
+});
+
+function cameraTweenTest() {
+
+	var targetPosition = pyramidMeshes[0].position;
+
+	var tween = new TWEEN.Tween(camera.position)
+		.to(targetPosition)
+		.easing(TWEEN.Easing.Linear.None).onUpdate(function () {
+		    camera.lookAt(camera.target);
+	}).onComplete(function () {
+		    camera.lookAt(selectedObject.position);
+	}).start();
+
+}
+

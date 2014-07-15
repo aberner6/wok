@@ -8,13 +8,16 @@
     <title>3D Scatter Plot</title>
 <link href="tipsy.css" rel="stylesheet" type="text/css" /> 
 
+	<!-- LIBS -->
     <script type="text/javascript" src="js/d3.min.js"></script>
     <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="js/threejs.min.js"></script>
     <script type="text/javascript" src="js/threejs.OrbitControls.js"></script>
     <script type="text/javascript" src="js/threejs.stats.min.js"></script>
 	<script type="text/javascript" src="js/jquery.tipsy.js"></script>
+	<script type="text/javascript" src="js/tweenjs-0.5.1.min.js"></script>
 
+	<!-- VIZS --> 
 	<script type="text/javascript" src="test_2d_to_3d.sprite.js"></script>
 	<script type="text/javascript" src="test_2d_to_3d.line.js"></script>
 	<script type="text/javascript" src="test_2d_to_3d.threejsinit.js"></script>
@@ -47,12 +50,21 @@ body {
 .button {
 	height: 30px;
 	width: 100px;
-	position: fixed;
-	right: 10px;
-	top: 10px;
 	background-color: cyan;
 	text-align: center;
 	cursor:pointer;
+}
+
+.button#cited {
+	position: fixed;
+	right: 10px;
+	top: 10px; 
+}
+
+.button#whirl {
+	position: fixed;
+	right: 10px;
+	top: 50px; 
 }
 
 .dot {
@@ -85,6 +97,7 @@ body {
 		</div>
 		<div id="stats"></div>
 		<div class="button" id="cited">click me</div> 
+		<div class="button" id="whirl">go for a whirl</div> 
 	</div>
   </body>
 </html>

@@ -124,11 +124,12 @@ function drawThings() {
 
 }
 
+var pyramidMeshes = [];
 function drawTestPyramids(thisscene) {
 	var geometry = new THREE.CylinderGeometry( 0, 10, 30, 4, 1 );
 	  var material = new THREE.MeshLambertMaterial( { color:0xffffff, shading: THREE.FlatShading } );
 
-	  for ( var i = 0; i < 5000; i ++ ) {
+	  for ( var i = 0; i < 500; i ++ ) {
 
 		var mesh = new THREE.Mesh( geometry, material );
 		mesh.position.x = ( Math.random() - 0.5 ) * 1000;
@@ -136,6 +137,7 @@ function drawTestPyramids(thisscene) {
 		mesh.position.z = ( Math.random() - 0.5 ) * 1000;
 		mesh.updateMatrix();
 		mesh.matrixAutoUpdate = false;
+		pyramidMeshes.push(mesh);
 		thisscene.add( mesh );
 
 	  }
