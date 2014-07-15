@@ -53,18 +53,26 @@ body {
 	background-color: cyan;
 	text-align: center;
 	cursor:pointer;
+	position: fixed;
 }
 
 .button#cited {
-	position: fixed;
 	right: 10px;
 	top: 10px; 
 }
 
 .button#whirl {
-	position: fixed;
 	right: 10px;
 	top: 50px; 
+}
+
+.button#camera {
+	right: 10px;
+	top: 90px; 
+}
+
+.button#camera.ortho {
+	background-color: magenta !important;
 }
 
 .dot {
@@ -98,6 +106,7 @@ body {
 		<div id="stats"></div>
 		<div class="button" id="cited">click me</div> 
 		<div class="button" id="whirl">go for a whirl</div> 
+		<div class="button ortho" id="camera" name="ortho">ORTHO CAMERA</div> 
 	</div>
   </body>
 </html>

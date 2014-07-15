@@ -1,5 +1,6 @@
 
 var camera, scene, renderer, controls, stats;
+var cameraPersp, cameraOrtho;
 var chart3d, secondChart, lineChart, material, material2, materialLine, spriteMapCircle;
 	var thisData = [];
 var sevenData = [];
@@ -98,11 +99,12 @@ function threejs_environment_init() {
 	// CAMERA
 	var camerazoom = 1; //not 1/4
 
-//	camera = new THREE.OrthographicCamera( - width / camerazoom, width / camerazoom, height / camerazoom, - height / camerazoom, 0.01, 100000 );
-	camera = new THREE.PerspectiveCamera( 100, width / height, 1, 10000 );
+	cameraPersp = new THREE.PerspectiveCamera( 35, width / height, 1, 5000 );
+	cameraOrtho = new THREE.OrthographicCamera( - width / camerazoom, width / camerazoom, height / camerazoom, - height / camerazoom, 0.01, 100000 );
+	camera = cameraOrtho;
 	camera.position.z = 3000;
-	camera.position.x = 600;
-	camera.position.y = 300;
+	camera.position.x = 0;
+	camera.position.y = 0;
 	origPosition = camera.position;
 
 	// RENDERER
@@ -248,6 +250,24 @@ $( document ).ready(function() {
 
 var whirlcount = 0;
 $( document ).ready(function() {
+	$("#camera").click(function() {
+		var thisbutton = $("#camera");
+		var formercamera = camera;
+		if(thisbutton.attr("name") == "ortho") {
+			thisbutton.attr("name", "persp");
+			thisbutton.removeClass("ortho");
+			thisbutton.html("PERSP CAMERA");
+			camera = cameraPersp; 
+		} else {
+			thisbutton.attr("name", "ortho");
+			thisbutton.addClass("ortho");
+			thisbutton.html("ORTHO CAMERA");
+			camera = cameraOrtho; 
+		} 
+		//camera.position = formercamera.position;
+		camera.target = {x: 0, y:0, z:0};
+	});
+
 	$("#whirl").click(function() {
 		switch(whirlcount++) {
 			case 0:
@@ -312,13 +332,20 @@ function cameraTween() {
 	// TWEENING CAMERA POSITION
 	var tweenIntermediatePosition = new TWEEN.Tween(camera.position)
 		.to(intermediatePosition, 4000)
-		.easing(TWEEN.Easing.Cubic.InOut);
+		.easing(TWEEN.Easing.Cubic.InOut)
+		.onUpdate(function() {
+			console.log(this);
+		});
+		
 	tweenIntermediatePosition.chain(tweenPosition);
 
 	// TWEENING CAMERA POSITION
 	var tweenPosition = new TWEEN.Tween(camera.position)
 		.to(endPosition, 4000)
-		.easing(TWEEN.Easing.Cubic.InOut);
+		.easing(TWEEN.Easing.Cubic.InOut)
+		.onUpdate(function() {
+			console.log(this);
+		});
 
 	//tweenIntermediatePosition.start();
 	tweenPosition.start();
