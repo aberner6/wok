@@ -152,7 +152,7 @@ if(totals.length>0){
 
             	loadBar(oneYear); //store inner subjects is the loading function for the big data      
 //            	console.log("came back from loadbar");
-
+				// rotationY
         	}
 
     	firstLoad++; 
@@ -185,12 +185,11 @@ function dotCited() {
 	.attr("position.y", function(d, i) { 
             for (j = 0; j<uniqueYears.length; j++){
                 if (d.Year==uniqueYears[j]){
-                    return ((height)-d3chart.heightScale(totals[j]));               
+                    return (d3chart.heightScale(totals[j]));  //not height-             
                 }
             }		
-		// return d['Cited'] ; 
 	})
-
+	// .attr("position.z", -10000)
 }
 
 function dotPage() {
@@ -236,16 +235,25 @@ function loadBar(thisYear) {
 			console.log(this);
 			if (d['Year']==thisYear){
 				total1++;	
-			// }
 
-            	var tempvar = (height-d3chart.heightScale(total1*3)); 
+            	var tempvar = (d3chart.heightScale(total1)); //not height-
             return tempvar;
         	}
         	
         	return this.position.y;
+       })
+	// .attr("position.y", function(d, i) {
+
+	// 		console.log(this);
+	// 		if (d['Year']==thisYear){
+	// 			total1++;	
+
+ //            	var tempvar = (d3chart.heightScale(total1)); //not height-
+ //            return tempvar;
+ //        	}
         	
-		// return d['Cited'] ; 
-	})
+ //        	return this.position.y;
+ //       })
 }
 
 

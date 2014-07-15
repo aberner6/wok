@@ -109,8 +109,8 @@ function drawLine(thisscene) {
 			.range([.2, 1])        
 
 		d3chart.heightScale = d3.scale.linear()
-			.domain([0, maxEntries*3])
-			.range([padding, height/1.2]);
+			.domain([0, maxEntries])
+			.range([-50, height+100]);
 
 
 	for (i=0; i<thisData.length; i++){
@@ -189,9 +189,14 @@ function animateLine() {
 	// 	geometryLine.vertices[ i ].y = 35 * Math.sin( i / 5 + ( time + i ) / 7 );
 
 	// }
+	// for ( var i = 0; i <  geometryLine.vertices.length; i ++ ) {
+	// 	dummyLine[i]
+	// 	geometryLine.vertices[ i ].y = 35 * Math.sin( i / 5 + ( time + i ) / 7 );
 
+	// }
 
 	geometryLine.verticesNeedUpdate = true;
+
 
 }
 

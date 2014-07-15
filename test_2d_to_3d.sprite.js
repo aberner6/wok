@@ -1,7 +1,7 @@
 var spriteRotation = {};
-spriteRotation.x = 0.01;
-spriteRotation.y = 0.03;
-spriteRotation.z = 0.02;
+spriteRotation.x = 0.0;
+spriteRotation.y = 0.0;
+spriteRotation.z = 0.0;
 
 var geometryLine = new THREE.Geometry();
 var materialLine = new THREE.LineBasicMaterial({
@@ -34,7 +34,9 @@ function drawSprite(csvFilename, thisscene) {
 	thisscene.add( secondChart );
 	thisscene.add( chart3d );
 	thisscene.add(lineChart);
-
+// Add axes
+	axes = buildAxes( width*1.2 );
+	thisscene.add( axes );
 
 	d3.csv(csvFilename, function(error, data) {
 
@@ -59,6 +61,39 @@ function drawSprite(csvFilename, thisscene) {
 			});
 	});
 }
+	function buildAxes( length ) {
+		var axes = new THREE.Object3D();
+
+		axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( length, 0, 0 ), 0x000000, false ) ); // +X
+		axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( -length, 0, 0 ), 0x000000, false) ); // -X
+		axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, length, 0 ), 0x000000, false ) ); // +Y
+		axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, -length, 0 ), 0x000000, false ) ); // -Y
+		axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, length ), 0x000000, false ) ); // +Z
+		axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, -length ), 0x000000, false) ); // -Z
+
+		return axes;
+
+	}
+
+	function buildAxis( src, dst, colorHex, dashed ) {
+		var geom = new THREE.Geometry(),
+			mat; 
+
+		if(dashed) {
+			mat = new THREE.LineDashedMaterial({ linewidth: 1, color: colorHex, dashSize: 3, gapSize: 3 });
+		} else {
+			mat = new THREE.LineBasicMaterial({ linewidth: 1, color: colorHex });
+		}
+
+		geom.vertices.push( src.clone() );
+		geom.vertices.push( dst.clone() );
+		geom.computeLineDistances(); // This one is SUPER important, otherwise dashed lines will appear as simple plain lines
+
+		var axis = new THREE.Line( geom, mat, THREE.LinePieces );
+
+		return axis;
+
+	}
 // var b = 0;
 $( document ).ready(function() {
 
@@ -167,6 +202,9 @@ if (secondChart.rotation.z < 1.55 && b==1) {
 }
 
 	if (typeof chart3d !== 'undefined') {
+		// if (dotCitedFlag==true && spriteRotation.y<1){
+		// 	chart3d.rotation.y += spriteRotation.y;
+		// }
 		// variable is defined
 		chart3d.rotation.x = spriteRotation.x; 
 		chart3d.rotation.y = spriteRotation.y;
