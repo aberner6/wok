@@ -123,7 +123,13 @@ function threejs_environment_init() {
 	controls = new THREE.OrbitControls( camera );
 	controls.addEventListener( 'change', threejs_render );
 
-
+	// STATS
+	// displays current and past frames per second attained by scene
+	stats = new Stats();
+	stats.domElement.style.position = 'absolute';
+	stats.domElement.style.bottom = '0px';
+	stats.domElement.style.zIndex = 100;
+	document.getElementByID('stats').appendChild( stats.domElement );
 
 }
 // var b = 0;
