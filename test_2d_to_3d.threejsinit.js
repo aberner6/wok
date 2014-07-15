@@ -1,6 +1,7 @@
 
 var camera, scene, renderer, controls, stats;
 var cameraPersp, cameraOrtho;
+var graphCenter;
 var chart3d, secondChart, lineChart, material, material2, materialLine, spriteMapCircle;
 	var thisData = [];
 var sevenData = [];
@@ -20,6 +21,7 @@ var height = 720;
 var maxAxis = 850;
 var maxX = maxAxis;
 var maxY = maxAxis;
+var cameraDistanceMult = 2.0;
 var padding = 35;
 
 
@@ -102,12 +104,14 @@ function threejs_environment_init() {
 
 	cameraPersp = new THREE.PerspectiveCamera( 50, width / height, 1, 5000 );
 	cameraOrtho = new THREE.OrthographicCamera( - width / camerazoom, width / camerazoom, height / camerazoom, - height / camerazoom, 0.01, 100000 );
-	//camera = cameraOrtho;
-	camera = cameraPersp;
+	camera = cameraOrtho;
+	//camera = cameraPersp;
 	camera.position.z = 3000;
 	camera.position.x = 0;
 	camera.position.y = 0;
-	camera.lookAt(new THREE.Vector3(maxAxis,maxAxis,maxAxis));
+
+	graphCenter = new THREE.Vector3(maxAxis/2, maxAxis/2, maxAxis/2);
+	camera.lookAt(graphCenter);
 /*	camera.target.x = 500;
 	camera.target.y = 500;
 	camera.target.z = 500; */
@@ -136,6 +140,9 @@ function threejs_environment_init() {
 //    controls.staticMoving = true;
     controls.dynamicDampingFactor = 1.0;
 
+	controls.target = graphCenter;
+
+
 /*    var radius = 5;
     controls.minDistance = radius * 1.1;
     controls.maxDistance = radius * 100; */
@@ -152,7 +159,7 @@ function threejs_environment_init() {
 	document.getElementById('stats').appendChild( stats.domElement );
 
 	// AXES
-	axes = buildAxes( maxX * 1.2 );
+	axes = buildAxes( maxAxis );
 	scene.add( axes );
 
 }
@@ -259,6 +266,7 @@ var pyramidcount = 0;
 
 $( document ).ready(function() {
 	$("#camera").click(function() {
+		/*
 		var thisbutton = $("#camera");
 		var formercamera = camera;// this doesn't work because formercamera is also a reference
 		if(thisbutton.attr("name") == "ortho") {
@@ -273,7 +281,7 @@ $( document ).ready(function() {
 			camera = cameraOrtho; 
 		} 
 		camera.position = formercamera.position;
-		camera.target = formercamera.target;
+		camera.target = formercamera.target;*/
 	});
 
 	$("#pyramids").click(function() {
@@ -320,14 +328,23 @@ function cameraTweenSetup() {
 
 
 //	cameraPositionTween(camera.position, {x: 500, y:0, z: 0}, 4000, 0);
-	cameraPositionTween(camera.position, endPosition, 4000, 0);
+	cameraPositionTween(camera.position, endPosition, 4000, 0, false);
 
 	//cameraFOVTween(camera.position, 300, 4000, 0);
 
 }
 
 
-function cameraPositionTween(position, destination, duration, delay) {
+function cameraPositionTween(position, destination, duration, delay, normalized) {
+
+	if(normalized == true) {
+		if(destination.x == 0) { destination.x = maxAxis / 2; }
+		if(destination.x == 1) { destination.x *= maxAxis / 2; }
+		if(destination.y == 0) { destination.y = maxAxis / 2; }
+		if(destination.y == 1) { destination.y *= maxAxis / 2; }
+		if(destination.z == 0) { destination.z = maxAxis / 2; }
+		if(destination.z == 1) { destination.z *= maxAxis / 2; }
+	}
 
 	var thistween = new TWEEN.Tween(position)
 		.to(destination, duration)

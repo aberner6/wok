@@ -65,7 +65,7 @@ function loadBar(thisYear) {
 	var total1 = 0;
 	moreDots
 	.transition()
-	// .duration(3000)
+//	.duration(3000)
 	.attr("position.y", function(d, i) {
 			if (d['Year']==thisYear){
 				total1++;	
@@ -82,6 +82,9 @@ function loadBar(thisYear) {
         	return this.position.x;
     	})		
 	.attr("position.z",0)
+
+
+//	cameraPositionTween(camera.position, {x: 1, y: 0, z: 1}, 3000, 0, true);
 }
 
 function prepCitations(){
@@ -90,11 +93,13 @@ function prepCitations(){
 	.attr("position.z", function(d){
 		return d.Cited; 
 	})	
+	cameraPositionTween(camera.position, {x: 0, y: 1, z: 1}, 3000, 0, true);
 }
 
 function doCitations(){
 	moreDots
 	.transition()
+	.duration(3000)
 	.attr("position.y", function(d){
 		return 0;
 	})		
@@ -106,23 +111,34 @@ function doCitations(){
 			return 0;
 		}
 	})
+
+
+	cameraPositionTween(camera.position, {x: 1, y: 0, z: 0}, 3000, 0, true);
 }
 
 function allCitations(){
 	dots
 	.transition()	
 	.attr("position.y", function(d){
-		if (d.Cited>0){
-		return (d.Cited);
-		}
-		else {
+		if(d.Year >= 2008) {
 			return 0;
+		} else { 
+			if (d.Cited>0){
+				return (d.Cited);
+			}
+			else {
+				return 0;
+			}
 		}
 	})
 	.each("end", function(d,i){
 		d3.select(this)
 		.attr("position.x", function(d){
-			return d3chart.xScale(d.Year); 
+			if(d.Year >= 2008) {
+				return 0;
+			} else { 
+				return d3chart.xScale(d.Year); 
+			}
 		})		
 	})
 	moreDots
