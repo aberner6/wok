@@ -117,9 +117,9 @@ function threejs_environment_init() {
 /*    controls.rotateSpeed = 10.0;
     controls.zoomSpeed = 1.2;
     controls.panSpeed = 0.2;
-
+*/
     controls.noZoom = false;
-    controls.noPan = false; */
+    controls.noPan = false; 
 
 //    controls.staticMoving = true;
     controls.dynamicDampingFactor = 1.0;
@@ -161,6 +161,9 @@ function threejs_render() {
 function threejs_update() {
 	controls.update();
 	stats.update();
+
+    var currentTime = Date.now()*0.001;
+
 	TWEEN.update();
 }
 
@@ -218,30 +221,25 @@ $( document ).ready(function() {
 
 function cameraTween() {
 
-	var randomMesh = pyramidMeshes[Math.floor(Math.random()*pyramidMeshes.length)];
-	var randomMesh2 = pyramidMeshes[Math.floor(Math.random()*pyramidMeshes.length)];
 	// clone so we're not actually changing the camera position as a reference
+	var randomMesh = pyramidMeshes[Math.floor(Math.random()*pyramidMeshes.length)];
 	var endPosition = randomMesh.position;
+	var randomMesh2 = pyramidMeshes[Math.floor(Math.random()*pyramidMeshes.length)];
 	var endTarget = randomMesh2.position;
 
-//	targetPosition.x = sourcePosition.x + 100; targetPosition.y = sourcePosition.x + 100;
-	
-	console.log(camera.position);
-	console.log("to");
-	console.log(endPosition);
 
 	console.log("alright, tweening!");
 	var tweenPosition = new TWEEN.Tween(camera.position)
 		.to(endPosition, 3000)
-		.easing(TWEEN.Easing.Linear.None)
-	tweenPosition.start();
+		.easing(TWEEN.Easing.Cubic.InOut);
+		tweenPosition.start();
 
 	var tweenTarget = new TWEEN.Tween(controls.target)
 		.to(endTarget, 3000)
-		.easing(TWEEN.Easing.Linear.None)
+		.easing(TWEEN.Easing.Cubic.InOut)
 		.onComplete(function () {
 			camera.lookAt(endTarget);
 		})
-	tweenTarget.start();
+		tweenTarget.start();
 }
 
