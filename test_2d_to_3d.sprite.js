@@ -35,9 +35,6 @@ function drawSprite(csvFilename, thisscene) {
 	thisscene.add( chart3d );
 	thisscene.add(lineChart);
 // Add axes
-	axes = buildAxes( width*1.2 );
-	thisscene.add( axes );
-
 	d3.csv(csvFilename, function(error, data) {
 
 		// use D3 to set up 3D bars
@@ -62,40 +59,7 @@ function drawSprite(csvFilename, thisscene) {
 	});
 }
 
-function buildAxes( length ) {
-	var axes = new THREE.Object3D();
 
-	var axescolor = 0x000000;
-	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( length, 0, 0 ), axescolor, false ) ); // +X
-	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( -length, 0, 0 ), axescolor, false) ); // -X
-	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, length, 0 ), axescolor, false ) ); // +Y
-	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, -length, 0 ), axescolor, false ) ); // -Y
-	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, length ), axescolor, false ) ); // +Z
-	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, -length ), axescolor, false) ); // -Z
-
-	return axes;
-
-}
-
-function buildAxis( src, dst, colorHex, dashed ) {
-	var geom = new THREE.Geometry(),
-		mat; 
-
-	if(dashed) {
-		mat = new THREE.LineDashedMaterial({ linewidth: 1, color: colorHex, dashSize: 3, gapSize: 3 });
-	} else {
-		mat = new THREE.LineBasicMaterial({ linewidth: 1, color: colorHex });
-	}
-
-	geom.vertices.push( src.clone() );
-	geom.vertices.push( dst.clone() );
-	geom.computeLineDistances(); // This one is SUPER important, otherwise dashed lines will appear as simple plain lines
-
-	var axis = new THREE.Line( geom, mat, THREE.LinePieces );
-
-	return axis;
-
-}
 // var b = 0;
 // $( document ).ready(function() {
 

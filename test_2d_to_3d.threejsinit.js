@@ -76,9 +76,9 @@ function threejs_environment_init() {
 
 	// SCENE
 	scene = new THREE.Scene();
-	scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
+//	scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
 
-	//scene.fog = new THREE.Fog( 0x000000, 1000, 7000 );
+	scene.fog = new THREE.Fog( 0x000000, 1000, 7000 );
 
 
 	// LIGHTS
@@ -86,7 +86,7 @@ function threejs_environment_init() {
     light.position.set( 0, 0, 1 );
     scene.add( light ); 
 
-    var light2= new THREE.DirectionalLight( 0xaaaaaa );
+    var light2= new THREE.DirectionalLight( 0xCCCCCC );
     light.position.set( 1, 1, 0 );
     scene.add( light2 ); 
 
@@ -98,8 +98,8 @@ function threejs_environment_init() {
 	// CAMERA
 	var camerazoom = 1; //not 1/4
 
-	camera = new THREE.OrthographicCamera( - width / camerazoom, width / camerazoom, height / camerazoom, - height / camerazoom, 0.01, 100000 );
-//	camera = new THREE.PerspectiveCamera( 100, width / height, 1, 10000 );
+//	camera = new THREE.OrthographicCamera( - width / camerazoom, width / camerazoom, height / camerazoom, - height / camerazoom, 0.01, 100000 );
+	camera = new THREE.PerspectiveCamera( 100, width / height, 1, 10000 );
 	camera.position.z = 3000;
 	camera.position.x = 600;
 	camera.position.y = 300;
@@ -143,7 +143,49 @@ function threejs_environment_init() {
 	stats.domElement.style.zIndex = 100;
 	document.getElementById('stats').appendChild( stats.domElement );
 
+	// AXES
+	axes = buildAxes( maxX * 1.2 );
+	scene.add( axes );
+
 }
+
+
+function buildAxes( length ) {
+	var axes = new THREE.Object3D();
+
+	var axescolor = 0x888888;
+	var axesdashed = false;
+
+	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( length, 0, 0 ), axescolor, axesdashed ) ); // +X
+	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( -length, 0, 0 ), axescolor, axesdashed) ); // -X
+	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, length, 0 ), axescolor, axesdashed ) ); // +Y
+	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, -length, 0 ), axescolor, axesdashed ) ); // -Y
+	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, length ), axescolor, axesdashed ) ); // +Z
+	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, -length ), axescolor, axesdashed) ); // -Z
+
+	return axes;
+}
+
+
+function buildAxis( src, dst, colorHex, dashed ) {
+	var geom = new THREE.Geometry(),
+		mat; 
+
+	if(dashed) {
+		mat = new THREE.LineDashedMaterial({ linewidth: 1, color: colorHex, dashSize: 3, gapSize: 3 });
+	} else {
+		mat = new THREE.LineBasicMaterial({ linewidth: 1, color: colorHex });
+	}
+
+	geom.vertices.push( src.clone() );
+	geom.vertices.push( dst.clone() );
+	geom.computeLineDistances(); // This one is SUPER important, otherwise dashed lines will appear as simple plain lines
+
+	var axis = new THREE.Line( geom, mat, THREE.LinePieces );
+
+	return axis;
+}
+
 
 function threejs_animate() {
 
