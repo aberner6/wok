@@ -3,6 +3,10 @@ lineRotation.x = 0; //0.01;
 lineRotation.y = 0;//0.01;
 lineRotation.z = 0;//1.55;//0.02;
 
+
+var kandelYears = [];
+var uniqueKandel;
+var kandelTotals = [];
 function drawLine(thisscene) {
 	straightLine = [];
 	d3chart = d3chart || {};
@@ -11,16 +15,14 @@ function drawLine(thisscene) {
 
 	var xScale, sevenScale, maxSevenCited, citeYScale;
 	var xAxis;
-	// var years = [];
-	// var uniqueYears;
+
 	var uniqueAuthors;
 	var uniqueKeywords;
 	var journalTypes = [];
-	// var authors = [];
+
 	var keywords = [];
 	var goSecond = false;
 
-	// var totals = [];
 	var totalAuthors = [];
 	var totalKeywords = [];
 
@@ -40,20 +42,20 @@ function drawLine(thisscene) {
 	var thisTotal;
 	var eachPaper;
 
-	var heightScale;
+	var heightScale, kandelHeightScale;
+
 	var singleScale;
-	// var thisData = [];
-	// var theseAuthors = [];
+
 	var theseKeywords = [];
 	var theX = [];
 	var maxEntries;
+var kandelData = [];
 
 	var lineX = [];
 	var lineY = [];
 
 
 	var randomX, randomY, randomZ;
-// var geometryLine;
 
 
 	d3.csv("memory_neuro_only_some_scientists.csv", function(data) {
@@ -71,30 +73,6 @@ function drawLine(thisscene) {
 		console.log(theseAuthors[0])
 
 
-
-
-
-
-
-
-
-
-var sevenYears = ["2014", "2013", "2012", "2011", "2010", "2009", "2008"];
-		for (i = 0;i<thisData.length; i++){ 
-			for (j=0; j<sevenYears.length; j++){
-			if (thisData[i].Year == sevenYears[j]){
-				sevenData.push(thisData[i]);
-				}
-			}
-		}	
-		moreDots = d3.select( secondChart )
-			.selectAll("THREE.Mesh")
-			.data(thisData)
-			.enter()
-			.append(function(d, i) { 
-				// return newSphere(7057110);
-				return newCircleSprite(parseInt("0x" + color(i).substr(1), 16));
-			});	
 	////finds unique names etc
 		function onlyUnique(value, index, self) { 
 			return self.indexOf(value) === index;
@@ -116,6 +94,91 @@ var sevenYears = ["2014", "2013", "2012", "2011", "2010", "2009", "2008"];
 		for (i = 0; i<uniqueYears.length; i++){
 			totals[i]= valueConsolidation(uniqueYears[i])
 		} 
+
+
+
+
+
+
+
+
+
+		for (i = 0;i<thisData.length; i++){ 
+        for (j=0; j<authors[i].length; j++){ 
+            if(authors[i][j]=="Kandel, E.R."){
+				kandelData.push(thisData[i]);
+			}
+			}
+		}            	
+		console.log(kandelData)
+		for (i=0; i<kandelData.length; i++){
+			kandelYears[i] = kandelData[i].Year;
+		}
+		uniqueKandel = kandelYears.filter( onlyUnique ); //finds unique names
+	////consolidates the Value for all values of a given Name
+		function valueKandelConsolidation(givenYear, i) { 
+			var total = 0;
+			for (i = 0;i<kandelData.length; i++){ 
+				if(kandelData[i].Year== givenYear){
+					total++;
+				}else{
+				}}
+			 return total;
+		 } 
+	 //creates a new aray with the sums of all the different Names 
+		for (i = 0; i<uniqueKandel.length; i++){
+			kandelTotals[i]= valueKandelConsolidation(uniqueKandel[i])
+		} 
+
+
+
+
+
+// var sevenYears = ["2014", "2013", "2012", "2011", "2010", "2009", "2008"];
+		// for (i = 0;i<thisData.length; i++){ 
+		// 	for (j=0; j<sevenYears.length; j++){
+		// 	if (thisData[i].Year == sevenYears[j]){
+		// 		sevenData.push(thisData[i]);
+		// 		}
+		// 	}
+		// }	
+		// moreDots = d3.select( secondChart )
+		// 	.selectAll("THREE.Mesh")
+		// 	.data(kandelData)
+		// 	.enter()
+		// 	.append(function(d, i) { 
+	if (uniqueTypes.length>0){		
+// if (uniqueTypes.length==372){
+		dots = d3.select( chart3d )
+			.selectAll("THREE.Mesh")
+			.data(thisData)
+			.enter()
+			.append(function(d, i) { 
+        for (j=0; j<uniqueTypes.length; j++){
+            if(d.Sourcetitle==uniqueTypes[j]){
+				return newCircleSprite(parseInt("0x" + color(j).substr(1), 16));
+            }       
+        }  				
+			});		
+// }
+
+
+
+		moreDots = d3.select( secondChart )
+			.selectAll("THREE.Mesh")
+			.data(kandelData)
+			.enter()
+			.append(function(d, i) { 
+        		for (j=0; j<uniqueTypes.length; j++){
+            		if(d.Sourcetitle==uniqueTypes[j]){
+						return newCircleSprite(parseInt("0x" + color(j).substr(1), 16));
+            		}       
+        		}  						
+				// return newSphere(7057110);
+				// return newCircleSprite(parseInt("0x" + color(i).substr(1), 16));
+			});	
+		}	
+
 
 	   maxAuthor = d3.max(totalAuthors, function(d) { return d; });
 	   singleScale = d3.scale.linear()
@@ -157,6 +220,14 @@ var maxCited = d3.max(data, function(d) { return d.Cited; });
 		d3chart.heightScale = d3.scale.linear()
 			.domain([0, maxEntries])
 			.range([0, maxY]);
+
+
+		// d3chart.kandelHeightScale = d3.scale.linear()
+		// 	.domain([0, maxEntriesKandel])
+		// 	.range([0, maxY]);
+
+
+
 
 // d3chart.randomX = d3.scale.linear()
 //     .domain([0,1]) 

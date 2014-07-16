@@ -42,24 +42,24 @@ function drawSprite(csvFilename, thisscene) {
 	thisscene.add( chart3d );
 	thisscene.add(lineChart);
 // Add axes
-	d3.csv(csvFilename, function(error, data) {
-
-		// use D3 to set up 3D bars
-		dots = d3.select( chart3d )
-			.selectAll("THREE.Mesh")
-			.data(data)
-			.enter()
-			.append(function(d, i) { 
-        for (j=0; j<uniqueTypes.length; j++){
-            if(d.Sourcetitle==uniqueTypes[j]){
-				return newCircleSprite(parseInt("0x" + color(j).substr(1), 16));
-            }       
-        }  				
-				// return newCircleSprite(parseInt("0x" + color(2).substr(1), 16));
-			});
-
-		console.log(dots);
-	});
+	// d3.csv(csvFilename, function(error, data) {
+// if (uniqueTypes.length==372){
+// 		// use D3 to set up 3D bars
+// 		dots = d3.select( chart3d )
+// 			.selectAll("THREE.Mesh")
+// 			.data(data)
+// 			.enter()
+// 			.append(function(d, i) { 
+//         for (j=0; j<uniqueTypes.length; j++){
+//             if(d.Sourcetitle==uniqueTypes[j]){
+// 				return newCircleSprite(parseInt("0x" + color(j).substr(1), 16));
+//             }       
+//         }  				
+// 				// return newCircleSprite(parseInt("0x" + color(2).substr(1), 16));
+// 			});		
+// }
+		// console.log(dots);
+	// });
 
 		// moreDots = d3.select( secondChart )
 		// 	.selectAll("THREE.Mesh")

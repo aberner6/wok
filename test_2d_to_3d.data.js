@@ -12,12 +12,32 @@ var firstLoad = 0;
 var d3chart = d3chart || {};
 var sevenYears = ["2014", "2013", "2012", "2011", "2010", "2009", "2008"];
 
-
+var kandel = false;
 
 function dotTotals() {
 
+if (kandel==true){
+	console.log("kandelTotals");
+	moreDots
+	.transition()
+	.duration(3000)
+	.attr("position.x", function(d, i) { 
+		return d3chart.xScale(d['Year']); 
+	})
+	.attr("position.y", function(d, i) { 
+            for (j = 0; j<uniqueKandel.length; j++){
+                if (d.Year==uniqueKandel[j]){
+                    return (d3chart.heightScale(kandelTotals[j]*5));  //not height-             
+                }
+            }		
+	})
+	.attr("position.z", 0)
 
-	console.log("dotTotals");
+	dots.transition()
+	.attr("position.y",0).attr("position.z",0).attr("position.x",0)
+}
+else{
+	console.log("allTotals");
 	dots
 	.transition()
 	.duration(3000)
@@ -32,40 +52,68 @@ function dotTotals() {
             }		
 	})
 	.attr("position.z", 0)
-
-	dots
-	// moreDots
-	.transition()
-	.duration(3000)
-	.attr("position.x", function(d, i) { 
-		return d3chart.xScale(d.Year); 
-	})
-	.attr("position.y", function(d, i) { 
-            for (j = 0; j<uniqueYears.length; j++){
-                if (d.Year==uniqueYears[j]){
-                    return (d3chart.heightScale(totals[j]));  //not height-             
-                }
-            }		
-	})
-	.attr("position.z", 0)
+}
 }
 
 function dotCited() {
-	console.log("dotCited");
-	dots
-	// moreDots
+if (kandel==true){
+	console.log("kandelCited");
+	moreDots
 	.transition()
 	.duration(3000)
 	.attr("position.x", function(d, i) { return d3chart.xScale(d['Year']); })
-	.attr("position.y", function(d, i) { return d['Cited'] ; })
+	.attr("position.z", function(d, i) { return d['Cited'] ; })
+
+	dots.transition().attr("position.y",0)
+}
+else {
+	console.log("allCited");
+	dots
+	.transition()
+	.duration(3000)
+	.attr("position.x", function(d, i) { return d3chart.xScale(d['Year']); })
+	.attr("position.y", function(d, i) { return d['Cited'] ; })	
+}
 }
 
 
 
 function loadBar(thisYear) {
+if (kandel==true){	
+	var total2 = 0;
+	moreDots
+	.transition()
+//	.duration(3000)
+	.attr("position.y", function(d, i) {
+			if (d['Year']==thisYear){
+				total2++;	
+            	var tempKY = (d3chart.heightScale(total2*10)); //not height-
+            	console.log(total2)
+            	return tempKY;
+        	} 
+        	return this.position.y;
+       })
+	.attr("position.x", function(d, i) {
+			if (d['Year']==thisYear){
+            	var tempKX = (d3chart.xScale(d['Year'])); //not height-
+            	return tempKX;
+        	}    	
+        	return this.position.x;
+    	})		
+	.attr("position.z", function(d){
+		// console.log(d.Cited);
+		return d.Cited; 
+	});		
+	// .attr("position.z",0)
+	dots
+	.transition()
+	.attr("position.x",0)	
+	.attr("position.y",0)	
+	.attr("position.z",0)	
+}
+else {
 	var total1 = 0;
 	dots
-	// moreDots
 	.transition()
 //	.duration(3000)
 	.attr("position.y", function(d, i) {
@@ -83,23 +131,30 @@ function loadBar(thisYear) {
         	}    	
         	return this.position.x;
     	})		
-	.attr("position.z",0)
-
+	.attr("position.z",0)	
+}
 
 //	cameraPositionTween(camera.position, {x: 1, y: 0, z: 1}, 3000, 0, true);
 }
 
 function prepCitations(){
+if (kandel==true){
+	moreDots
+	.transition()
+	.attr("position.z", function(d){
+		// console.log(d.Cited);
+		return d.Cited; 
+	})	
+}
+else{
 	dots
-	// moreDots
 	.transition()
 	.attr("position.z", function(d){
 		return d.Cited; 
 	})	
-// function cameraPositionTween(position, destination, duration, delay, normalized) {
-
+}
 	cameraPositionTween(camera.position, {x: 427, y: -1011, z: 976}, 8000, 0, false);
-	console.log(camera.position)
+	// console.log(camera.position)
 }
 
 function doCitations(){
@@ -130,7 +185,9 @@ function doCitations(){
 
 
 
-
+//IRRELEVANT
+//IRRELEVANT
+//IRRELEVANT
 //IRRELEVANT
 function allCitations(){
 	dots
@@ -176,26 +233,47 @@ function allCitations(){
 		})	
 }
 
-function kandel(){
-var total3 = 0;
+// function kandel(){
+// var total3 = 0;
 
-	dots
-	.transition()	
-	.attr("position.y", function(d, i) {
-        for (j=0; j<authors[i].length; j++){ 
-            if(authors[i][j]=="Kandel, E.R."){
-				// total3++;	
-				return -1*d.Cited;
-            	// var kandY = -5*(d3chart.heightScale(total3)); //not height-
-            	// return kandY;
-            }} 
-        	return this.position.y;
-     }) 	
-}
+// 	dots
+// 	.transition()	
+// 	.attr("position.y", function(d, i) {
+//         for (j=0; j<authors[i].length; j++){ 
+//             if(authors[i][j]=="Kandel, E.R."){
+// 				// total3++;	
+// 				return -1*d.Cited;
+//             	// var kandY = -5*(d3chart.heightScale(total3)); //not height-
+//             	// return kandY;
+//             }} 
+//         	return this.position.y;
+//      }) 	
+// }
+// function kandel(){
+// dots
+// 	.transition()
+// 	.attr("y",0)
+
+// moreDots
+// 	.transition()
+// 	.duration(3000)
+// 	.attr("position.x", function(d, i) { 
+// 		return d3chart.xScale(d.Year); 
+// 	})
+// 	.attr("position.y", function(d, i) { 
+//             for (j = 0; j<uniqueYears.length; j++){
+//                 if (d.Year==uniqueYears[j]){
+//                     return (d3chart.heightScale(totals[j]));            
+//                 }
+//             }		
+// 	})
+// 	.attr("position.z", 0)
+// }
 
 function dotRandom() {
-	console.log("random");
-	dots
+if (kandel==true){
+	console.log("kandelRandom");
+	moreDots
 	.transition()
 	.duration(1000)
 	.attr("position.x", function(d, i) { 
@@ -208,7 +286,33 @@ function dotRandom() {
 		// console.log("dealing with dot #" + i);
 		return newZ[i];
 
+	})	
+	dots.transition()
+	.attr("position.x", function(d, i) { 
+		return newX[i]*2;
+	})	
+	.attr("position.y", function(d, i) { 
+		return newY[i]*2;
 	})
+	.attr("position.z", function(d,i){
+		return newZ[i]*2;
+	})
+}
+else{
+	console.log("random");
+	dots
+	.transition()
+	.duration(1000)
+	.attr("position.x", function(d, i) { 
+		return newX[i];
+	})
+	.attr("position.y", function(d, i) { 
+		return newY[i];
+	})
+	.attr("position.z", function(d,i){
+		return newZ[i];
+	})
+}
 	console.log("dots transition random called");
 }
 
@@ -263,6 +367,7 @@ function drawTestPyramids(thisscene) {
 // }
 
 function loadDots(){
+	console.log("in here")
 firstLoadVar = setInterval(function(){ 
 if(totals.length>0){    
     if (firstLoad<=uniqueYears.length){
@@ -277,9 +382,8 @@ if(totals.length>0){
     	clearInterval(firstLoadVar); //and stop loading stuff in
     }
 }
-},80);	
+},200);	
 }
-
 
 
 
@@ -314,12 +418,20 @@ $( document ).ready(function() {
 		doCitations();
 	}	
 	if(b==4){
-		allCitations();
+		kandel=true;		
+		dotTotals();
 	}	
 	if(b==5){
-		// loadDots();		
-		kandel();
-	}			
+		firstLoad = 0;
+		loadDots();		
+	}	
+	if(b==6){
+		// dotCited();
+		prepCitations();		
+	}	
+	if(b==7){
+		doCitations();		
+	}					
 	});
 })
 
