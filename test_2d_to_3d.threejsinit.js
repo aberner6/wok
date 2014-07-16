@@ -102,6 +102,7 @@ function threejs_environment_init() {
 	// CAMERA
 	var camerazoom = 1; //not 1/4
 
+	// cameraPersp = new THREE.PerspectiveCamera( 50, width / height, 1, 1000 );
 	cameraPersp = new THREE.PerspectiveCamera( 50, width / height, 1, 5000 );
 	cameraOrtho = new THREE.OrthographicCamera( - width / camerazoom, width / camerazoom, height / camerazoom, - height / camerazoom, 0.01, 100000 );
 	camera = cameraOrtho;
