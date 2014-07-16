@@ -89,7 +89,7 @@ var sevenYears = ["2014", "2013", "2012", "2011", "2010", "2009", "2008"];
 		}	
 		moreDots = d3.select( secondChart )
 			.selectAll("THREE.Mesh")
-			.data(sevenData)
+			.data(thisData)
 			.enter()
 			.append(function(d, i) { 
 				// return newSphere(7057110);
@@ -167,10 +167,10 @@ var maxCited = d3.max(data, function(d) { return d.Cited; });
 
 d3chart.randomX = d3.scale.linear()
     .domain([0,1]) 
-    .range([-width*3, width*3]);
+    .range([-maxX*2, maxX*2]);
 d3chart.randomY = d3.scale.linear()
     .domain([0,1]) 
-    .range([-height*3, height*3]);
+    .range([-maxY*2, maxY*2]);
 d3chart.randomZ = d3.scale.linear()
     .domain([0,1]) 
     .range([-2000, 2000]);

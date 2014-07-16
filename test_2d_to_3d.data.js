@@ -33,8 +33,8 @@ function dotTotals() {
 	})
 	.attr("position.z", 0)
 
-
-	moreDots
+	dots
+	// moreDots
 	.transition()
 	.duration(3000)
 	.attr("position.x", function(d, i) { 
@@ -52,7 +52,8 @@ function dotTotals() {
 
 function dotCited() {
 	console.log("dotCited");
-	moreDots
+	dots
+	// moreDots
 	.transition()
 	.duration(3000)
 	.attr("position.x", function(d, i) { return d3chart.xScale(d['Year']); })
@@ -63,7 +64,8 @@ function dotCited() {
 
 function loadBar(thisYear) {
 	var total1 = 0;
-	moreDots
+	dots
+	// moreDots
 	.transition()
 //	.duration(3000)
 	.attr("position.y", function(d, i) {
@@ -76,7 +78,7 @@ function loadBar(thisYear) {
        })
 	.attr("position.x", function(d, i) {
 			if (d['Year']==thisYear){
-            	var tempx = (d3chart.sevenScale(thisYear)); //not height-
+            	var tempx = (d3chart.xScale(thisYear)); //not height-
             	return tempx;
         	}    	
         	return this.position.x;
@@ -88,34 +90,48 @@ function loadBar(thisYear) {
 }
 
 function prepCitations(){
-	moreDots
+	dots
+	// moreDots
 	.transition()
 	.attr("position.z", function(d){
 		return d.Cited; 
 	})	
-	cameraPositionTween(camera.position, {x: 0, y: 1, z: 1}, 3000, 0, true);
+// function cameraPositionTween(position, destination, duration, delay, normalized) {
+
+	cameraPositionTween(camera.position, {x: 427, y: -1011, z: 976}, 8000, 0, false);
+	console.log(camera.position)
 }
 
 function doCitations(){
-	moreDots
-	.transition()
-	.duration(3000)
-	.attr("position.y", function(d){
-		return 0;
-	})		
-	.attr("position.z", function(d){		
-		if (d.Cited>0){
-		return (d.Cited);
-		}
-		else {
-			return 0;
-		}
-	})
+	// moreDots
+	// .transition()
+	// .duration(3000)
+	// .attr("position.z", function(d){
+	// 	return 0;
+	// })		
+	// .attr("position.y", function(d){		
+	// 	if (d.Cited>0){
+	// 	return (d.Cited);
+	// 	}
+	// 	else {
+	// 		return 0;
+	// 	}
+	// })
 
 
-	cameraPositionTween(camera.position, {x: 1, y: 0, z: 0}, 3000, 0, true);
+	cameraPositionTween(camera.position, {x: 424, y: 421, z: 1963}, 8000, 0, false);
 }
 
+
+
+
+
+
+
+
+
+
+//IRRELEVANT
 function allCitations(){
 	dots
 	.transition()	
@@ -131,6 +147,18 @@ function allCitations(){
 			}
 		}
 	})
+	// .attr("position.z", function(d){
+	// 	if(d.Year >= 2008) {
+	// 		return 0;
+	// 	} else { 
+	// 		if (d.Cited>0){
+	// 			return (d.Cited);
+	// 		}
+	// 		else {
+	// 			return 0;
+	// 		}
+	// 	}
+	// })	
 	.each("end", function(d,i){
 		d3.select(this)
 		.attr("position.x", function(d){
@@ -237,9 +265,9 @@ function drawTestPyramids(thisscene) {
 function loadDots(){
 firstLoadVar = setInterval(function(){ 
 if(totals.length>0){    
-    if (firstLoad<=sevenYears.length){
-        var oneYear = sevenYears[firstLoad];
-        console.log("going into loadbar TO READ " + oneYear);
+    if (firstLoad<=uniqueYears.length){
+        var oneYear = uniqueYears[firstLoad];
+        // console.log("going into loadbar TO READ " + oneYear);
         if (oneYear!="undefined"){
         loadBar(oneYear); //store inner subjects is the loading function for the big data      
     	firstLoad++;
@@ -249,7 +277,7 @@ if(totals.length>0){
     	clearInterval(firstLoadVar); //and stop loading stuff in
     }
 }
-},400);	
+},80);	
 }
 
 

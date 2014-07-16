@@ -18,11 +18,11 @@ var dummyLine;
 var b;
 var originX = 0, originY = 0; 
 // given a color, creates a sprite with color
-spriteMapCircle = THREE.ImageUtils.loadTexture( "images/sprite_circle.png" );
+spriteMapCircle = THREE.ImageUtils.loadTexture( "images/sprite_rect.png" );
 newCircleSprite = function(thiscolor) { 
 	var thismaterial = new THREE.SpriteMaterial( { map: spriteMapCircle, color: thiscolor, fog: true });
 	var thissprite = new THREE.Sprite( thismaterial);
-	thissprite.scale.set(15,15,10);
+	thissprite.scale.set(15,10,10);
 	return thissprite;
 }
 
@@ -50,7 +50,12 @@ function drawSprite(csvFilename, thisscene) {
 			.data(data)
 			.enter()
 			.append(function(d, i) { 
-				return newCircleSprite(parseInt("0x" + color(i).substr(1), 16));
+        for (j=0; j<uniqueTypes.length; j++){
+            if(d.Sourcetitle==uniqueTypes[j]){
+				return newCircleSprite(parseInt("0x" + color(j).substr(1), 16));
+            }       
+        }  				
+				// return newCircleSprite(parseInt("0x" + color(2).substr(1), 16));
 			});
 
 		console.log(dots);
