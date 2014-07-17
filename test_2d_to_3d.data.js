@@ -209,6 +209,8 @@ function drawParticles(thisscene) {
 	var geometry = new THREE.Geometry();
 
 	var particleRadius = 4000;
+
+
 	for ( i = 0; i < 2000; i ++ ) {
 		var vertex = new THREE.Vector3();
 		vertex.x = Math.random() * particleRadius - (particleRadius / 2);
@@ -217,21 +219,18 @@ function drawParticles(thisscene) {
 		geometry.vertices.push( vertex );
 	}  
 
-/*
-	for ( i = 0; i < 2000; i ++ ) {
-		var vertex = new THREE.Vector3();
-		var u = (Math.random() * 2) - 1; // from -1 to 1
-		var theta = (Math.random() * 2 * Math.Pi); // from 0 to 2pi
-		vertex.x = Math.sqrt(1 - Math.pow(u, 2)) * Math.cos(theta);
-		vertex.y = Math.sqrt(1 - Math.pow(u, 2)) * Math.sin(theta);
-		vertex.z = u;
-		vertex.x *= particleRadius;
-		vertex.y *= particleRadius;
-		vertex.z *= particleRadius;
-		console.log(vertex);
-		geometry.vertices.push( vertex );
-	}  */
 
+/*
+	for ( i = 0; i < 10000; i ++ ) {
+		var vertex = new THREE.Vector3();
+		var randP = randomSpherePoint(particleRadius);	
+		vertex.x = randP.x + maxAxis / 2;
+		vertex.y = randP.y + maxAxis / 2;
+		vertex.z = randP.z + maxAxis / 2;
+//		console.log(vertex);
+		geometry.vertices.push( vertex );
+	}  
+*/
 
 	var pointMaterial = new THREE.PointCloudMaterial( { 
 		color: 0x999999,
@@ -251,6 +250,20 @@ function drawParticles(thisscene) {
 	console.log("particles done");
 
 	xAxisMesh = buildTextMesh( new THREE.Vector3( length + 40, -10, 0 ), "BLAHX AXIS") ;
+}
+
+function randomSpherePoint(r)
+{
+    var x = Math.random() - 0.5, y = Math.random() - 0.5, z = Math.random() - 0.5;
+    var k = Math.sqrt(x*x + y*y + z*z);
+    while (k < 0.2 || k > 0.3)
+    {
+        x = Math.random() - 0.5;
+        y = Math.random() - 0.5;
+        z = Math.random() - 0.5;
+        k = Math.sqrt(x*x + y*y + z*z);
+    }
+    return {x:x/k * r, y:y/k * r , z:z/k * r};
 }
 
 function drawTestPyramids(thisscene) {

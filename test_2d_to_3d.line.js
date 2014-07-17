@@ -163,6 +163,10 @@ for (i=0; i<kandelData.length; i++){
 
 var maxCited = 2817;
 
+var colorScale = d3.scale.ordinal()
+    .domain([uniqueTypes.length, 0])
+    .range(colorbrewer.PuBu[9]);
+
 	if (uniqueTypes.length>0){		
 		dots = d3.select( chart3d )
 			.selectAll("THREE.Mesh")
@@ -180,7 +184,8 @@ var maxCited = 2817;
             	console.log(parseInt("0x" + color(j).substr(1), 16));
             }		
 
-				return newCircleSprite(parseInt("0x" + color(j).substr(1), 16));
+				return newCircleSprite(parseInt("0x" + colorScale(j).substr(1), 16));
+				//return newCircleSprite(parseInt("0x" + color(j).substr(1), 16));
             }       
         }  				
 			});		
