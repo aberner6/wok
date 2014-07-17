@@ -15,7 +15,7 @@ var d3chart = d3chart || {};
 var pyramidMeshes = [];
 var particles = [];
 
-var globalSpeed = 3.5;
+var globalSpeed = 1; //3.5;
 function dotTotals() {
 
 	console.log("allTotals");
@@ -39,7 +39,7 @@ function dotTotals() {
 	})
 	.attr("position.z", 0)
 
-	axesLabels.remove(zAxisMesh);
+//	axesLabels.remove(zAxisMesh);
 
 	var xAxisPos = xAxisMesh.position;
 	axesLabels.remove(xAxisMesh);
@@ -115,7 +115,7 @@ function prepCitations(){
 //flip side
 cameraPositionTween({x: 550, y: -750, z: 1249}, {x: 775.9634148076755, y: -468.53095876153293, z: -775.7814568827}, 2000*globalSpeed, 9000*globalSpeed, false);
 
-	axesLabels.remove(yAxisMesh);
+//	axesLabels.remove(yAxisMesh);
 
 	var zAxisPos = zAxisMesh.position;
 	axesLabels.remove(zAxisMesh);
@@ -216,7 +216,8 @@ function drawParticles(thisscene) {
 		vertex.y = Math.random() * particleRadius - (particleRadius / 2);
 		vertex.z = Math.random() * particleRadius - (particleRadius / 2);
 		geometry.vertices.push( vertex );
-	} 
+	}  
+
 /*
 	for ( i = 0; i < 2000; i ++ ) {
 		var vertex = new THREE.Vector3();
@@ -225,14 +226,17 @@ function drawParticles(thisscene) {
 		vertex.x = Math.sqrt(1 - Math.pow(u, 2)) * Math.cos(theta);
 		vertex.y = Math.sqrt(1 - Math.pow(u, 2)) * Math.sin(theta);
 		vertex.z = u;
+		vertex.x *= particleRadius;
+		vertex.y *= particleRadius;
+		vertex.z *= particleRadius;
 		console.log(vertex);
 		geometry.vertices.push( vertex );
-	} */
+	}  */
 
 
 	var pointMaterial = new THREE.PointCloudMaterial( { 
 		color: 0x999999,
-		size: 5, 
+		size: 3, 
 		transparent: true, 
 		opacity:1 
 	 } );
@@ -289,7 +293,7 @@ function loadDots(){
 
 	var xAxisPos = xAxisMesh.position;
 	axesLabels.remove(xAxisMesh);
-	xAxisMesh = buildTextMesh( xAxisPos, "X (years)");
+	xAxisMesh = buildTextMesh( xAxisPos, "X (years)"); //
 	axesLabels.add(xAxisMesh);
 
 	var yAxisPos = yAxisMesh.position;
