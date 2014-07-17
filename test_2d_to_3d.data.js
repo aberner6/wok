@@ -39,13 +39,12 @@ function dotTotals() {
 	})
 	.attr("position.z", 0)
 
-//	axesLabels.remove(zAxisMesh);
+	//	axesLabels.remove(zAxisMesh); //remove zAxisLbel
 
 	var xAxisPos = xAxisMesh.position;
 	axesLabels.remove(xAxisMesh);
 	xAxisMesh = buildTextMesh( xAxisPos, "X (years)") ;
 	axesLabels.add(xAxisMesh);
-
 
 
 	scene.remove(tickMarks); tickMarks = new THREE.Object3D(); scene.add(tickMarks);
