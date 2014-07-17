@@ -112,7 +112,6 @@ cameraPositionTween({x: 550, y: -750, z: 1249}, {x: 775.9634148076755, y: -468.5
 
 //	axesLabels.remove(yAxisMesh);
 
-	
 	changeAxisText("zaxis", "Z (cited)");
 
 	clearTickMarks("all");

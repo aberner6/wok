@@ -249,6 +249,7 @@ function buildTickMark ( axis, amplitude, text)  {
 	var coordsText;
 	var tick;
 	var thisTick = new THREE.Object3D();
+	//tick mark coordinates are hardcoded here
 	switch(axis) {
 		case "xaxis":
 			coordsTick = new THREE.Vector3(amplitude, -5, 0);
