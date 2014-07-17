@@ -163,9 +163,14 @@ for (i=0; i<kandelData.length; i++){
 
 var maxCited = 2817;
 
+//var colorSpectrum = colorbrewer.PuBu[9];
+var colorSpectrum = ["#fde0dd","#fcc5c0","#fa9fb5","#f768a1","#dd3497","#ae017e","#7a0177","#49006a"] ;
+var colorSpectrum = ["#E463FF", "#9062E8", "#788AFF","#62B2E8","#6BFFF5"];
+var colorSpectrum = ["#98d8c8", "#E463FF", "#9062E8", "#788AFF","#62B2E8","#6BFFF5"];
+
 var colorScale = d3.scale.ordinal()
-    .domain([uniqueTypes.length, 0])
-    .range(colorbrewer.PuBu[9]);
+    .domain([0, uniqueTypes.length])
+    .range(colorSpectrum);
 
 	if (uniqueTypes.length>0){		
 		dots = d3.select( chart3d )

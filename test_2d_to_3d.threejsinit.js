@@ -287,8 +287,9 @@ function buildTextMesh(location, text) {
 	
 	console.log(textGeo)
 
-	var  color = new THREE.Color();
-	color.setRGB(100, 100, 100);
+	var color = 0x888888;
+//THREE.Color();
+//	color.setRGB(255,  0, 0);
 	var  textMaterial = new THREE.MeshBasicMaterial({ color: color });
 
 	var textMesh = new THREE.Mesh(textGeo , textMaterial);
