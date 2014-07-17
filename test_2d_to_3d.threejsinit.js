@@ -27,7 +27,7 @@ var padding = 35;
 var textX, textY, textZ;
 
 var tickMarks;
-
+var axesLabels;
 
 function threejs_d3_functions() {
 	/* THIS IS EVERYTHING TO KNIT D3 AND THREEJS TOGETHER */
@@ -173,7 +173,7 @@ function drawAxes() {
 
 	var length = maxAxis;
 	var axes = new THREE.Object3D();
-	var axesLabels = new THREE.Object3D();
+	axesLabels = new THREE.Object3D();
 
 	var axescolor = 0x888888;
 	var axesdashed = false;
@@ -235,6 +235,7 @@ function buildTextMesh(location, text) {
 		font: "helvetiker",
 		style: "normal"
 	});
+
 	
 	console.log(textGeo)
 
@@ -246,6 +247,7 @@ function buildTextMesh(location, text) {
 	textMesh.position.x = location.x;
 	textMesh.position.y = location.y;
 	textMesh.position.z = location.z;
+	//textMesh.quaternion.copy( camera.quaternion );
 
 	return textMesh;
 //	scene.add(textMesh);
@@ -291,9 +293,16 @@ function threejs_update() {
 	controls.update();
 	stats.update();
 
-    var currentTime = Date.now()*0.001;
+    //var currentTime = Date.now()*0.001;
 
 	TWEEN.update();
+
+//	axesLabels
+//	tickMarks
+/*	for(i = 0; i < axesLabels.length; i++) {
+	//textMesh.quaternion.copy( camera.quaternion );
+		axesLabels[i].rotation.copy( camera.rotation );
+	} */
 }
 
 function onWindowResize() {
