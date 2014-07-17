@@ -202,6 +202,48 @@ function drawAxes() {
 	
 	}
 
+function changeAxisText(axis, text) {
+	switch(axis) {
+		case "xaxis":
+			var xAxisPosition = xAxisMesh.position;
+			axesLabels.remove(xAxisMesh);
+			xAxisMesh = buildTextMesh( xAxisPosition, text) ;
+			axesLabels.add(xAxisMesh);
+			break;
+		case "yaxis":
+			var yAxisPosition = yAxisMesh.position;
+			axesLabels.remove(yAxisMesh);
+			yAxisMesh = buildTextMesh( yAxisPosition, text) ;
+			axesLabels.add(yAxisMesh);
+			break;
+		case "zaxis":
+			var zAxisPosition = zAxisMesh.position;
+			axesLabels.remove(zAxisMesh);
+			zAxisMesh = buildTextMesh( zAxisPosition, text) ;
+			axesLabels.add(zAxisMesh);
+			break;
+	}	
+}
+
+function clearTickMarks(axis) {
+	switch(axis) {
+		case "all":
+			scene.remove(tickMarks); 
+			tickMarks = new THREE.Object3D(); 
+			scene.add(tickMarks);
+			break;
+		default:
+			for(var i = 0; i < tickMarks.children.length; i++) {
+				var thisMark = tickMarks.children[i];
+				if(thisMark.axis == axis) {
+					tickMarks.remove(thisMark);
+				}
+			}
+			break;
+	}	
+}
+
+
 function buildTickMark ( axis, amplitude, text)  {
 	var coordsTick;
 	var coordsText;
@@ -226,6 +268,7 @@ function buildTickMark ( axis, amplitude, text)  {
 	}	
 	thisTick.add( buildTextMesh( coordsTick , tick) );
 	thisTick.add( buildTextMesh( coordsText , text) );
+	thisTick.axis = axis;
 //	scene.add( buildTextMesh( new THREE.Vector3( 300, 300, 0 ), "Y AXISsS") );
 	return thisTick;
 }
