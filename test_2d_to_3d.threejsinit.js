@@ -161,17 +161,15 @@ function threejs_environment_init() {
 	stats.domElement.style.zIndex = 100;
 	document.getElementById('stats').appendChild( stats.domElement );
 
-	// AXES
-	axes = buildAxes( maxAxis );
-
-	scene.add( axes );
-
 
 }
 
 
-function buildAxes( length ) {
+function drawAxes() {
+
+	var length = maxAxis;
 	var axes = new THREE.Object3D();
+	var axesLabels = new THREE.Object3D();
 
 	var axescolor = 0x888888;
 	var axesdashed = false;
@@ -183,10 +181,12 @@ function buildAxes( length ) {
 	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, length ), axescolor, axesdashed ) ); // +Z
 //	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, -length ), axescolor, axesdashed) ); // -Z
 
-	axes.add( buildTextMesh( new THREE.Vector3( length, 0, 0 ), "X AXIS") );
-	axes.add( buildTextMesh( new THREE.Vector3( 0, length, 0 ), "Y AXIS") );
-	axes.add( buildTextMesh( new THREE.Vector3( 0, 0, length ), "Z AXIS") );
-	return axes;
+	axesLabels.add( buildTextMesh( new THREE.Vector3( length, 0, 0 ), "X AXIS") );
+	axesLabels.add( buildTextMesh( new THREE.Vector3( 0, length, 0 ), "Y AXIS") );
+	axesLabels.add( buildTextMesh( new THREE.Vector3( 0, 0, length ), "Z AXIS") );
+
+	scene.add(axes);
+	scene.add(axesLabels);
 }
 
 
@@ -277,6 +277,9 @@ $( document ).ready(function() {
 
 	// initiate threejs renderer
 	threejs_environment_init();
+
+	// draw things
+	drawAxes();
 
 	// draw things
 	drawThings();
