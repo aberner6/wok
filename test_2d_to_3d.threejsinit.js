@@ -201,7 +201,7 @@ function buildAxis( src, dst, colorHex, dashed ) {
 	var axis = new THREE.Line( geom, mat, THREE.LinePieces );
 
 //FOR TEXT
-    var  textY = new THREE.TextGeometry('Y AXIS', {
+    var  textYa = new THREE.TextGeometry('Y AXIS', {
         size: 18,
         height: 2,
         curveSegments: 6,
@@ -214,10 +214,10 @@ function buildAxis( src, dst, colorHex, dashed ) {
 var  color = new THREE.Color();
 color.setRGB(255, 255, 255);
 var  textMaterial = new THREE.MeshBasicMaterial({ color: color });
-var  textY = new THREE.Mesh(textY , textMaterial);
-textY.position.x = geom.vertices[0].x;
-textY.position.y = geom.vertices[1].y;
-textY.position.z = geom.vertices[0].z;
+var  textY = new THREE.Mesh(textYa , textMaterial);
+// textY.position.x = geom.vertices[0].x;
+// textY.position.y = geom.vertices[1].y;
+// textY.position.z = geom.vertices[0].z;
 
     var  textX = new THREE.TextGeometry('X AXIS', {
         size: 18,
@@ -249,8 +249,8 @@ textZ.position.x = geom.vertices[0].x;
 textZ.position.y = geom.vertices[0].y;
 textZ.position.z = geom.vertices[1].z;
 scene.add(textY);
-scene.add(textX);
-scene.add(textZ);
+// scene.add(textX);
+// scene.add(textZ);
 //FOR TEXT
 	return axis;
 }
