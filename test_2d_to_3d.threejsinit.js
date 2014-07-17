@@ -26,6 +26,7 @@ var padding = 35;
 
 var textX, textY, textZ;
 
+var xAxisMesh, yAxisMesh, zAxisMesh;
 var tickMarks;
 var axesLabels;
 
@@ -182,9 +183,15 @@ function drawAxes() {
 	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, length, 0 ), axescolor, axesdashed ) ); // +Y
 	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, length ), axescolor, axesdashed ) ); // +Z
 
-	axesLabels.add( buildTextMesh( new THREE.Vector3( length, 0, 0 ), "X AXIS") );
-	axesLabels.add( buildTextMesh( new THREE.Vector3( 0, length, 0 ), "Y AXIS") );
-	axesLabels.add( buildTextMesh( new THREE.Vector3( 0, 0, length ), "Z AXIS") );
+	xAxisMesh = buildTextMesh( new THREE.Vector3( length + 10, -10, 0 ), "X AXIS") ;
+	yAxisMesh = buildTextMesh( new THREE.Vector3( -30, length + 10, 0 ), "Y AXIS") ;
+	zAxisMesh = buildTextMesh( new THREE.Vector3( -30, -10, length + 10 ), "Z AXIS") ;
+//	zAxisMesh.lookAt(0, 0,rotation.set(Math.Pi / 2, 0,0);
+//	zAxisMesh.rotation.set(3.14 / 2, 0,0);
+//	xAxisMesh.rotation.set(3.14 / 4, 0,0);
+	axesLabels.add( xAxisMesh );
+	axesLabels.add( yAxisMesh );
+	axesLabels.add( zAxisMesh );
 
 	scene.add(axes);
 	scene.add(axesLabels);
@@ -199,6 +206,7 @@ function buildTickMark ( axis, amplitude, text)  {
 	var coordsTick;
 	var coordsText;
 	var tick;
+	var thisTick = new THREE.Object3D();
 	switch(axis) {
 		case "xaxis":
 			coordsTick = new THREE.Vector3(amplitude, -5, 0);
@@ -216,10 +224,6 @@ function buildTickMark ( axis, amplitude, text)  {
 			tick = "—";
 			break;
 	}	
-	console.log("FUCK I AM BUILDING A TICK MARK");
-	console.log(coordsTick);
-	console.log(coordsText);
-	var thisTick = new THREE.Object3D();
 	thisTick.add( buildTextMesh( coordsTick , tick) );
 	thisTick.add( buildTextMesh( coordsText , text) );
 //	scene.add( buildTextMesh( new THREE.Vector3( 300, 300, 0 ), "Y AXISsS") );
@@ -229,7 +233,7 @@ function buildTickMark ( axis, amplitude, text)  {
 function buildTextMesh(location, text) {
 	console.log("printping +" + text);
 	var textGeo = new THREE.TextGeometry(text, {
-		size: 18,
+		size: 16,
 		height: 2,
 		curveSegments: 6,
 		font: "helvetiker",
@@ -240,13 +244,14 @@ function buildTextMesh(location, text) {
 	console.log(textGeo)
 
 	var  color = new THREE.Color();
-	color.setRGB(255, 255, 255);
+	color.setRGB(100, 100, 100);
 	var  textMaterial = new THREE.MeshBasicMaterial({ color: color });
 
 	var textMesh = new THREE.Mesh(textGeo , textMaterial);
 	textMesh.position.x = location.x;
 	textMesh.position.y = location.y;
 	textMesh.position.z = location.z;
+	textMesh.orientation
 	//textMesh.quaternion.copy( camera.quaternion );
 
 	return textMesh;
@@ -299,10 +304,17 @@ function threejs_update() {
 
 //	axesLabels
 //	tickMarks
-/*	for(i = 0; i < axesLabels.length; i++) {
+	xAxisMesh.rotation.set(camera.rotation.x,0,0);
+	yAxisMesh.rotation.set(camera.rotation.x,0,0);
+	zAxisMesh.rotation.set(camera.rotation.x,0,0);
+	for(i = 0; i < tickMarks.children.length; i++) {
 	//textMesh.quaternion.copy( camera.quaternion );
-		axesLabels[i].rotation.copy( camera.rotation );
-	} */
+		for (j = 0; j < tickMarks.children[i].children.length; j++) {
+			tickMarks.children[i].children[j].rotation.set(camera.rotation.x,0,0);
+//		axesLabels.rotation =   camera.rotation ;
+		//axesLabels.children[i].lookAt(camera.position);
+		}
+	} 
 }
 
 function onWindowResize() {
