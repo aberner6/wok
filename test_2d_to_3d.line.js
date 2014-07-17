@@ -9,7 +9,6 @@ var uniqueKandel;
 var kandelTotals = []; 
 
 
-var tickMarks;
 
 
 function drawLine(thisscene) {
@@ -67,12 +66,10 @@ var storeCited = [];
 	var randomX, randomY, randomZ;
 
 
-	tickMarks = new THREE.Object3D();
-	thisscene.add(tickMarks);
 
-	tickMarks.add( buildTickMark( "yaxis", 440 , "y40") );
+	/*tickMarks.add( buildTickMark( "yaxis", 440 , "y40") );
 	tickMarks.add( buildTickMark( "zaxis", 440 , "z40") );
-	tickMarks.add( buildTickMark( "xaxis", 440 , "x40") );
+	tickMarks.add( buildTickMark( "xaxis", 440 , "x40") ); */
 
 
 	d3.csv("memory_neuro_only_some_scientists.csv", function(data) {

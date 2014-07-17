@@ -26,6 +26,7 @@ var padding = 35;
 
 var textX, textY, textZ;
 
+var tickMarks;
 
 
 function threejs_d3_functions() {
@@ -187,7 +188,12 @@ function drawAxes() {
 
 	scene.add(axes);
 	scene.add(axesLabels);
-}
+
+	tickMarks = new THREE.Object3D();
+	scene.add(tickMarks);
+
+	
+	}
 
 function buildTickMark ( axis, amplitude, text)  {
 	var coordsTick;

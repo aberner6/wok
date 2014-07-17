@@ -38,6 +38,12 @@ function dotTotals() {
             }       		
 	})
 	.attr("position.z", 0)
+
+	tickMarks.add( buildTickMark( "xaxis", d3chart.xScale(1965) , "1965") );
+	tickMarks.add( buildTickMark( "xaxis", d3chart.xScale(1989) , "1989") );
+	tickMarks.add( buildTickMark( "xaxis", d3chart.xScale(2014) , "2014") );
+
+
 }
 
 function dotCited() {
@@ -82,7 +88,7 @@ function loadBar(thisYear) {
 }
 
 function prepCitations(){
-console.log("prep");
+	console.log("prep");
 	dots
 	.transition()
 	.duration(2000)
@@ -99,6 +105,10 @@ console.log("prep");
 //flip side
 cameraPositionTween({x: 550, y: -750, z: 1249}, {x: 775.9634148076755, y: -468.53095876153293, z: -775.7814568827}, 2000*globalSpeed, 9000*globalSpeed, false);
 
+	tickMarks.add( buildTickMark( "zaxis", d3chart.citeYScale(2817) , "2817") );
+	tickMarks.add( buildTickMark( "zaxis", d3chart.citeYScale(903) , "903") );
+	tickMarks.add( buildTickMark( "zaxis", d3chart.citeYScale(683) , "683") );
+	tickMarks.add( buildTickMark( "zaxis", d3chart.citeYScale(304) , "304") );
 }
 
 function doCitations(){
@@ -242,21 +252,27 @@ function drawTestPyramids(thisscene) {
 
 function loadDots(){
 	console.log("in here")
-firstLoadVar = setInterval(function(){ 
-if(totals.length>0){    
-    if (firstLoad<=uniqueYears.length){
-        var oneYear = uniqueYears[firstLoad];
-        // console.log("going into loadbar TO READ " + oneYear);
-        if (oneYear!="undefined"){
-        loadBar(oneYear); //store inner subjects is the loading function for the big data      
-    	firstLoad++;
-    	} 
-    }
-    else {
-    	clearInterval(firstLoadVar); //and stop loading stuff in
-    }
-}
-},400);	
+	firstLoadVar = setInterval(function(){ 
+	if(totals.length>0){    
+		if (firstLoad<=uniqueYears.length){
+			var oneYear = uniqueYears[firstLoad];
+			// console.log("going into loadbar TO READ " + oneYear);
+			if (oneYear!="undefined"){
+			loadBar(oneYear); //store inner subjects is the loading function for the big data      
+			firstLoad++;
+			} 
+		}
+		else {
+			clearInterval(firstLoadVar); //and stop loading stuff in
+		}
+	}
+	},400);	
+
+	tickMarks.add( buildTickMark( "yaxis", d3chart.heightScale(410) , "410") );
+	tickMarks.add( buildTickMark( "yaxis", d3chart.heightScale(228) , "228") );
+	tickMarks.add( buildTickMark( "yaxis", d3chart.heightScale(139) , "139") );
+
+
 }
 
 
