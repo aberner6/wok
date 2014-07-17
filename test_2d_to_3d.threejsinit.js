@@ -186,6 +186,10 @@ function buildAxes( length ) {
 }
 
 
+var textYGeo, textYMesh;
+
+//function addText(location, :
+
 function buildAxis( src, dst, colorHex, dashed ) {
 	var geom = new THREE.Geometry(),
 		mat; 
@@ -203,7 +207,7 @@ function buildAxis( src, dst, colorHex, dashed ) {
 	var axis = new THREE.Line( geom, mat, THREE.LinePieces );
 
 //FOR TEXT
-    var  textYa = new THREE.TextGeometry('Y AXIS', {
+  textYGeo = new THREE.TextGeometry('Y AXIS', {
         size: 18,
         height: 2,
         curveSegments: 6,
@@ -211,24 +215,28 @@ function buildAxis( src, dst, colorHex, dashed ) {
         style: "normal"
 
     });
-	console.log(textY)
+	console.log(textYGeo)
+
+		console.log("this is geom"); console.log(geom);
 
 var  color = new THREE.Color();
 color.setRGB(255, 255, 255);
 var  textMaterial = new THREE.MeshBasicMaterial({ color: color });
-textY = new THREE.Mesh(textYa , textMaterial);
-textY.position.x = geom.vertices[0].x;
-textY.position.y = geom.vertices[1].y;
-textY.position.z = geom.vertices[0].z;
-
+textYMesh = new THREE.Mesh(textYGeo , textMaterial);
+textYMesh.position.x = dst.x;
+textYMesh.position.y = dst.y;
+textYMesh.position.z = dst.z;
+/*textYMesh.position.x = geom.vertices[0].x;
+textYMesh.position.y = geom.vertices[1].y;
+textYMesh.position.z = geom.vertices[0].z; */
     var  textX = new THREE.TextGeometry('X AXIS', {
         size: 18,
         height: 2,
         curveSegments: 6,
         font: "helvetiker",
         style: "normal"
-
     });
+
 	console.log(textX)
 
 textX = new THREE.Mesh(textX , textMaterial);
@@ -250,38 +258,13 @@ textZ = new THREE.Mesh(textZ , textMaterial);
 textZ.position.x = geom.vertices[0].x;
 textZ.position.y = geom.vertices[0].y;
 textZ.position.z = geom.vertices[1].z;
-scene.add(textY);
-scene.add(textX);
-scene.add(textZ);
+scene.add(textYMesh);
+// scene.add(textX);
+// scene.add(textZ);
 //FOR TEXT
 	return axis;
 }
 
-// if(typeof axis!="undefined"){
-// 	console.log("text")
-// //FOR TEXT
-//     var  textGeo = new THREE.TextGeometry('Y AXIS', {
-//         size: 5,
-//         height: 2,
-//         curveSegments: 6,
-//         font: "helvetiker",
-//         style: "normal"
-
-//     });
-// 	console.log(textGeo)
-
-// var  color = new THREE.Color();
-// color.setRGB(255, 255, 255);
-// var  textMaterial = new THREE.MeshBasicMaterial({ color: color });
-// var  text = new THREE.Mesh(textGeo , textMaterial);
-
-// text.position.x = axis.geom.vertices[1].x;
-// text.position.y = axis.geom.vertices[1].y;
-// text.position.z = axis.geom.vertices[1].z;
-// text.rotation = camera.rotation;
-// scene.add(text);
-// //FOR TEXT
-// }
 function threejs_animate() {
 
 	requestAnimationFrame( threejs_animate );
