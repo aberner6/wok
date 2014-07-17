@@ -18,7 +18,7 @@ function drawLine(thisscene) {
 
 	var uniqueAuthors;
 	var uniqueKeywords;
-	var journalTypes = [];
+	var documentTypes = [];
 
 	var keywords = [];
 	var goSecond = false;
@@ -73,7 +73,7 @@ var storeCited = [];
 			theseAuthors.push(authors[i][j]);            
 			}
 
-			journalTypes[i] = data[i].Sourcetitle;
+			documentTypes[i] = data[i]['Document Type'];
 		}
 		console.log(theseAuthors[0])
 
@@ -82,7 +82,7 @@ var storeCited = [];
 		function onlyUnique(value, index, self) { 
 			return self.indexOf(value) === index;
 		} 
-		uniqueTypes = journalTypes.filter( onlyUnique ); //finds unique names
+		uniqueTypes = documentTypes.filter( onlyUnique ); //finds unique names
 		uniqueYears = years.filter( onlyUnique ); //finds unique names
 
 	////consolidates the Value for all values of a given Name
@@ -115,7 +115,7 @@ var storeCited = [];
 			}
 			}
 		}            	
-		console.log(kandelData)
+		// console.log(kandelData)
 var maxKandel = d3.max(kandelData, function(d,i) { 
 	// console.log(i+"index"+" and journal "+d.Sourcetitle+" and title "+d.Title);
 
@@ -147,6 +147,7 @@ for (i=0; i<kandelData.length; i++){
 		} 
 
 
+var maxCited = 2817;
 
 	if (uniqueTypes.length>0){		
 		dots = d3.select( chart3d )
@@ -155,11 +156,16 @@ for (i=0; i<kandelData.length; i++){
 			.enter()
 			.append(function(d, i) { 
         for (j=0; j<uniqueTypes.length; j++){
-            if(d.Sourcetitle==uniqueTypes[j]){
+            if(d['Document Type']==uniqueTypes[j]){
+            	if (d.Cited>maxCited/8){
+            	console.log(color(j)+" color "+uniqueTypes[j]+" type");
+            	}
+
             if (i==5140){
             	console.log(d.Title+d.Authors+d.Year+d.Cited);
             	console.log(parseInt("0x" + color(j).substr(1), 16));
-            }		            	
+            }		
+
 				return newCircleSprite(parseInt("0x" + color(j).substr(1), 16));
             }       
         }  				
@@ -181,7 +187,6 @@ for (i=0; i<kandelData.length; i++){
 			.domain([minYear, maxYear]) //not min year to max year
 			.range([0, maxX]);
      
-var maxCited = 2817;
 		d3chart.citeYScale = d3.scale.linear()
 			.domain([0, maxCited])
 			.range([0, maxY])        
