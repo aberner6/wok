@@ -155,7 +155,7 @@ else{
 	.transition()
 	.duration(2000)
 	.attr("position.z", function(d){
-		return d.Cited; 
+		return (d3chart.citeYScale(d.Cited)); 
 	})	
 }
 //shows an inbetween

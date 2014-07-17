@@ -53,7 +53,7 @@ var kandelData = [];
 
 	var lineX = [];
 	var lineY = [];
-
+var storeCited = [];
 
 	var randomX, randomY, randomZ;
 
@@ -62,7 +62,12 @@ var kandelData = [];
 			thisData=(data);
 		for (i = 0;i<thisData.length; i++){ 
 			years[i] = data[i].Year;
-
+			if(data[i].Cited>0){
+			storeCited[i] = data[i].Cited;
+		}
+		else {
+			storeCited[i]=(0);
+		}
 			authors[i] = data[i].Authors.split("., ");
 			for (j=0; j<authors[i].length; j++){
 			theseAuthors.push(authors[i][j]);            
@@ -111,6 +116,17 @@ var kandelData = [];
 			}
 		}            	
 		console.log(kandelData)
+var maxKandel = d3.max(kandelData, function(d,i) { 
+	// console.log(i+"index"+" and journal "+d.Sourcetitle+" and title "+d.Title);
+
+	return d.Cited; 
+});
+console.log(maxKandel)
+for (i=0; i<kandelData.length; i++){
+	if(kandelData[i].Cited==94){
+	console.log(kandelData[i].Year+" year "+i+"index"+" and journal "+kandelData[i].Sourcetitle+" and title "+kandelData[i].Title);
+	}
+}
 		for (i=0; i<kandelData.length; i++){
 			kandelYears[i] = kandelData[i].Year;
 		}
@@ -204,7 +220,8 @@ var maxSevenCited = d3.max(sevenData, function(d) { return d.Cited; });
 			.domain([0, maxSevenCited])
 			.range([0, 300])        
 
-var maxCited = d3.max(data, function(d) { return d.Cited; });
+var maxCited = d3.max(storeCited, function(d) { return d; });
+console.log(maxCited)
 		d3chart.citeYScale = d3.scale.linear()
 			.domain([0, maxCited])
 			.range([0, 300])        

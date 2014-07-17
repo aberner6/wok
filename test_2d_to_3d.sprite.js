@@ -38,6 +38,10 @@ function drawSprite(csvFilename, thisscene) {
 
 	lineChart = new THREE.Object3D();
 
+
+
+
+
 	thisscene.add( secondChart );
 	thisscene.add( chart3d );
 	thisscene.add(lineChart);
