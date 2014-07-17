@@ -324,6 +324,9 @@ $( document ).ready(function() {
 	$("#pyramids").click(function() {
 		switch(pyramidcount++) {
 			case 0:
+				drawParticles(scene); //just for testing
+				break;
+			case 1:
 				drawTestPyramids(scene); //just for testing
 				break;
 		}

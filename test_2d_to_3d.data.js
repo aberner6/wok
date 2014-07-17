@@ -12,6 +12,9 @@ var firstLoad = 0;
 var d3chart = d3chart || {};
 
 
+var pyramidMeshes = [];
+var particles = [];
+
 function dotTotals() {
 
 	console.log("allTotals");
@@ -170,7 +173,38 @@ function drawThings() {
 
 }
 
-var pyramidMeshes = [];
+
+function drawParticles(thisscene) {
+
+	parameters = [
+		[ [1, 1, 0.5], 5 ],
+		[ [0.95, 1, 0.5], 4 ],
+		[ [0.90, 1, 0.5], 3 ],
+		[ [0.85, 1, 0.5], 2 ],
+		[ [0.80, 1, 0.5], 1 ]
+	];
+
+	var materials;
+
+	for ( i = 0; i < parameters.length; i ++ ) {
+
+		color = parameters[i][0];
+		size  = parameters[i][1];
+
+		materials[i] = new THREE.PointCloudMaterial( { size: size } );
+
+		particles = new THREE.PointCloud( geometry, materials[i] );
+
+		particles.rotation.x = Math.random() * 6;
+		particles.rotation.y = Math.random() * 6;
+		particles.rotation.z = Math.random() * 6;
+
+		thisscene.add( particles );
+
+	}
+
+}
+
 function drawTestPyramids(thisscene) {
 	var geometry = new THREE.CylinderGeometry( 0, 10, 30, 4, 1 );
 	  var material = new THREE.MeshLambertMaterial( { color:0xffffff, shading: THREE.FlatShading } );
