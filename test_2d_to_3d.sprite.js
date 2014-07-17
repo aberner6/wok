@@ -45,6 +45,7 @@ function drawSprite(csvFilename, thisscene) {
 	thisscene.add( secondChart );
 	thisscene.add( chart3d );
 	thisscene.add(lineChart);
+	
 // Add axes
 	// d3.csv(csvFilename, function(error, data) {
 // if (uniqueTypes.length==372){

@@ -24,6 +24,8 @@ var maxY = maxAxis;
 var cameraDistanceMult = 2.0;
 var padding = 35;
 
+var textX, textY, textZ;
+
 
 
 function threejs_d3_functions() {
@@ -214,10 +216,10 @@ function buildAxis( src, dst, colorHex, dashed ) {
 var  color = new THREE.Color();
 color.setRGB(255, 255, 255);
 var  textMaterial = new THREE.MeshBasicMaterial({ color: color });
-var  textY = new THREE.Mesh(textYa , textMaterial);
-// textY.position.x = geom.vertices[0].x;
-// textY.position.y = geom.vertices[1].y;
-// textY.position.z = geom.vertices[0].z;
+textY = new THREE.Mesh(textYa , textMaterial);
+textY.position.x = geom.vertices[0].x;
+textY.position.y = geom.vertices[1].y;
+textY.position.z = geom.vertices[0].z;
 
     var  textX = new THREE.TextGeometry('X AXIS', {
         size: 18,
@@ -229,7 +231,7 @@ var  textY = new THREE.Mesh(textYa , textMaterial);
     });
 	console.log(textX)
 
-var  textX = new THREE.Mesh(textX , textMaterial);
+textX = new THREE.Mesh(textX , textMaterial);
 textX.position.x = geom.vertices[1].x;
 textX.position.y = geom.vertices[0].y;
 textX.position.z = geom.vertices[0].z;
@@ -244,17 +246,16 @@ textX.position.z = geom.vertices[0].z;
     });
 	console.log(textZ)
 
-var  textZ = new THREE.Mesh(textZ , textMaterial);
+textZ = new THREE.Mesh(textZ , textMaterial);
 textZ.position.x = geom.vertices[0].x;
 textZ.position.y = geom.vertices[0].y;
 textZ.position.z = geom.vertices[1].z;
 scene.add(textY);
-// scene.add(textX);
-// scene.add(textZ);
+scene.add(textX);
+scene.add(textZ);
 //FOR TEXT
 	return axis;
 }
-
 
 // if(typeof axis!="undefined"){
 // 	console.log("text")

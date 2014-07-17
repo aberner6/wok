@@ -148,23 +148,7 @@ for (i=0; i<kandelData.length; i++){
 
 
 
-
-
-// var sevenYears = ["2014", "2013", "2012", "2011", "2010", "2009", "2008"];
-		// for (i = 0;i<thisData.length; i++){ 
-		// 	for (j=0; j<sevenYears.length; j++){
-		// 	if (thisData[i].Year == sevenYears[j]){
-		// 		sevenData.push(thisData[i]);
-		// 		}
-		// 	}
-		// }	
-		// moreDots = d3.select( secondChart )
-		// 	.selectAll("THREE.Mesh")
-		// 	.data(kandelData)
-		// 	.enter()
-		// 	.append(function(d, i) { 
 	if (uniqueTypes.length>0){		
-// if (uniqueTypes.length==372){
 		dots = d3.select( chart3d )
 			.selectAll("THREE.Mesh")
 			.data(thisData)
@@ -180,23 +164,6 @@ for (i=0; i<kandelData.length; i++){
             }       
         }  				
 			});		
-// }
-
-
-
-		moreDots = d3.select( secondChart )
-			.selectAll("THREE.Mesh")
-			.data(kandelData)
-			.enter()
-			.append(function(d, i) { 
-        		for (j=0; j<uniqueTypes.length; j++){
-            		if(d.Sourcetitle==uniqueTypes[j]){
-						return newCircleSprite(parseInt("0x" + color(j).substr(1), 16));
-            		}       
-        		}  						
-				// return newSphere(7057110);
-				// return newCircleSprite(parseInt("0x" + color(i).substr(1), 16));
-			});	
 		}	
 
 
@@ -213,19 +180,7 @@ for (i=0; i<kandelData.length; i++){
 		d3chart.xScale = d3.scale.linear()
 			.domain([minYear, maxYear]) //not min year to max year
 			.range([0, maxX]);
-
-var sevenYears = ["2014", "2013", "2012", "2011", "2010", "2009", "2008"];
-		d3chart.sevenScale = d3.scale.linear()
-			.domain([2008, 2014]) //not min year to max year
-			.range([100, maxX]);
-
-var maxSevenCited = d3.max(sevenData, function(d) { return d.Cited; });
-		d3chart.citeSevenYScale = d3.scale.linear()
-			.domain([0, maxSevenCited])
-			.range([0, 300])        
-
-// var maxCited = d3.max(storeCited, function(d) { return d; });
-// console.log(maxCited)
+     
 var maxCited = 2817;
 		d3chart.citeYScale = d3.scale.linear()
 			.domain([0, maxCited])
@@ -242,21 +197,6 @@ var maxCited = 2817;
 		d3chart.heightScale = d3.scale.linear()
 			.domain([0, maxEntries])
 			.range([0, maxY]);
-
-
-		// d3chart.kandelHeightScale = d3.scale.linear()
-		// 	.domain([0, maxEntriesKandel])
-		// 	.range([0, maxY]);
-
-
-
-
-// d3chart.randomX = d3.scale.linear()
-//     .domain([0,1]) 
-//     .range([-width*3, width*3]);
-// d3chart.randomY = d3.scale.linear()
-//     .domain([0,1]) 
-//     .range([-height*3, height*3]);
 
 d3chart.randomX = d3.scale.linear()
     .domain([0,1]) 
