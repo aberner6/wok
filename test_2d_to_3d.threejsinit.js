@@ -269,6 +269,9 @@ function onWindowResize() {
 	renderer.setSize( width, height);
 }
 
+/************************************/
+/****** SEQUENCE OF OPERATIONS ******/
+/************************************/
 
 $( document ).ready(function() {
 
@@ -278,7 +281,7 @@ $( document ).ready(function() {
 	// initiate threejs renderer
 	threejs_environment_init();
 
-	// draw things
+	// draw axes
 	drawAxes();
 
 	// draw things
