@@ -8,6 +8,10 @@ var kandelYears = [];
 var uniqueKandel;
 var kandelTotals = [];
 function drawLine(thisscene) {
+
+	chart3d = new THREE.Object3D();
+	thisscene.add( chart3d );
+
 	straightLine = [];
 	d3chart = d3chart || {};
 

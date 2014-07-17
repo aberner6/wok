@@ -33,7 +33,7 @@ function drawSprite(csvFilename, thisscene) {
 	var color = d3.scale.category20c();
 
 	// create objects, add them to thisscene
-	chart3d = new THREE.Object3D();
+//	chart3d = new THREE.Object3D();
 	secondChart = new THREE.Object3D();
 
 	lineChart = new THREE.Object3D();
@@ -43,7 +43,7 @@ function drawSprite(csvFilename, thisscene) {
 
 
 	thisscene.add( secondChart );
-	thisscene.add( chart3d );
+//	thisscene.add( chart3d );
 	thisscene.add(lineChart);
 	
 // Add axes

@@ -174,47 +174,34 @@ function drawThings() {
 }
 
 
+var particle;
+
 function drawParticles(thisscene) {
 
 	var geometry = new THREE.Geometry();
 
 	for ( i = 0; i < 2000; i ++ ) {
-
 		var vertex = new THREE.Vector3();
 		vertex.x = Math.random() * 2000 - 1000;
 		vertex.y = Math.random() * 2000 - 1000;
 		vertex.z = Math.random() * 2000 - 1000;
-
 		geometry.vertices.push( vertex );
-
 	}
 
-	var parameters = [
-		[ [1, 1, 0.5], 105 ],
-		[ [0.95, 1, 0.5], 40 ],
-		[ [0.90, 1, 0.5], 3 ],
-		[ [0.85, 1, 0.5], 2 ],
-		[ [0.80, 1, 0.5], 1 ]
-	];
+	var pointMaterial = new THREE.PointCloudMaterial( { 
+		color: 0xFFFFFF,
+		size: 15, 
+		transparent: true, 
+		opacity: 0.6
+	 } );
 
-	var materials = [];
+	particles = new THREE.PointCloud( geometry, pointMaterial );
 
-	for ( i = 0; i < parameters.length; i ++ ) {
+	particles.rotation.x = Math.random() * 6;
+	particles.rotation.y = Math.random() * 6;
+	particles.rotation.z = Math.random() * 6;
 
-		color = parameters[i][0];
-		size  = parameters[i][1];
-
-		materials[i] = new THREE.PointCloudMaterial( { size: size } );
-
-		particles = new THREE.PointCloud( geometry, materials[i] );
-
-		particles.rotation.x = Math.random() * 6;
-		particles.rotation.y = Math.random() * 6;
-		particles.rotation.z = Math.random() * 6;
-
-		scene.add( particles );
-
-	}
+	scene.add( particles );
 
 	console.log("particles done");
 
