@@ -172,6 +172,10 @@ for (i=0; i<kandelData.length; i++){
 			.append(function(d, i) { 
         for (j=0; j<uniqueTypes.length; j++){
             if(d.Sourcetitle==uniqueTypes[j]){
+            if (i==5140){
+            	console.log(d.Title+d.Authors+d.Year+d.Cited);
+            	console.log(parseInt("0x" + color(j).substr(1), 16));
+            }		            	
 				return newCircleSprite(parseInt("0x" + color(j).substr(1), 16));
             }       
         }  				
@@ -220,11 +224,12 @@ var maxSevenCited = d3.max(sevenData, function(d) { return d.Cited; });
 			.domain([0, maxSevenCited])
 			.range([0, 300])        
 
-var maxCited = d3.max(storeCited, function(d) { return d; });
-console.log(maxCited)
+// var maxCited = d3.max(storeCited, function(d) { return d; });
+// console.log(maxCited)
+var maxCited = 2817;
 		d3chart.citeYScale = d3.scale.linear()
 			.domain([0, maxCited])
-			.range([0, 300])        
+			.range([0, maxY])        
 
 		
 

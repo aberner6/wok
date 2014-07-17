@@ -45,14 +45,19 @@ else{
 	.transition()
 	.duration(3000)
 	.attr("position.x", function(d, i) { 
+//     thisData[5140].Title
+// "Cognitive neuroscience and the study of memory" 		
+            if (i==5140){
+				console.log("x:"+d3chart.xScale(d['Year']));
+            }		
 		return d3chart.xScale(d['Year']); 
 	})
-	.attr("position.y", function(d, i) { 
+	.attr("position.y", function(d, i) { 		
             for (j = 0; j<uniqueYears.length; j++){
                 if (d.Year==uniqueYears[j]){
                     return (d3chart.heightScale(totals[j]));  //not height-             
                 }
-            }		
+            }       		
 	})
 	.attr("position.z", 0)
 }
@@ -91,13 +96,13 @@ if (kandel==true){
 			if (d['Year']==thisYear){
 				total2++;	
             	var tempKY = (d3chart.heightScale(total2*3))-3; //not height-
-            	console.log(total2)
+            	// console.log(total2)
             	return tempKY;
         	} 
         	return this.position.y;
        })
 	.attr("position.x", function(d, i) {
-			if (d['Year']==thisYear){
+			if (d['Year']==thisYear){			
             	var tempKX = (d3chart.xScale(d['Year'])); //not height-
             	return tempKX;
         	}    	
@@ -121,8 +126,12 @@ else {
 //	.duration(3000)
 	.attr("position.y", function(d, i) {
 			if (d['Year']==thisYear){
+				
 				total1++;	
             	var tempy = (d3chart.heightScale(total1)); //not height-
+            	if (i==5140&&thisYear==1998){
+					console.log("y:"+d3chart.heightScale(total1));
+            	}		            	
             	return tempy;
         	} 
         	return this.position.y;
@@ -147,14 +156,18 @@ if (kandel==true){
 	.transition()
 	.attr("position.z", function(d){
 		// console.log(d.Cited);
-		return d.Cited; 
+		return (d3chart.citeYScale(d.Cited)); 
+		// return d.Cited; 
 	})	
 }
 else{
 	dots
 	.transition()
 	.duration(2000)
-	.attr("position.z", function(d){
+	.attr("position.z", function(d,i){
+        if (i==5140&&d.Year==1998){
+			console.log("y Cited:"+d3chart.citeYScale(d.Cited));
+        }			
 		return (d3chart.citeYScale(d.Cited)); 
 	})	
 }
