@@ -176,15 +176,28 @@ function drawThings() {
 
 function drawParticles(thisscene) {
 
-	parameters = [
-		[ [1, 1, 0.5], 5 ],
-		[ [0.95, 1, 0.5], 4 ],
+	var geometry = new THREE.Geometry();
+
+	for ( i = 0; i < 2000; i ++ ) {
+
+		var vertex = new THREE.Vector3();
+		vertex.x = Math.random() * 2000 - 1000;
+		vertex.y = Math.random() * 2000 - 1000;
+		vertex.z = Math.random() * 2000 - 1000;
+
+		geometry.vertices.push( vertex );
+
+	}
+
+	var parameters = [
+		[ [1, 1, 0.5], 105 ],
+		[ [0.95, 1, 0.5], 40 ],
 		[ [0.90, 1, 0.5], 3 ],
 		[ [0.85, 1, 0.5], 2 ],
 		[ [0.80, 1, 0.5], 1 ]
 	];
 
-	var materials;
+	var materials = [];
 
 	for ( i = 0; i < parameters.length; i ++ ) {
 
@@ -199,9 +212,11 @@ function drawParticles(thisscene) {
 		particles.rotation.y = Math.random() * 6;
 		particles.rotation.z = Math.random() * 6;
 
-		thisscene.add( particles );
+		scene.add( particles );
 
 	}
+
+	console.log("particles done");
 
 }
 

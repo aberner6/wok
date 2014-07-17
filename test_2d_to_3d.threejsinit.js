@@ -178,11 +178,8 @@ function drawAxes() {
 	var axesdashed = false;
 
 	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( length, 0, 0 ), axescolor, axesdashed ) ); // +X
-//	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( -length, 0, 0 ), axescolor, axesdashed) ); // -X
 	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, length, 0 ), axescolor, axesdashed ) ); // +Y
-//	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, -length, 0 ), axescolor, axesdashed ) ); // -Y
 	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, length ), axescolor, axesdashed ) ); // +Z
-//	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, -length ), axescolor, axesdashed) ); // -Z
 
 	axesLabels.add( buildTextMesh( new THREE.Vector3( length, 0, 0 ), "X AXIS") );
 	axesLabels.add( buildTextMesh( new THREE.Vector3( 0, length, 0 ), "Y AXIS") );
