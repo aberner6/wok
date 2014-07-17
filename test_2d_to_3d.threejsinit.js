@@ -161,6 +161,9 @@ function threejs_environment_init() {
 	stats.domElement.style.zIndex = 100;
 	document.getElementById('stats').appendChild( stats.domElement );
 
+	// WINDOW RESIZE
+	window.addEventListener( 'resize', onWindowResize, false );
+
 
 }
 
@@ -289,9 +292,6 @@ $( document ).ready(function() {
 
 	// animate data
 	threejs_animate();  
-
-	// when window is resized, deal with that
-	window.addEventListener( 'resize', onWindowResize, false );
 
 });
 
