@@ -24,6 +24,8 @@ var maxY = maxAxis;
 var cameraDistanceMult = 2.0;
 var padding = 35;
 
+var textX, textY, textZ;
+
 
 
 function threejs_d3_functions() {
@@ -227,7 +229,6 @@ textYMesh.position.z = dst.z;
 /*textYMesh.position.x = geom.vertices[0].x;
 textYMesh.position.y = geom.vertices[1].y;
 textYMesh.position.z = geom.vertices[0].z; */
-
     var  textX = new THREE.TextGeometry('X AXIS', {
         size: 18,
         height: 2,
@@ -238,7 +239,7 @@ textYMesh.position.z = geom.vertices[0].z; */
 
 	console.log(textX)
 
-var  textX = new THREE.Mesh(textX , textMaterial);
+textX = new THREE.Mesh(textX , textMaterial);
 textX.position.x = geom.vertices[1].x;
 textX.position.y = geom.vertices[0].y;
 textX.position.z = geom.vertices[0].z;
@@ -253,7 +254,7 @@ textX.position.z = geom.vertices[0].z;
     });
 	console.log(textZ)
 
-var  textZ = new THREE.Mesh(textZ , textMaterial);
+textZ = new THREE.Mesh(textZ , textMaterial);
 textZ.position.x = geom.vertices[0].x;
 textZ.position.y = geom.vertices[0].y;
 textZ.position.z = geom.vertices[1].z;
