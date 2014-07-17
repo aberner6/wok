@@ -181,19 +181,32 @@ function drawParticles(thisscene) {
 
 	var geometry = new THREE.Geometry();
 
+	var particleRadius = 4000;
 	for ( i = 0; i < 2000; i ++ ) {
 		var vertex = new THREE.Vector3();
-		vertex.x = Math.random() * 2000 - 1000;
-		vertex.y = Math.random() * 2000 - 1000;
-		vertex.z = Math.random() * 2000 - 1000;
+		vertex.x = Math.random() * particleRadius - (particleRadius / 2);
+		vertex.y = Math.random() * particleRadius - (particleRadius / 2);
+		vertex.z = Math.random() * particleRadius - (particleRadius / 2);
 		geometry.vertices.push( vertex );
-	}
+	} 
+/*
+	for ( i = 0; i < 2000; i ++ ) {
+		var vertex = new THREE.Vector3();
+		var u = (Math.random() * 2) - 1; // from -1 to 1
+		var theta = (Math.random() * 2 * Math.Pi); // from 0 to 2pi
+		vertex.x = Math.sqrt(1 - Math.pow(u, 2)) * Math.cos(theta);
+		vertex.y = Math.sqrt(1 - Math.pow(u, 2)) * Math.sin(theta);
+		vertex.z = u;
+		console.log(vertex);
+		geometry.vertices.push( vertex );
+	} */
+
 
 	var pointMaterial = new THREE.PointCloudMaterial( { 
-		color: 0xFFFFFF,
-		size: 15, 
+		color: 0x999999,
+		size: 5, 
 		transparent: true, 
-		opacity: 0.6
+		opacity:1 
 	 } );
 
 	particles = new THREE.PointCloud( geometry, pointMaterial );

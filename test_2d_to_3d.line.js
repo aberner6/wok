@@ -6,7 +6,12 @@ lineRotation.z = 0;//1.55;//0.02;
 
 var kandelYears = [];
 var uniqueKandel;
-var kandelTotals = [];
+var kandelTotals = []; 
+
+
+var tickMarks;
+
+
 function drawLine(thisscene) {
 
 	chart3d = new THREE.Object3D();
@@ -60,6 +65,14 @@ var kandelData = [];
 var storeCited = [];
 
 	var randomX, randomY, randomZ;
+
+
+	tickMarks = new THREE.Object3D();
+	thisscene.add(tickMarks);
+
+	tickMarks.add( buildTickMark( "yaxis", 440 , "y40") );
+	tickMarks.add( buildTickMark( "zaxis", 440 , "z40") );
+	tickMarks.add( buildTickMark( "xaxis", 440 , "x40") );
 
 
 	d3.csv("memory_neuro_only_some_scientists.csv", function(data) {

@@ -189,8 +189,39 @@ function drawAxes() {
 	scene.add(axesLabels);
 }
 
+function buildTickMark ( axis, amplitude, text)  {
+	var coordsTick;
+	var coordsText;
+	var tick;
+	switch(axis) {
+		case "xaxis":
+			coordsTick = new THREE.Vector3(amplitude, -5, 0);
+			coordsText = new THREE.Vector3(amplitude - 10, -35, 0);
+			tick = "|";
+			break;
+		case "yaxis":
+			coordsTick = new THREE.Vector3(-10, amplitude, 0);
+			coordsText = new THREE.Vector3(-60, amplitude, 0);
+			tick = "—";
+			break;
+		case "zaxis":
+			coordsTick = new THREE.Vector3(-10, 0, amplitude);
+			coordsText = new THREE.Vector3(-60, 0, amplitude);
+			tick = "—";
+			break;
+	}	
+	console.log("FUCK I AM BUILDING A TICK MARK");
+	console.log(coordsTick);
+	console.log(coordsText);
+	var thisTick = new THREE.Object3D();
+	thisTick.add( buildTextMesh( coordsTick , tick) );
+	thisTick.add( buildTextMesh( coordsText , text) );
+//	scene.add( buildTextMesh( new THREE.Vector3( 300, 300, 0 ), "Y AXISsS") );
+	return thisTick;
+}
 
 function buildTextMesh(location, text) {
+	console.log("printping +" + text);
 	var textGeo = new THREE.TextGeometry(text, {
 		size: 18,
 		height: 2,
