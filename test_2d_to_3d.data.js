@@ -15,6 +15,7 @@ var d3chart = d3chart || {};
 var pyramidMeshes = [];
 var particles = [];
 
+var globalSpeed = 3.5;
 function dotTotals() {
 
 	console.log("allTotals");
@@ -92,17 +93,17 @@ console.log("prep");
 		return (d3chart.citeYScale(d.Cited)); 
 	})	
 //shows an inbetween
-	cameraPositionTween(camera.position, {x: 702, y: -463, z: 1649}, 2000, 2000*globalSpeed, false);
-	cameraPositionTween({x: 702, y: -463, z: 1649}, {x: 550, y: -750, z: 1249}, 2000, 5000*globalSpeed, false);
+	cameraPositionTween(camera.position, {x: 702, y: -463, z: 1649}, 2000*globalSpeed, 2000*globalSpeed, false);
+	cameraPositionTween({x: 702, y: -463, z: 1649}, {x: 550, y: -750, z: 1249}, 2000*globalSpeed, 5000*globalSpeed, false);
 
 //flip side
-cameraPositionTween({x: 550, y: -750, z: 1249}, {x: 775.9634148076755, y: -468.53095876153293, z: -775.7814568827}, 2000, 9000*globalSpeed, false);
+cameraPositionTween({x: 550, y: -750, z: 1249}, {x: 775.9634148076755, y: -468.53095876153293, z: -775.7814568827}, 2000*globalSpeed, 9000*globalSpeed, false);
 
 }
 
 function doCitations(){
 	console.log("do");
-	cameraPositionTween(camera.position, {x: 424.99573832199366, y: -1112.991560126789, z: 431.5544609364713}, 2000, 0*globalSpeed, false);
+	cameraPositionTween(camera.position, {x: 424.99573832199366, y: -1112.991560126789, z: 431.5544609364713}, 2000*globalSpeed, 0*globalSpeed, false);
 
 
 	// cameraPositionTween(camera.position, {x: 424.99573832199366, y: -1112.991560126789, z: 431.5544609364713}, 2000, 0, false);
@@ -140,7 +141,7 @@ function allCitations(){
 	console.log("all")
 	// cameraPositionTween(camera.position, {x: 424.99573832199366, y: -1112.991560126789, z: 431.5544609364713}, 2000, 0, false);
 	cameraPositionTween(camera.position, {x: -118.70351357384163, y: 316.19463559993744
-, z: 1859.5762029258426}, 2000, 0*globalSpeed, false);	
+, z: 1859.5762029258426}, 2000*globalSpeed, 0*globalSpeed, false);	
 }
 
 
@@ -279,7 +280,7 @@ $( document ).ready(function() {
 	if(b==5){
 	cameraPositionTween(camera.position, {x: 426.0379905336258,
 y: 431.44996989494274,
-z: 3067.3052685035245},2000,0,false);				
+z: 3067.3052685035245},2000*globalSpeed,0*globalSpeed,false);				
 		dotTotals();
 	}	
 	if(b==6){
