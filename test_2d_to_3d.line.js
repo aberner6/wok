@@ -171,7 +171,7 @@ var maxCited = 2817;
 			.append(function(d, i) { 
         for (j=0; j<uniqueTypes.length; j++){
             if(d['Document Type']==uniqueTypes[j]){
-            	if (d.Cited>maxCited/8){
+            	if (d.Cited>maxCited/6){
             	console.log(color(j)+" color "+uniqueTypes[j]+" type");
             	}
 
