@@ -39,6 +39,16 @@ function dotTotals() {
 	})
 	.attr("position.z", 0)
 
+	axesLabels.remove(zAxisMesh);
+
+	var xAxisPos = xAxisMesh.position;
+	axesLabels.remove(xAxisMesh);
+	xAxisMesh = buildTextMesh( xAxisPos, "X (years)") ;
+	axesLabels.add(xAxisMesh);
+
+
+
+	scene.remove(tickMarks); tickMarks = new THREE.Object3D(); scene.add(tickMarks);
 	tickMarks.add( buildTickMark( "xaxis", d3chart.xScale(1965) , "1965") );
 	tickMarks.add( buildTickMark( "xaxis", d3chart.xScale(1989) , "1989") );
 	tickMarks.add( buildTickMark( "xaxis", d3chart.xScale(2014) , "2014") );
@@ -105,6 +115,14 @@ function prepCitations(){
 //flip side
 cameraPositionTween({x: 550, y: -750, z: 1249}, {x: 775.9634148076755, y: -468.53095876153293, z: -775.7814568827}, 2000*globalSpeed, 9000*globalSpeed, false);
 
+	axesLabels.remove(yAxisMesh);
+
+	var zAxisPos = zAxisMesh.position;
+	axesLabels.remove(zAxisMesh);
+	zAxisMesh = buildTextMesh( zAxisPos, "Z (cited)") ;
+	axesLabels.add(zAxisMesh);
+
+	scene.remove(tickMarks); tickMarks = new THREE.Object3D(); scene.add(tickMarks);
 	tickMarks.add( buildTickMark( "zaxis", d3chart.citeYScale(2817) , "2817") );
 	tickMarks.add( buildTickMark( "zaxis", d3chart.citeYScale(903) , "903") );
 	tickMarks.add( buildTickMark( "zaxis", d3chart.citeYScale(683) , "683") );
@@ -229,6 +247,7 @@ function drawParticles(thisscene) {
 
 	console.log("particles done");
 
+	xAxisMesh = buildTextMesh( new THREE.Vector3( length + 40, -10, 0 ), "BLAHX AXIS") ;
 }
 
 function drawTestPyramids(thisscene) {
@@ -268,6 +287,17 @@ function loadDots(){
 	}
 	},400);	
 
+	var xAxisPos = xAxisMesh.position;
+	axesLabels.remove(xAxisMesh);
+	xAxisMesh = buildTextMesh( xAxisPos, "X (years)");
+	axesLabels.add(xAxisMesh);
+
+	var yAxisPos = yAxisMesh.position;
+	axesLabels.remove(yAxisMesh);
+	yAxisMesh = buildTextMesh( yAxisPos, "Y (# of papers)") ;
+	axesLabels.add(yAxisMesh);
+
+	scene.remove(tickMarks); tickMarks = new THREE.Object3D(); scene.add(tickMarks);
 	tickMarks.add( buildTickMark( "yaxis", d3chart.heightScale(410) , "410") );
 	tickMarks.add( buildTickMark( "yaxis", d3chart.heightScale(228) , "228") );
 	tickMarks.add( buildTickMark( "yaxis", d3chart.heightScale(139) , "139") );
