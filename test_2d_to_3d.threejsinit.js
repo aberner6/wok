@@ -201,26 +201,56 @@ function buildAxis( src, dst, colorHex, dashed ) {
 	var axis = new THREE.Line( geom, mat, THREE.LinePieces );
 
 //FOR TEXT
-    var  textGeo = new THREE.TextGeometry('Y AXIS', {
-        size: 15,
-        height: 12,
+    var  textY = new THREE.TextGeometry('Y AXIS', {
+        size: 18,
+        height: 2,
         curveSegments: 6,
         font: "helvetiker",
         style: "normal"
 
     });
-	console.log(textGeo)
+	console.log(textY)
 
 var  color = new THREE.Color();
 color.setRGB(255, 255, 255);
 var  textMaterial = new THREE.MeshBasicMaterial({ color: color });
-var  text = new THREE.Mesh(textGeo , textMaterial);
-// text.position = geom.vertices;
-text.position.x = geom.vertices[0].x;
-text.position.y = geom.vertices[1].y;
-text.position.z = geom.vertices[0].z;
-// text.rotation = camera.rotation;
-scene.add(text);
+var  textY = new THREE.Mesh(textY , textMaterial);
+textY.position.x = geom.vertices[0].x;
+textY.position.y = geom.vertices[1].y;
+textY.position.z = geom.vertices[0].z;
+
+    var  textX = new THREE.TextGeometry('X AXIS', {
+        size: 18,
+        height: 2,
+        curveSegments: 6,
+        font: "helvetiker",
+        style: "normal"
+
+    });
+	console.log(textX)
+
+var  textX = new THREE.Mesh(textX , textMaterial);
+textX.position.x = geom.vertices[1].x;
+textX.position.y = geom.vertices[0].y;
+textX.position.z = geom.vertices[0].z;
+// textX.rotation = camera.position;
+    var  textZ = new THREE.TextGeometry('Z AXIS', {
+        size: 18,
+        height: 2,
+        curveSegments: 6,
+        font: "helvetiker",
+        style: "normal"
+
+    });
+	console.log(textZ)
+
+var  textZ = new THREE.Mesh(textZ , textMaterial);
+textZ.position.x = geom.vertices[0].x;
+textZ.position.y = geom.vertices[0].y;
+textZ.position.z = geom.vertices[1].z;
+scene.add(textY);
+scene.add(textX);
+scene.add(textZ);
 //FOR TEXT
 	return axis;
 }
