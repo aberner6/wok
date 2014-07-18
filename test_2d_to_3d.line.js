@@ -86,8 +86,9 @@ var storeCited = [];
 			for (j=0; j<authors[i].length; j++){
 			theseAuthors.push(authors[i][j]);            
 			}
+			documentTypes[i] = data[i]['Document Type'];
 
-			documentTypes[i] = data[i]['Sourcetitle'];
+			// documentTypes[i] = data[i]['Sourcetitle'];
 		}
 		console.log(theseAuthors[0])
 
@@ -163,11 +164,13 @@ for (i=0; i<kandelData.length; i++){
 
 var maxCited = 2817;
 
-//var colorSpectrum = colorbrewer.PuBu[9];
-// var colorSpectrum = ["#fde0dd","#fcc5c0","#fa9fb5","#f768a1","#dd3497","#ae017e","#7a0177","#49006a"] ;
+var colorSpectrum = colorbrewer.PuBu[9];
+var colorSpectrum = ["#66c2a5"
+,"#fc8d62"
+,"#8da0cb","#fde0dd","#fcc5c0","#fa9fb5","#f768a1","#dd3497","#ae017e","#7a0177","#49006a"] ;
 // var colorSpectrum = ["#E463FF", "#9062E8", "#788AFF","#62B2E8","#6BFFF5"];
 // var colorSpectrum = ["#98d8c8", "#E463FF", "#9062E8", "#788AFF","#62B2E8","#6BFFF5"];
-var colorSpectrum = ["#8beee4","#ff8185","#3e65bd", "#a10d76", "#3e65bd","#2e92a8","#ff8185"];
+// var colorSpectrum = ["#8beee4","#ff8185","#3e65bd", "#a10d76", "#3e65bd","#2e92a8","#ff8185"];
 
 var colorScale = d3.scale.ordinal()
     .domain([0, uniqueTypes.length])
@@ -180,7 +183,9 @@ var colorScale = d3.scale.ordinal()
 			.enter()
 			.append(function(d, i) { 
         for (j=0; j<uniqueTypes.length; j++){
-            if(d['Sourcetitle']==uniqueTypes[j]){
+            if(d['Document Type']==uniqueTypes[j]){
+
+            // if(d['Sourcetitle']==uniqueTypes[j]){
             	if (d.Cited>maxCited/6){
             	console.log(color(j)+" color "+uniqueTypes[j]+" type");
             	}
@@ -190,7 +195,7 @@ var colorScale = d3.scale.ordinal()
             	console.log(parseInt("0x" + color(j).substr(1), 16));
             }		
 
-				return newCircleSprite(parseInt("0x" + color(j).substr(1), 16));
+				return newCircleSprite(parseInt("0x" + colorScale(j).substr(1), 16));
 				//return newCircleSprite(parseInt("0x" + color(j).substr(1), 16));
             }       
         }  				

@@ -112,8 +112,6 @@ function prepCitations(){
         }			
 		return (d3chart.citeYScale(d.Cited)); 
 	})	
-	var camerazoom = 3/4;
-	cameraOrtho = new THREE.OrthographicCamera( - width / camerazoom, width / camerazoom, height / camerazoom, - height / camerazoom, 0.01, 100000 );
 
 //shows an inbetween
 	cameraPositionTween(camera.position, {x: 702, y: -463, z: 1649}, 2000*globalSpeed, 0, false);
@@ -154,8 +152,6 @@ function doCitations(){
 	tickMarks.add( buildTickMark( "xaxis", d3chart.xScale(1989) , "1989") );
 	tickMarks.add( buildTickMark( "xaxis", d3chart.xScale(2014) , "2014") );
 	// cameraPositionTween(camera.position, {x: 424.99573832199366, y: -1112.991560126789, z: 431.5544609364713}, 2000, 0, false);
-	var camerazoom = 1;
-	cameraOrtho = new THREE.OrthographicCamera( - width / camerazoom, width / camerazoom, height / camerazoom, - height / camerazoom, 0.01, 100000 );
 
 	// moreDots
 	// .transition()
