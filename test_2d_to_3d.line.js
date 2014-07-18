@@ -87,7 +87,7 @@ var storeCited = [];
 			theseAuthors.push(authors[i][j]);            
 			}
 
-			documentTypes[i] = data[i]['Document Type'];
+			documentTypes[i] = data[i]['Sourcetitle'];
 		}
 		console.log(theseAuthors[0])
 
@@ -180,7 +180,7 @@ var colorScale = d3.scale.ordinal()
 			.enter()
 			.append(function(d, i) { 
         for (j=0; j<uniqueTypes.length; j++){
-            if(d['Document Type']==uniqueTypes[j]){
+            if(d['Sourcetitle']==uniqueTypes[j]){
             	if (d.Cited>maxCited/6){
             	console.log(color(j)+" color "+uniqueTypes[j]+" type");
             	}
@@ -190,7 +190,7 @@ var colorScale = d3.scale.ordinal()
             	console.log(parseInt("0x" + color(j).substr(1), 16));
             }		
 
-				return newCircleSprite(parseInt("0x" + colorScale(j).substr(1), 16));
+				return newCircleSprite(parseInt("0x" + color(j).substr(1), 16));
 				//return newCircleSprite(parseInt("0x" + color(j).substr(1), 16));
             }       
         }  				
@@ -212,9 +212,9 @@ var colorScale = d3.scale.ordinal()
 			.domain([minYear, maxYear]) //not min year to max year
 			.range([10, maxX]);
      
-		d3chart.citeYScale = d3.scale.linear()
-			.domain([0, maxCited])
-			.range([0, maxY])        
+d3chart.citeYScale = d3.scale.linear()
+			.domain([0, maxCited+10])
+			.range([30, maxY])      
 
 		
 

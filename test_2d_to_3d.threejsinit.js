@@ -104,7 +104,7 @@ function threejs_environment_init() {
 	var height = threeJSDiv.height();
 
 	// CAMERA
-	var camerazoom = 1; //not 1/4
+	var camerazoom = 1;
 
 	// cameraPersp = new THREE.PerspectiveCamera( 50, width / height, 1, 1000 );
 	cameraPersp = new THREE.PerspectiveCamera( 50, width / height, 1, 5000 );
@@ -176,16 +176,16 @@ function drawAxes() {
 	var axes = new THREE.Object3D();
 	axesLabels = new THREE.Object3D();
 
-	var axescolor = 0x888888;
+	var axescolor = 0x000000;
 	var axesdashed = false;
 
 	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( length, 0, 0 ), axescolor, axesdashed ) ); // +X
 	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, length, 0 ), axescolor, axesdashed ) ); // +Y
 	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, length ), axescolor, axesdashed ) ); // +Z
 
-	xAxisMesh = buildTextMesh( new THREE.Vector3( length + 40, -10, 0 ), "X AXIS") ;
-	yAxisMesh = buildTextMesh( new THREE.Vector3( -30, length + 40, 0 ), "Y AXIS") ;
-	zAxisMesh = buildTextMesh( new THREE.Vector3( -30, -10, length + 40 ), "Z AXIS") ;
+	xAxisMesh = buildTextMesh( new THREE.Vector3( length + 40, -10, 0 ), "") ;
+	yAxisMesh = buildTextMesh( new THREE.Vector3( -30, length + 40, 0 ), "") ;
+	zAxisMesh = buildTextMesh( new THREE.Vector3( -30, -10, length + 40 ), "") ;
 //	zAxisMesh.lookAt(0, 0,rotation.set(Math.Pi / 2, 0,0);
 //	zAxisMesh.rotation.set(3.14 / 2, 0,0);
 //	xAxisMesh.rotation.set(3.14 / 4, 0,0);

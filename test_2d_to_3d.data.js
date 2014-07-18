@@ -15,13 +15,13 @@ var d3chart = d3chart || {};
 var pyramidMeshes = [];
 var particles = [];
 
-var globalSpeed = 3.5;
+var globalSpeed = 4;
 function dotTotals() {
 
 	console.log("allTotals");
 	dots
 	.transition()
-	.duration(3000*globalSpeed)
+	.duration(2000*globalSpeed)
 	.attr("position.x", function(d, i) { 
 //     thisData[5140].Title
 // "Cognitive neuroscience and the study of memory" 		
@@ -41,7 +41,7 @@ function dotTotals() {
 
 	//	axesLabels.remove(zAxisMesh); //remove zAxisLbel
 
-	changeAxisText("xaxis", "X (years)");
+	changeAxisText("xaxis", "years");
 
 	scene.remove(tickMarks); tickMarks = new THREE.Object3D(); scene.add(tickMarks);
 	tickMarks.add( buildTickMark( "xaxis", d3chart.xScale(1965) , "1965") );
@@ -53,7 +53,9 @@ function dotTotals() {
 	// cameraPositionTween({x: 702, y: -463, z: 1649}, {x: 550, y: -750, z: 1249}, 2000*globalSpeed, 5000*globalSpeed, false);
 
 //flip side
-cameraPositionTween(camera.position, {x: 1174.769791331465, y:51.94926347051404, z: 1893.0906406660242}, 2000*globalSpeed, 3000*globalSpeed, false);
+cameraPositionTween(camera.position, {x: 447.8069788150349, y:1095.4817575575296, z: 3090.3261836285847}, 2000*globalSpeed, 3000*globalSpeed, false);
+
+// cameraPositionTween(camera.position, {x: 1174.769791331465, y:51.94926347051404, z: 1893.0906406660242}, 2000*globalSpeed, 3000*globalSpeed, false);
 
 
 }
@@ -110,6 +112,9 @@ function prepCitations(){
         }			
 		return (d3chart.citeYScale(d.Cited)); 
 	})	
+	var camerazoom = 3/4;
+	cameraOrtho = new THREE.OrthographicCamera( - width / camerazoom, width / camerazoom, height / camerazoom, - height / camerazoom, 0.01, 100000 );
+
 //shows an inbetween
 	cameraPositionTween(camera.position, {x: 702, y: -463, z: 1649}, 2000*globalSpeed, 0, false);
 	cameraPositionTween({x: 702, y: -463, z: 1649}, {x: 550, y: -750, z: 1249}, 2000*globalSpeed, 5000*globalSpeed, false);
@@ -119,37 +124,38 @@ function prepCitations(){
 
 //	axesLabels.remove(yAxisMesh);
 
-	changeAxisText("zaxis", "Z (cited)");
-
-	// clearTickMarks("all");
-
-	tickMarks.add( buildTickMark( "zaxis", d3chart.citeYScale(2817) , "2817") );
-	tickMarks.add( buildTickMark( "zaxis", d3chart.citeYScale(1003) , "1003") );
-	tickMarks.add( buildTickMark( "zaxis", d3chart.citeYScale(2000) , "2000") );
-	tickMarks.add( buildTickMark( "zaxis", d3chart.citeYScale(304) , "304") );
+	// changeAxisText("zaxis", "cited");
+	// tickMarks.add( buildTickMark( "zaxis", d3chart.citeYScale(2817) , "2817") );
+	// tickMarks.add( buildTickMark( "zaxis", d3chart.citeYScale(1003) , "1003") );
+	// tickMarks.add( buildTickMark( "zaxis", d3chart.citeYScale(2000) , "2000") );
+	// tickMarks.add( buildTickMark( "zaxis", d3chart.citeYScale(304) , "304") );
 
 }
 
 function doCitations(){
 	console.log("do");
 	clearTickMarks("all");
-
+	changeAxisText("zaxis", "cited");
 	tickMarks.add( buildTickMark( "zaxis", d3chart.citeYScale(2817) , "2817") );
 	tickMarks.add( buildTickMark( "zaxis", d3chart.citeYScale(1003) , "1003") );
 	tickMarks.add( buildTickMark( "zaxis", d3chart.citeYScale(2000) , "2000") );
 	tickMarks.add( buildTickMark( "zaxis", d3chart.citeYScale(304) , "304") );
 	
-	// changeAxisText("xaxis", "X (years)");
+	changeAxisText("yaxis", "");
+	changeAxisText("xaxis", "");
 
 	// scene.remove(tickMarks); tickMarks = new THREE.Object3D(); scene.add(tickMarks);
+
+
+	cameraPositionTween(camera.position, {x: 424.99573832199366, y: -1112.991560126789, z: 431.5544609364713}, 2000*globalSpeed, 0*globalSpeed, false);
+	changeAxisText("xaxis", "years");
+
 	tickMarks.add( buildTickMark( "xaxis", d3chart.xScale(1965) , "1965") );
 	tickMarks.add( buildTickMark( "xaxis", d3chart.xScale(1989) , "1989") );
 	tickMarks.add( buildTickMark( "xaxis", d3chart.xScale(2014) , "2014") );
-
-	cameraPositionTween(camera.position, {x: 424.99573832199366, y: -1112.991560126789, z: 431.5544609364713}, 2000*globalSpeed, 0*globalSpeed, false);
-
-
 	// cameraPositionTween(camera.position, {x: 424.99573832199366, y: -1112.991560126789, z: 431.5544609364713}, 2000, 0, false);
+	var camerazoom = 1;
+	cameraOrtho = new THREE.OrthographicCamera( - width / camerazoom, width / camerazoom, height / camerazoom, - height / camerazoom, 0.01, 100000 );
 
 	// moreDots
 	// .transition()
@@ -330,7 +336,7 @@ function loadDots(){
 			clearInterval(firstLoadVar); //and stop loading stuff in
 		}
 	}
-	},400);	
+	},800);	
 		if (firstLoad>=uniqueYears.length){
 
 cameraPositionTween(camera.position, {x: 9.038103598868474, y:7.958078640513122, z: 2999.999999999944}, 2000*globalSpeed, 2000*globalSpeed, false);
@@ -340,7 +346,7 @@ cameraPositionTween(camera.position, {x: 9.038103598868474, y:7.958078640513122,
 	tickMarks.add( buildTickMark( "xaxis", d3chart.xScale(2014) , "2014") );
 
 	// changeAxisText("xaxis", "X (years)");
-	changeAxisText("yaxis", "Y (# of papers)");
+	changeAxisText("yaxis", "# of papers");
 
 	// clearTickMarks("all");
 	tickMarks.add( buildTickMark( "yaxis", d3chart.heightScale(410) , "410") );
