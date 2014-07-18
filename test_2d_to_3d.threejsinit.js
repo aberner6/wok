@@ -183,9 +183,9 @@ function drawAxes() {
 	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, length, 0 ), axescolor, axesdashed ) ); // +Y
 	axes.add( buildAxis( new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, length ), axescolor, axesdashed ) ); // +Z
 
-	xAxisMesh = buildTextMesh( new THREE.Vector3( length + 40, -10, 0 ), "") ;
-	yAxisMesh = buildTextMesh( new THREE.Vector3( -30, length + 40, 0 ), "") ;
-	zAxisMesh = buildTextMesh( new THREE.Vector3( -30, -10, length + 40 ), "") ;
+	xAxisMesh = buildTextMesh( new THREE.Vector3( length + 70, -10, 0 ), "") ;
+	yAxisMesh = buildTextMesh( new THREE.Vector3( -30, length + 70, 0 ), "") ;
+	zAxisMesh = buildTextMesh( new THREE.Vector3( -30, -10, length + 70 ), "") ;
 //	zAxisMesh.lookAt(0, 0,rotation.set(Math.Pi / 2, 0,0);
 //	zAxisMesh.rotation.set(3.14 / 2, 0,0);
 //	xAxisMesh.rotation.set(3.14 / 4, 0,0);

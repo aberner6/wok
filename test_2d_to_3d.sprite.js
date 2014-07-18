@@ -18,7 +18,7 @@ var dummyLine;
 var b;
 var originX = 0, originY = 0; 
 // given a color, creates a sprite with color
-spriteMapCircle = THREE.ImageUtils.loadTexture( "images/sprite_rect_stroke.png" );
+spriteMapCircle = THREE.ImageUtils.loadTexture( "images/sprite_rect.png" );
 newCircleSprite = function(thiscolor) { 
 	var thismaterial = new THREE.SpriteMaterial( { map: spriteMapCircle, color: thiscolor, fog: true });
 	var thissprite = new THREE.Sprite( thismaterial);

@@ -76,7 +76,7 @@ function loadBar(thisYear) {
 	var total1 = 0;
 	dots
 	.transition()
-//	.duration(3000)
+	.duration(2000)
 	.attr("position.y", function(d, i) {
 			if (d['Year']==thisYear){
 				
@@ -332,7 +332,7 @@ function loadDots(){
 			clearInterval(firstLoadVar); //and stop loading stuff in
 		}
 	}
-	},800);	
+	},2000);	
 		if (firstLoad>=uniqueYears.length){
 
 cameraPositionTween(camera.position, {x: 9.038103598868474, y:7.958078640513122, z: 2999.999999999944}, 2000*globalSpeed, 2000*globalSpeed, false);
