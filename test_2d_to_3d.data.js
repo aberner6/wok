@@ -49,11 +49,11 @@ function dotTotals() {
 	tickMarks.add( buildTickMark( "xaxis", d3chart.xScale(2014) , "2014") );
 
 
-	cameraPositionTween(camera.position, {x: 702, y: -463, z: 1649}, 2000*globalSpeed, 0, false);
-	cameraPositionTween({x: 702, y: -463, z: 1649}, {x: 550, y: -750, z: 1249}, 2000*globalSpeed, 5000*globalSpeed, false);
+	// cameraPositionTween(camera.position, {x: 702, y: -463, z: 1649}, 2000*globalSpeed, 0, false);
+	// cameraPositionTween({x: 702, y: -463, z: 1649}, {x: 550, y: -750, z: 1249}, 2000*globalSpeed, 5000*globalSpeed, false);
 
 //flip side
-cameraPositionTween({x: 550, y: -750, z: 1249}, {x: 775.9634148076755, y: -468.53095876153293, z: -775.7814568827}, 2000*globalSpeed, 9000*globalSpeed, false);
+cameraPositionTween(camera.position, {x: 1174.769791331465, y:51.94926347051404, z: 1893.0906406660242}, 2000*globalSpeed, 3000*globalSpeed, false);
 
 
 }
@@ -127,6 +127,7 @@ function prepCitations(){
 	tickMarks.add( buildTickMark( "zaxis", d3chart.citeYScale(1003) , "1003") );
 	tickMarks.add( buildTickMark( "zaxis", d3chart.citeYScale(2000) , "2000") );
 	tickMarks.add( buildTickMark( "zaxis", d3chart.citeYScale(304) , "304") );
+
 }
 
 function doCitations(){
@@ -189,8 +190,11 @@ function allCitations(){
 	tickMarks.add( buildTickMark( "xaxis", d3chart.xScale(2014) , "2014") );
 
 	tickMarks.add( buildTickMark( "yaxis", d3chart.heightScale(410) , "410") );
+	tickMarks.add( buildTickMark( "yaxis", d3chart.heightScale(367) , "367") );
 	tickMarks.add( buildTickMark( "yaxis", d3chart.heightScale(228) , "228") );
 	tickMarks.add( buildTickMark( "yaxis", d3chart.heightScale(139) , "139") );	
+	tickMarks.add( buildTickMark( "yaxis", d3chart.heightScale(14) , "14") );	
+
 	// cameraPositionTween(camera.position, {x: 424.99573832199366, y: -1112.991560126789, z: 431.5544609364713}, 2000, 0, false);
 	cameraPositionTween(camera.position, {x: -118.70351357384163, y: 316.19463559993744
 , z: 1859.5762029258426}, 2000*globalSpeed, 0*globalSpeed, false);	
@@ -327,17 +331,23 @@ function loadDots(){
 		}
 	}
 	},400);	
+		if (firstLoad>=uniqueYears.length){
+
+cameraPositionTween(camera.position, {x: 9.038103598868474, y:7.958078640513122, z: 2999.999999999944}, 2000*globalSpeed, 2000*globalSpeed, false);
+}
 	tickMarks.add( buildTickMark( "xaxis", d3chart.xScale(1965) , "1965") );
 	tickMarks.add( buildTickMark( "xaxis", d3chart.xScale(1989) , "1989") );
 	tickMarks.add( buildTickMark( "xaxis", d3chart.xScale(2014) , "2014") );
 
-	changeAxisText("xaxis", "X (years)");
+	// changeAxisText("xaxis", "X (years)");
 	changeAxisText("yaxis", "Y (# of papers)");
 
 	// clearTickMarks("all");
 	tickMarks.add( buildTickMark( "yaxis", d3chart.heightScale(410) , "410") );
+	tickMarks.add( buildTickMark( "yaxis", d3chart.heightScale(367) , "367") );	
 	tickMarks.add( buildTickMark( "yaxis", d3chart.heightScale(228) , "228") );
 	tickMarks.add( buildTickMark( "yaxis", d3chart.heightScale(139) , "139") );
+	tickMarks.add( buildTickMark( "yaxis", d3chart.heightScale(14) , "14") );	
 
 
 }
@@ -373,23 +383,30 @@ $( document ).ready(function() {
 	if(b==4){
 		allCitations();
 	}
+
 	if(b==5){
+	cameraPositionTween(camera.position, {x: -744.4854839640254,
+y: -177.92272211382726,
+z:1221.3974472260902},2000*globalSpeed,0*globalSpeed,false);				
+		// otherView();
+	}
+	if(b==6){
 	cameraPositionTween(camera.position, {x: 426.0379905336258,
 y: 431.44996989494274,
 z: 3067.3052685035245},2000*globalSpeed,0*globalSpeed,false);				
 		dotTotals();
 	}	
-	if(b==6){
+	if(b==7){
 		firstLoad = 0;
 		loadDots();				
 	}	
-	if(b==7){
+	if(b==8){
 		prepCitations();		
 	}	
-	if(b==8){
+	if(b==9){
 		doCitations();		
 	}	
-	if(b==9){
+	if(b==10){
 		allCitations();
 	}						
 	});
