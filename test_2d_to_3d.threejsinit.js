@@ -490,8 +490,14 @@ function cameraPositionTween(position, destination, duration, delay, normalized)
 		.to(destination, duration)
 		.delay(delay)
 		.easing(TWEEN.Easing.Cubic.InOut)
+		.onStart(function() {
+			console.log("START we just stopped a tween that took " + duration + "s and was delayed " + delay + "s");
+		})
 		.onUpdate(function() {
 		//	console.log(this);
+		})
+		.onComplete(function() {
+			console.log("STOP we just stopped a tween that took " + duration + "s and was delayed " + delay + "s");
 		});
 
 	console.log("alright, tweening! from" );
