@@ -51,27 +51,38 @@ body {
 }
 
 .button {
-	height: 30px;
+height: 21px;
+background-color: white;
+border-bottom: solid 1px gray;
+cursor: pointer;
+position: fixed;
+border-style: 1px;
+border-bottom-style: solid;
+font-family: Helvetica Neue;
+font-size: 12px;
+text-align: center;
+font-weight: 200;
+/*	height: 30px;
 	width: 100px;
 	background-color: cyan;
 	text-align: center;
 	cursor:pointer;
-	position: fixed;
+	position: fixed;*/
 }
 
 .button#cited {
-	right: 10px;
-	top: 10px; 
+right: 20px;
+top: 45px;
 }
 
 .button#pyramids {
-	right: 10px;
-	top: 50px; 
+right: 20px;
+top: 85px;
 }
 
 .button#whirl {
-	right: 10px;
-	top: 90px; 
+right: 20px;
+top: 125px;
 }
 
 .button#camera {
@@ -96,6 +107,7 @@ body {
 	width: 94vmin;
 	height: 94vmin;
 	margin: auto;
+margin-top: 6.1vmin;	
 }
 
 #threeJS {
@@ -112,9 +124,25 @@ body {
 			<div id="threeJS"></div> 
 		</div>
 		<div id="stats"></div>
-		<div class="button" id="cited">cited</div> 
+
+<div class="button" id="Header" style="
+    left: 20px;
+    top: 5px;
+    font-size: 18px;
+    border-style: none;
+    font-weight: 500;
+">Sample Dataset Exploration</div>
+  		<div class="button" id="Intro" style="
+    left: 20px; 
+    top: 45px;
+">Guiding Notes</div> 
+		<div class="button" id="pyramids">Totals</div> 
+		<div class="button" id="whirl">Camera Control</div> 
+		<div class="button" id="cited">Cited</div>
+
+<!-- 		<div class="button" id="cited">cited</div> 
 		<div class="button" id="pyramids">ADD STARS</div> 
-		<div class="button" id="whirl">go for a whirl</div> 
+		<div class="button" id="whirl">go for a whirl</div>  -->
 		<div class="button ortho" id="camera" name="ortho" style="display:none;">ORTHO CAMERA</div> 
 	</div>
   </body>
