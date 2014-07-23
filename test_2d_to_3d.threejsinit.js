@@ -434,16 +434,16 @@ $( document ).ready(function() {
 	// 	}
 	// });
 
-	$("#whirl").click(function() {
-		switch(whirlcount++) {
-			case 0:
-				cameraTweenSetup();
-				break;
-			default:
-				cameraTweenSetup();
-				break;
-		}
-	});
+	// $("#whirl").click(function() {
+	// 	switch(whirlcount++) {
+	// 		case 0:
+	// 			cameraTweenSetup();
+	// 			break;
+	// 		default:
+	// 			cameraTweenSetup();
+	// 			break;
+	// 	}
+	// });
 });
 
 function cameraTweenSetup() {

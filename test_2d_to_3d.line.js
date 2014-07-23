@@ -172,35 +172,6 @@ var maxCited = 2817;
 // var colorScale = d3.scale.ordinal()
 //     .domain([0, uniqueTypes.length])
 //     .range(colorSpectrum);
-
-	if (uniqueTypes.length>0){		
-		dots = d3.select( chart3d )
-			.selectAll("THREE.Mesh")
-			.data(thisData)
-			.enter()
-			.append(function(d, i) { 
-        for (j=0; j<uniqueTypes.length; j++){
-            if(d['Sourcetitle']==uniqueTypes[j]){
-            	if (d.Cited>maxCited/6){
-            	// console.log(d.Title+d.Authors+d.Year+d.Cited);
-            	// console.log(parseInt("0x" + color(j).substr(1), 16));            		
-            	// console.log(color(j)+" color "+uniqueTypes[j]+" type");
-            	}
-
-            if (i==5140){
-            	console.log(d.Title+d.Authors+d.Year+d.Cited);
-            	console.log(color(j)+" color "+uniqueTypes[j]+" type");            	
-            	// console.log(parseInt("0x" + color(j).substr(1), 16));
-            }		
-
-				return newCircleSprite(parseInt("0x" + color(j).substr(1), 16));
-				//return newCircleSprite(parseInt("0x" + color(j).substr(1), 16));
-            }       
-        }  				
-			});		
-		}	
-
-
 	   maxAuthor = d3.max(totalAuthors, function(d) { return d; });
 	   singleScale = d3.scale.linear()
 			.domain([1, maxAuthor*5])
@@ -259,6 +230,138 @@ for (i=0; i<thisData.length; i++){
 			y: newY[i]
 		})
 	}
+
+
+	if (uniqueTypes.length>0){		
+		dots = d3.select( chart3d )
+			.selectAll("THREE.Mesh")
+			.data(thisData)
+			.enter()
+			.append(function(d, i) { 
+        for (j=0; j<uniqueTypes.length; j++){
+            if(d['Sourcetitle']==uniqueTypes[j]){
+            	if (d.Cited>maxCited/6){
+            	// console.log(d.Title+d.Authors+d.Year+d.Cited);
+            	// console.log(parseInt("0x" + color(j).substr(1), 16));            		
+            	// console.log(color(j)+" color "+uniqueTypes[j]+" type");
+            	}
+
+            if (i==5140){
+            	console.log(d.Title+d.Authors+d.Year+d.Cited);
+            	console.log(color(j)+" color "+uniqueTypes[j]+" type");            	
+            	// console.log(parseInt("0x" + color(j).substr(1), 16));
+            }		
+
+				return newCircleSprite(parseInt("0x" + color(j).substr(1), 16));
+				//return newCircleSprite(parseInt("0x" + color(j).substr(1), 16));
+            }       
+        }  				
+			})
+// if (typeof dots !== 'undefined') {
+	// dots
+	.attr("position.x", function(d, i) {
+		// console.log("in here")
+			// if (d['Year']==thisYear){
+            	// var tempx = (d3chart.xScale(thisYear)); //not height-
+            	return d3chart.xScale(d.Year);
+        	// }    	
+        	// return this.position.x;
+    	})
+// }					
+		}	
+
+
+
+
+
+
+
+
+
+
+
+
+// 	   maxAuthor = d3.max(totalAuthors, function(d) { return d; });
+// 	   singleScale = d3.scale.linear()
+// 			.domain([1, maxAuthor*5])
+// 			.range([1, height/6-100]);
+
+// 		maxEntries = d3.max(totals, function(d) { return d; });
+
+// 		minYear = d3.min(years, function(d) { return d; });
+// 		maxYear = d3.max(years, function(d) { return d; });
+
+// 		d3chart.xScale = d3.scale.linear()
+// 			.domain([minYear, maxYear]) //not min year to max year
+// 			.range([10, maxX]);
+     
+// d3chart.citeYScale = d3.scale.linear()
+// 			.domain([0, maxCited+10])
+// 			.range([30, maxY])      
+
+		
+
+
+// 		opacityMap = d3.scale.linear()
+// 			.domain([0, maxCited])
+// 			.range([.2, 1])        
+
+// //FOR TOTALS
+// 		d3chart.heightScale = d3.scale.linear()
+// 			.domain([0, maxEntries+10])
+// 			.range([0, maxY]);
+
+// d3chart.randomX = d3.scale.linear()
+//     .domain([0,1]) 
+//     .range([-maxX*2, maxX*2]);
+// d3chart.randomY = d3.scale.linear()
+//     .domain([0,1]) 
+//     .range([-maxY*2, maxY*2]);
+// d3chart.randomZ = d3.scale.linear()
+//     .domain([0,1]) 
+//     .range([-2000, 2000]);
+
+// for (i=0; i<thisData.length; i++){
+//     newX.push(d3chart.randomX(Math.random()))
+//     newY.push(d3chart.randomY(Math.random()))
+// 	newZ.push(d3chart.randomZ(Math.random()))
+// }
+
+
+// 	for (i=0; i<thisData.length; i++){
+// 		lineX.push(d3chart.xScale(years[i]))
+// 		lineY.push(thisData[i].Cited) //height-10-
+// 	}
+
+// 	for (i=0; i<thisData.length; i++){
+// 		straightLine.push({
+// 			x: newX[i],
+// 			y: newY[i]
+// 		})
+// 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 	////FOR X AXIS

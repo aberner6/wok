@@ -82,7 +82,7 @@ function loadBar(thisYear) {
 	var total1 = 0;
 	dots
 	.transition()
-	.duration(2000)
+	.duration(1000)
 	.attr("position.y", function(d, i) {
 			if (d['Year']==thisYear){
 				
@@ -95,15 +95,14 @@ function loadBar(thisYear) {
         	} 
         	return this.position.y;
        })
-	.attr("position.x", function(d, i) {
-			if (d['Year']==thisYear){
-            	var tempx = (d3chart.xScale(thisYear)); //not height-
-            	return tempx;
-        	}    	
-        	return this.position.x;
-    	})		
+	// .attr("position.x", function(d, i) {
+	// 		if (d['Year']==thisYear){
+ //            	var tempx = (d3chart.xScale(thisYear)); //not height-
+ //            	return tempx;
+ //        	}    	
+ //        	return this.position.x;
+ //    	})		
 	.attr("position.z",0)	
-
 //	cameraPositionTween(camera.position, {x: 1, y: 0, z: 1}, 3000, 0, true);
 }
 
@@ -335,10 +334,14 @@ function loadDots(){
 			} 
 		}
 		else {
+// if (firstLoad>=uniqueYears.length){
+	$("#cited").show();
+	$("#whirl").show();			
+// }			
 			clearInterval(firstLoadVar); //and stop loading stuff in
 		}
 	}
-	},2000);	
+	},1000);	
 		if (firstLoad>=uniqueYears.length){
 
 cameraPositionTween(camera.position, {x: 9.038103598868474, y:7.958078640513122, z: 2999.999999999944}, 2000*globalSpeed, 2000*globalSpeed, false);
@@ -385,10 +388,7 @@ if(totalFlag == true) {
 	if (uniqueYears.length>0){
 		if (xAxisMesh !== 'undefined') {
 		loadDots();	
-		if (firstLoad>=uniqueYears.length){
-	$("#cited").show();
-	$("#whirl").show();			
-		}
+
 		totalFlag = false;		
 	}
 }		
@@ -403,24 +403,24 @@ z: 3067.3052685035245},2000*globalSpeed,0*globalSpeed,false);
 }
 });	
 
-// $("#whirl").click(function(){
-// if(cameraFlag == true) {				
+$("#whirl").click(function(){
+if(cameraFlag == true) {				
 
-// cameraPositionTween(camera.position, {x: -744.4854839640254,
-// y: -177.92272211382726,
-// z:1221.3974472260902},2000*globalSpeed,0*globalSpeed,false);	
+cameraPositionTween(camera.position, {x: -744.4854839640254,
+y: -177.92272211382726,
+z:1221.3974472260902},2000*globalSpeed,0*globalSpeed,false);	
 
-// cameraFlag = false;
+cameraFlag = false;
 
-// }
-// else{
+}
+else{
 cameraPositionTween(camera.position, {x: 426.0379905336258,
 y: 431.44996989494274,
 z: 3067.3052685035245},2000*globalSpeed,0*globalSpeed,false);	
 
-// 	cameraFlag = true;
-// }	
-// 	})
+	cameraFlag = true;
+}	
+	})
 
 	$("body").keypress(function(){
 	b+=1;
