@@ -15,7 +15,13 @@ var d3chart = d3chart || {};
 var pyramidMeshes = [];
 var particles = [];
 
-var globalSpeed = 4;
+var globalSpeed = 1;
+
+
+var dotCitedFlag = true;
+var totalFlag = true;
+var cameraFlag = true;
+
 function dotTotals() {
 
 	console.log("allTotals");
@@ -357,18 +363,64 @@ cameraPositionTween(camera.position, {x: 9.038103598868474, y:7.958078640513122,
 
 
 $( document ).ready(function() {
+
 	// deal with debug button
 	$("#cited").click(function() {
 		console.log("cited clicked");
 		if(dotCitedFlag == true) {
-			dotTotals();
+			// dotTotals();
+		prepCitations();
+		doCitations();
+
 			dotCitedFlag = false;
 		} else {
-			dotRandom();
-
+			// dotRandom();
 			dotCitedFlag = true;
 		}
 	});
+
+$("#pyramids").click(function() {
+
+if(totalFlag == true) {									
+	if (uniqueYears.length>0){
+		if (xAxisMesh !== 'undefined') {
+		loadDots();	
+		if (firstLoad>=uniqueYears.length){
+	$("#cited").show();
+	$("#whirl").show();			
+		}
+		totalFlag = false;		
+	}
+}		
+}
+
+else {
+		allCitations();			
+cameraPositionTween(camera.position, {x: 426.0379905336258,
+y: 431.44996989494274,
+z: 3067.3052685035245},2000*globalSpeed,0*globalSpeed,false);	
+		totalFlag = true;
+}
+});	
+
+// $("#whirl").click(function(){
+// if(cameraFlag == true) {				
+
+// cameraPositionTween(camera.position, {x: -744.4854839640254,
+// y: -177.92272211382726,
+// z:1221.3974472260902},2000*globalSpeed,0*globalSpeed,false);	
+
+// cameraFlag = false;
+
+// }
+// else{
+cameraPositionTween(camera.position, {x: 426.0379905336258,
+y: 431.44996989494274,
+z: 3067.3052685035245},2000*globalSpeed,0*globalSpeed,false);	
+
+// 	cameraFlag = true;
+// }	
+// 	})
 
 	$("body").keypress(function(){
 	b+=1;

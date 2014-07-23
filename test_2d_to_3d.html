@@ -72,15 +72,17 @@ font-weight: 200;
 
 .button#cited {
 right: 20px;
-top: 45px;
+top: 85px;
+display:none;
 }
 
 .button#pyramids {
 right: 20px;
-top: 85px;
+top: 45px;
 }
 
 .button#whirl {
+	display:none;
 right: 20px;
 top: 125px;
 }
@@ -115,7 +117,14 @@ margin-top: 6.1vmin;
 	height: 100%;
 }
 
-
+#introText{
+    left: 20px; 
+    top: 65px;	
+display:none;
+width: 200px;
+border-style: none;
+text-align: left;
+}
 	</style>
   </head>
   <body>
@@ -136,8 +145,13 @@ margin-top: 6.1vmin;
     left: 20px; 
     top: 45px;
 ">Guiding Notes</div> 
+<div class="button" id = "introText">
+The Research Index will be based on a database containing all of the publications and their metadata, including title, authors, journal, citations, date, and much more.To render this prototype, we worked with Scopus, a journal database containing abstracts and citations for thousands of scientific publications.We conducted several data searches and created a visualization based on the search of keyword “Memory.” In this basic trial, we narrowed our results to the top 100 authors on the topic “Memory” within the field of “Neuroscience.” 
+</div>
+
+
 		<div class="button" id="pyramids">Totals</div> 
-		<div class="button" id="whirl">Camera Control</div> 
+		<div class="button" id="whirl">Explore Dimensions</div> 
 		<div class="button" id="cited">Cited</div>
 
 <!-- 		<div class="button" id="cited">cited</div> 
@@ -145,6 +159,11 @@ margin-top: 6.1vmin;
 		<div class="button" id="whirl">go for a whirl</div>  -->
 		<div class="button ortho" id="camera" name="ortho" style="display:none;">ORTHO CAMERA</div> 
 	</div>
+<script>
+$("#Intro").click(function() {
+$("#introText").toggle();
+})
+</script>
   </body>
 </html>
 

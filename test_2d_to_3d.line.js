@@ -182,9 +182,9 @@ var maxCited = 2817;
         for (j=0; j<uniqueTypes.length; j++){
             if(d['Sourcetitle']==uniqueTypes[j]){
             	if (d.Cited>maxCited/6){
-            	console.log(d.Title+d.Authors+d.Year+d.Cited);
+            	// console.log(d.Title+d.Authors+d.Year+d.Cited);
             	// console.log(parseInt("0x" + color(j).substr(1), 16));            		
-            	console.log(color(j)+" color "+uniqueTypes[j]+" type");
+            	// console.log(color(j)+" color "+uniqueTypes[j]+" type");
             	}
 
             if (i==5140){

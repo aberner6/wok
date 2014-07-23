@@ -13,6 +13,8 @@ var secondRotationX = 0;
 var secondRotationY = 0;
 var secondRotationZ = 0;
 var dotCitedFlag = true;
+var totalFlag = true;
+
 var origPosition;
 
 var threeJSDiv;
@@ -421,16 +423,16 @@ $( document ).ready(function() {
 		camera.target = formercamera.target;*/
 	});
 
-	$("#pyramids").click(function() {
-		switch(pyramidcount++) {
-			case 0:
-				drawParticles(scene); //just for testing
-				break;
-			case 1:
-				drawTestPyramids(scene); //just for testing
-				break;
-		}
-	});
+	// $("#pyramids").click(function() {
+	// 	switch(pyramidcount++) {
+	// 		case 0:
+	// 			drawParticles(scene); //just for testing
+	// 			break;
+	// 		case 1:
+	// 			drawTestPyramids(scene); //just for testing
+	// 			break;
+	// 	}
+	// });
 
 	$("#whirl").click(function() {
 		switch(whirlcount++) {
@@ -454,7 +456,7 @@ function cameraTweenSetup() {
 					{x: 0, y:0, z:distFromCenter},
 					{x: -distFromCenter, y:0, z:0},
 					{x: 0, y:-distFromCenter, z:0},
-					{x: 0, y:0, z:-distFromCenter}];
+					{x: 0, y:0, z:distFromCenter}];
 
 	var endPosition;
 	while(true) {
