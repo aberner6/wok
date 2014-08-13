@@ -369,6 +369,9 @@ $( document ).ready(function() {
 
 	// deal with debug button
 	$("#cited").click(function() {
+        d3.select("#pyramids").classed("selected", false);
+        d3.select("#whirl").classed("selected",false);
+        d3.select("#cited").classed("selected", true);		
 		console.log("cited clicked");
 		if(dotCitedFlag == true) {
 			// dotTotals();
@@ -383,7 +386,9 @@ $( document ).ready(function() {
 	});
 
 $("#pyramids").click(function() {
-
+        d3.select("#pyramids").classed("selected", true);
+        d3.select("#whirl").classed("selected",false);
+        d3.select("#cited").classed("selected", false);
 if(totalFlag == true) {									
 	if (uniqueYears.length>0){
 		if (xAxisMesh !== 'undefined') {
@@ -404,6 +409,9 @@ z: 3067.3052685035245},2000*globalSpeed,0*globalSpeed,false);
 });	
 
 $("#whirl").click(function(){
+        d3.select("#pyramids").classed("selected", false);
+        d3.select("#whirl").classed("selected",true);
+        d3.select("#cited").classed("selected", false);	
 if(cameraFlag == true) {				
 
 cameraPositionTween(camera.position, {x: -226.5508569446256, y: 850.4319890215008, z: 1751.6311105679358},2000*globalSpeed,0*globalSpeed,false);	

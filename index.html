@@ -51,40 +51,81 @@ body {
 }
 
 .button {
-height: 21px;
+height: 15px;
 background-color: white;
-border-bottom: solid 1px gray;
 cursor: pointer;
 position: fixed;
-border-style: 1px;
-border-bottom-style: solid;
+/*border-style: 1px;*/
+/*border-bottom-style: solid;*/
 font-family: Helvetica Neue;
 font-size: 12px;
 text-align: center;
 font-weight: 200;
-/*	height: 30px;
-	width: 100px;
-	background-color: cyan;
-	text-align: center;
-	cursor:pointer;
-	position: fixed;*/
+padding: 6px;
+}
+.text {
+height: 21px;
+background-color: white;
+position: fixed;
+/*border-style: 1px;*/
+/*border-bottom-style: solid;*/
+font-family: Helvetica Neue;
+font-size: 12px;
+text-align: left;
+font-weight: 200;
+padding: 3px;
 }
 
 .button#cited {
-right: 20px;
+/*right: 20px;*/
 top: 85px;
+/*left:224px;*/
+margin-left: -39px;
+
+ /*20px*/
+/*top: 45px;*/
+border-bottom: solid 1px gray;
+
 display:none;
 }
 
 .button#pyramids {
-right: 20px;
-top: 45px;
+/*right: 20px;*/
+margin-left: -44px;
+top: 46px;
+border-bottom: solid 1px gray;
+
 }
 
 .button#whirl {
+
 	display:none;
-right: 20px;
+/*right: 20px;*/
 top: 125px;
+margin-left: -51px;
+border-bottom: solid 1px gray;
+
+}
+
+#pyramids.selected{
+    color: white;
+    /*border:1px solid yellow; */
+    margin-left:0px;
+    background-color: rgba(65, 63, 63, .3);  
+}
+#whirl.selected{
+    color: white;
+        margin-left:0px;
+
+    /*border:1px solid yellow; */
+    background-color: rgba(65, 63, 63, .3);  
+}
+#cited.selected{
+    color: white;
+        margin-left:0px;
+
+    /*border:1px solid yellow; */
+    background-color: rgba(65, 63, 63, .3);  
 }
 
 .button#camera {
@@ -118,12 +159,23 @@ margin-top: 6.1vmin;
 }
 
 #introText{
-    left: 20px; 
-    top: 65px;	
+    right: 20px; 
+    top: 41px;	
 display:none;
 width: 14%;
-border-style: none;
+/*color:blue;*/
+
+/*border-style: none;*/
 text-align: left;
+}
+#Intro{
+    font-size: 14px;
+    border-style: none;
+    font-weight: 200;
+    cursor: pointer;
+    right: 20px;
+    top: 5px;
+
 }
 #stats{
 	display:none;
@@ -133,6 +185,9 @@ text-align: left;
   <body>
 	<div id="container">
 		<div id="threeJS-wrapper">
+					<div class="button" id="pyramids">Totals</div> 
+		<div class="button" id="whirl">Explore</div> 
+		<div class="button" id="cited">Cited</div>
 			<div id="threeJS"></div> 
 		</div>
 		<div id="stats"></div>
@@ -140,22 +195,24 @@ text-align: left;
 <div class="button" id="Header" style="
     left: 20px;
     top: 5px;
-    font-size: 18px;
+    font-size: 14px;
     border-style: none;
     font-weight: 500;
-">Sample Dataset Exploration</div>
-  		<div class="button" id="Intro" style="
-    left: 20px; 
-    top: 45px;
-">Guiding Notes</div> 
-<div class="button" id = "introText">
+">Neuroscience Publications on Memory</div>
+
+<div class="button" id="Header" style="
+    left: 20px;
+    top: 25px;
+    font-size: 12px;
+    border-style: none;
+    font-weight: 200;
+">Dataset Dimensions Exploration</div>
+  		<div class="button" id="Intro">Guiding Notes</div> 
+<div class="text" id = "introText">
 The Research Index will be based on a database containing all of the publications and their metadata, including title, authors, journal, citations, date, and much more.To render this prototype, we worked with Scopus, a journal database containing abstracts and citations for thousands of scientific publications.We conducted several data searches and created a visualization based on the search of keyword “Memory.” In this basic trial, we narrowed our results to the top 100 authors on the topic “Memory” within the field of “Neuroscience.” 
 </div>
 
 
-		<div class="button" id="pyramids">Totals</div> 
-		<div class="button" id="whirl">Explore Dimensions</div> 
-		<div class="button" id="cited">Cited</div>
 
 <!-- 		<div class="button" id="cited">cited</div> 
 		<div class="button" id="pyramids">ADD STARS</div> 
