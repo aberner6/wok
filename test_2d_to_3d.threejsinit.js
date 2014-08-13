@@ -19,7 +19,7 @@ var origPosition;
 
 var threeJSDiv;
 var width = 1400;
-var height = 720;
+var height = 700;
 var maxAxis = 850;
 var maxX = maxAxis;
 var maxY = maxAxis;
@@ -277,7 +277,7 @@ function buildTickMark ( axis, amplitude, text)  {
 }
 
 function buildTextMesh(location, text) {
-	console.log("printping +" + text);
+	// console.log("printping +" + text);
 	var textGeo = new THREE.TextGeometry(text, {
 		size: 16,
 		height: 2,
@@ -287,7 +287,7 @@ function buildTextMesh(location, text) {
 	});
 
 	
-	console.log(textGeo)
+	// console.log(textGeo)
 
 	var color = 0x888888;
 //THREE.Color();

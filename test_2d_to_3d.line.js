@@ -232,6 +232,8 @@ for (i=0; i<thisData.length; i++){
 	}
 
 
+
+
 	if (uniqueTypes.length>0){		
 		dots = d3.select( chart3d )
 			.selectAll("THREE.Mesh")
@@ -259,16 +261,98 @@ for (i=0; i<thisData.length; i++){
 			})
 // if (typeof dots !== 'undefined') {
 	// dots
+	// .attr("position.x", function(d, i) {
+	// 	// console.log("in here")
+	// 		// if (d['Year']==thisYear){
+ //            	// var tempx = (d3chart.xScale(thisYear)); //not height-
+ //            	// return d3chart.xScale(d.Year);
+ //        	// }    	
+ //        	// return this.position.x;
+ //    	})
+// }					
+		}	
+
+
+
+
+
+
+
+
+
+
+// 	if (uniqueTypes.length>0){		
+// 		dots = d3.select( chart3d )
+// 			.selectAll("THREE.Mesh")
+// 			.data(thisData)
+// 			.enter()
+// 			.append(function(d, i) { 
+//         for (j=0; j<uniqueTypes.length; j++){
+//             if(d['Sourcetitle']==uniqueTypes[j]){
+//             	if (d.Cited>maxCited/6){
+//             	// console.log(d.Title+d.Authors+d.Year+d.Cited);
+//             	// console.log(parseInt("0x" + color(j).substr(1), 16));            		
+//             	// console.log(color(j)+" color "+uniqueTypes[j]+" type");
+//             	}
+
+//             if (i==5140){
+//             	console.log(d.Title+d.Authors+d.Year+d.Cited);
+//             	console.log(color(j)+" color "+uniqueTypes[j]+" type");            	
+//             	// console.log(parseInt("0x" + color(j).substr(1), 16));
+//             }		
+
+// 				return newCircleSprite(parseInt("0x" + color(j).substr(1), 16));
+// 				//return newCircleSprite(parseInt("0x" + color(j).substr(1), 16));
+//             }       
+//         }  				
+// 			})
+
+dots
+	.transition()
+	.duration(1000)
+	.attr("position.x", function(d, i) { 
+		return newX[i];
+	})
+	.attr("position.y", function(d, i) { 
+		return newY[i];
+	})
+	.attr("position.z", function(d,i){
+		return newZ[i];
+	})
+	.transition()
+	.delay(3000)
+	.duration(1000)
 	.attr("position.x", function(d, i) {
 		// console.log("in here")
-			// if (d['Year']==thisYear){
-            	// var tempx = (d3chart.xScale(thisYear)); //not height-
             	return d3chart.xScale(d.Year);
         	// }    	
         	// return this.position.x;
     	})
+	.attr("position.z",0)
+	.attr("position.y",0)
+ 	console.log("dots transition random called")
+// }
+	changeAxisText("xaxis", "years");
+	scene.remove(tickMarks); tickMarks = new THREE.Object3D(); scene.add(tickMarks);
+	tickMarks.add( buildTickMark( "xaxis", d3chart.xScale(1965) , "1965") );
+	tickMarks.add( buildTickMark( "xaxis", d3chart.xScale(1989) , "1989") );
+	tickMarks.add( buildTickMark( "xaxis", d3chart.xScale(2014) , "2014") );
+cameraPositionTween(camera.position, {x: 447.8069788150349, y:0, z: 3090.3261836285847}, 2000*globalSpeed, 0, false);
+
+
+
+// if (typeof dots !== 'undefined') {
+	// dots
+	// .attr("position.x", function(d, i) {
+	// 	// console.log("in here")
+	// 		// if (d['Year']==thisYear){
+ //            	// var tempx = (d3chart.xScale(thisYear)); //not height-
+ //            	return d3chart.xScale(d.Year);
+ //        	// }    	
+ //        	// return this.position.x;
+ //    	})
 // }					
-		}	
+		// }	
 
 
 
